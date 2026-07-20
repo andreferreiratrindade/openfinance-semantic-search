@@ -1,0 +1,6 @@
+{
+  "texto": "Após a captura do authorization code , realize as demais operações de UX necessárias. Payload de resposta e cache Nas APIs de negócio, as respostas dos sistemas de negócio podem ser cacheadas no API Gateway , desde que a arquitetura do sistema invalide dinamicamente os registros em cache que não espelhem mais a realidade.",
+  "paginaId": "301662235_Guia+de+Boas+Pr+ticas",
+  "title": "Guia de Boas Práticas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/301662235/Guia+de+Boas+Pr+ticas"
+}

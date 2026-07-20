@@ -1,0 +1,6 @@
+{
+  "texto": "Qualquer outro caractere não deve ser usado nos nomes dos objetos e atributos, com exceção do caractere - (hífen), que poderá ser utilizado apenas conforme descrito na seção Extensibilidade . Estilo de nomeação de atributos Os nomes dos objetos e atributos devem ser nomes significativos e em língua inglesa. Quando houver diferença entre inglês americano e inglês britânico no termo a ser utilizado, deverá ser utilizado o termo em inglês britânico. P. ex: utilizar o termo Post Code (Reino Unido) ao invés de Zip Code (Estados Unidos). Arrays devem ser nomeados no plural. Demais atributos deverão ser nomeados no singular. Convenções de propriedade dos atributos Tipos de dados dos atributos Cada atributo deverá estar associado a um tipo de dado. A lista de tipos de dados válidos está definida na seção tipos de dados comuns . Se um tipo de dado personalizado é necessário para um atributo, o mesmo deverá ser classificado como uma string com uma descrição clara de como o valor da propriedade deve ser interpretado.",
+  "paginaId": "17377399_Conven+es+de+Payload",
+  "title": "Convenções de Payload - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17377399/Conven+es+de+Payload"
+}

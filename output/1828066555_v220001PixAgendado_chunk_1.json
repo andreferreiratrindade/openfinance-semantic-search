@@ -1,0 +1,6 @@
+{
+  "texto": "O Pix Agendado permite a criação de autorizações para realização de pagamentos em data futura, de forma única ou recorrente, para pessoas físicas ou jurídicas, no contexto do Open Finance. Este capítulo descreve o seguinte cenário da jornada de Pix Agendado : A criação e confirmação da autorização de agendamento, em que são definidos parâmetros como data de execução, recorrência (quando aplicável), valor e demais condições do pagamento. Casos de uso de agendamentos recorrentes com Pix No caso de agendamentos recorrentes, o usuário pode programar pagamentos periódicos com valor fixo, adequados para compromissos frequentes, como: Aluguel; Serviços; Assinaturas; Remessas recorrentes; Doações.",
+  "paginaId": "1828066555_v.22.00.01+Pix+Agendado",
+  "title": "v.22.00.01 Pix Agendado - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828066555/v.22.00.01+Pix+Agendado"
+}

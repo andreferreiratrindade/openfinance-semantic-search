@@ -1,0 +1,6 @@
+{
+    "texto": "1\nVisão Geral\n2\nConjunto de informações de Câmbio para taxa online\n: (GET /opendata-exchange/v1/online-rates)\n2.1\nDicionário de dados\n3\nConjunto de informações de Câmbio para valor VET:\n(GET /opendata-exchange/v1/vet-values)\n3.1\nDicionário de dados\nVisão Geral\nAs instituições financeiras participantes podem consultar as informações de câmbio de outras instituições participantes\nConjunto de informações de Câmbio para taxa online\n: (GET /opendata-exchange/v1/online-rates)\nMétodo para disponibilizar a taxa online.\nDicionário de dados\nFazer download do dicionário de dados\nConjunto de informações de Câmbio para valor VET:\n(GET /opendata-exchange/v1/vet-values)\nMétodo para disponibilizar o valor VET.\nDicionário de dados\nCampos de resposta do endpoint de\n/vet-values\nFazer download do dicionário de dados",
+    "paginaId": "619348203_Informa+es+Gerais+-+DA+C+mbio+-+v1.0.1",
+    "title": "Informações Gerais - [DA] Câmbio - v1.0.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/619348203/Informa+es+Gerais+-+DA+C+mbio+-+v1.0.1"
+}

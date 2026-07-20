@@ -1,0 +1,6 @@
+{
+  "texto": "Nessas situações, o campo tokenId deve ser omitido do reporte à PCM. string CLIENT Todos Todos /open-banking/accounts/v x /accounts /open-banking/accounts/v x /accounts/{accountId} /open-banking/accounts/v x /accounts/{accountId}/balances /open-banking/accounts/v x /accounts/{accountId}/transactions /open-banking/accounts/v x /accounts/{accountId}/transactions-current /open-banking/accounts/v x /accounts/{accountId}/overdraft-limits v2 Dados de entrada Token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' (JWT completo) Pepper: '[valor secreto da instituição]' Processo Concatenar: token + pepper Hash SHA256: da string concatenada Truncar: primeiros 72 bits (9 bytes) Codificar: Base64URL-safe Resultado { \"additionalInfo\": { \"tokenId\": \"c9ng8aKzxNXm\" } }",
+  "paginaId": "1623195649_Contas+-+Regras+de+Obrigatoriedade+additionalInfo",
+  "title": "Contas - Regras de Obrigatoriedade (additionalInfo) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1623195649/Contas+-+Regras+de+Obrigatoriedade+additionalInfo"
+}

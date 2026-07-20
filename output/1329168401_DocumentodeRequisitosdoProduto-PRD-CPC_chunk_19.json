@@ -1,0 +1,6 @@
+{
+  "texto": "O contrato original deve permanecer disponível para um novo pedido de portabilidade no futuro, após o cancelamento. Interface do Cliente: Tanto a jornada da instituição proponente, como a jornada da instituição credora original devem contemplar uma interface/menu que permita ao cliente visualizar o status do pedido de portabilidade e acessar a opção de cancelamento. Serviço de Comunicação: ● Para gerenciar as desistências do devedor, será criado um serviço de comunicação (endpoint – API Portabilidade de Crédito) baseado em eventos. ● O serviço comunicará a instituição envolvida sobre mudanças no estado do pedido de portabilidade de crédito, incluindo a desistência. Diagrama do Serviço de Comunicação: Open 3.2.3 Motivos de Recusa Motivos padronizados de recusa e inconsistências que possam impedir a conclusão de um pedido de portabilidade na jornada do OFB . O manual deve: Justificar a não aceitação do pedido de portabilidade. Assegurar a conformidade do processo.",
+  "paginaId": "1329168401_Documento+de+Requisitos+do+Produto+-+PRD+-+CPC",
+  "title": "Documento de Requisitos do Produto - PRD - CPC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1329168401/Documento+de+Requisitos+do+Produto+-+PRD+-+CPC"
+}

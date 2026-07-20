@@ -1,0 +1,6 @@
+{
+    "texto": "Uma Software Statements Assertion (SSA) é um JWT assinado do diretório que contém todas as informações sobre um aplicativo que existe em um determinado momento no diretório. Inclui a localização de todas as chaves públicas vinculadas a esta declaração de software e todos os outros metadados de que um banco precisa para validar a legitimidade do aplicativo.\nEtapa 1: Criando uma Nova Declaração de Software Assinada\nRequisitos\n1.\nNecessário ter criado uma\nCriando um Software Statements\npara sua organização.\n2.\nNo Diretório, localize e selecione a sua organização.\n3.\nVá até o menu\nSoftware Statement\n, acesse o artefato criado anteriormente clicando no link\nCLIENT NAME\n.\n4.\nNa janela\nSoftware Statement Details\n,\nrole a página para baixo e\nselecione o menu\nSoftware Statements Assertion\n.\n5.\nClique no botão\nCopy to Clipboard\npara copiar o SSA gerado pelo Diretório.\nOpen",
+    "paginaId": "941819893_14.+Obtendo+um+Software+Statements+Assertion",
+    "title": "14. Obtendo um Software Statements Assertion - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941819893/14.+Obtendo+um+Software+Statements+Assertion"
+}

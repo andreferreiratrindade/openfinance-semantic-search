@@ -1,0 +1,6 @@
+{
+  "texto": "Com mesmo tipo de taxa ou Indexador e mesmo percentual aplicado. Caso haja mais de 1 evento por cliente referente a mesma Modalidade e Indexador deverá ser considerado apenas 1 valor, calculado como a média aritmética dos valores das ocorrências daquele cliente Processo de Apuração para cada tipo de Indexador/taxa – percentual aplicado para cada Modalidade que satisfizer os critérios de apuração Para cada Indexador/Taxa e seu percentual, da Modalidade apurada: Identificar clientes com mais de uma ocorrência de evento e calcular a média aritmética sobre valores cobrados; Enfileirar os valores em ordem crescente de grandeza; Definir menor (MenorVL) e maior valor (MaiorVL) relativos aos valores enfileirados em ordem crescente Calcular: ( MaiorVL – MenorVL ) / 4 = Intervalo para definição faixas de valores (e se MenorVL = MaiorVL, então 1.",
+  "paginaId": "17367790_Dados+Abertos+-+DA",
+  "title": "Dados Abertos - DA - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17367790/Dados+Abertos+-+DA"
+}

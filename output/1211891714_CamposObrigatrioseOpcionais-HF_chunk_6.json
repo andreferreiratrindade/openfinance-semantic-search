@@ -1,0 +1,6 @@
+{
+  "texto": "ACCEPTED: O status ACCEPTED indica que a validação de formato do reporte não tem erros e este será enviado para processamento. DISCARDED: O status DISCARDED indica que o reporte enviado pelo participante foi rejeitado pela PCM. O motivo do descarte será enviado com a resposta, podendo ser por conta de um reporte inválido ou por um erro no processamento. Não é possível modificar um reporte DISCARDED, portanto o reportador deverá corrigir o registro que apresentou erro e reenviar via POST. enum <string> ACCEPTED, DISCARDED ACCEPTED",
+  "paginaId": "1211891714_Campos+Obrigat+rios+e+Opcionais+-+HF",
+  "title": "Campos Obrigatórios e Opcionais - HF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1211891714/Campos+Obrigat+rios+e+Opcionais+-+HF"
+}

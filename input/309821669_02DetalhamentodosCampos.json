@@ -1,0 +1,6 @@
+{
+    "texto": "Nesta página serão apresentadas todas as informações da aba “Detalhes Gerais”.\nNúmero do ticket (Incidente ou Solicitação de Serviço)\nData de solicitação e encerramento\nNome e Empresa do usuário solicitante\nEquipes de atendimento,  solucionadora e especialista responsável pelo\nresponsável pelo atendimento\nCategorias do ticket\nPrazo de SLA do ticket\nOpen\nAs informações preenchidas pelo usuário requisitante no campo “\nTitulo\n” e “\nDescrição\n” serão apresentadas no corpo do ticket.\nAs “\nNotas\n” deverão ser utilizadas para interagir com o requisitante.  Solicite ou envie informações neste campo.\nClique “\n+Novo\n” para inserir uma nota no pop-up do campo\nOpen\nOs anexos inseridos pelo requisitante estarão disponíveis no campo de \"\nAnexos“,\nclique o arquivo para realizar o download.\nClique em “\nclique para buscar\n\" para anexar um arquivo no ticket\nOpen\nEm caso de dúvidas sobre o processo de atendimento no Service Desk, abrir um chamado na ferramenta Sysaid ou entrar em contato pelo e-mail\ngestao.atendimento@openfinance.com.br\n.",
+    "paginaId": "309821669_02.+Detalhamento+dos+Campos",
+    "title": "02. Detalhamento dos Campos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/309821669/02.+Detalhamento+dos+Campos"
+}

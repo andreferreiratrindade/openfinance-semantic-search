@@ -1,0 +1,6 @@
+{
+  "texto": "§ 4º A seleção dos parâmetros das curvas utiliza o método de Monte Carlo de modo a melhorar a precisão das estimativas numéricas do modelo Nelson-Siegel. § 5º A fim de melhorar a qualidade da estimação dos prêmios de risco, ativos com preços atípicos – definidos como outliers pelo critério do intervalo interquartílico e fator de 1,5 – são removidos da amostra. CAPÍTULO VII DA CONCENTRAÇÃO DE ATIVOS POR EMISSOR NA CESTA DE GARANTIAS Art. 18. A apuração do Fator de Restrição de Concentração de Cesta (Frcce,i) para o emissor \"e\", otimizado para o ativo \"i\" desse emissor na cesta de garantias, de que trata o § 4º do art. 38, do Regulamento LFL, de 2021, na ausência de saldo em CGE, será: I - igual a 0 (zero) para uma cesta de garantias teórica com ativos de 6 (seis) ou mais emissores distintos, onde o Valor Posicionado de um Emissor (VPose), de que trata o art. 37 do Regulamento LFL, de 2021, para cada emissor é menor ou igual a 20% (vinte por cento) do Valor Posicionado Total das garantias (VPos), de que trata o art.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=143"
+}

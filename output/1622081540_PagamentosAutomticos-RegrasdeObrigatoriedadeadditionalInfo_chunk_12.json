@@ -1,0 +1,6 @@
+{
+  "texto": "Caso o HTTP Code seja 4XX ou 5XX, esse campo deve ser preenchido com a lista das strings obtidas em \".errors[].code\", devendo constar apenas um código de erro. Não havendo string, deve ser enviada uma lista vazia.",
+  "paginaId": "1622081540_Pagamentos+Autom+ticos+-+Regras+de+Obrigatoriedade+additionalInfo",
+  "title": "Pagamentos Automáticos - Regras de Obrigatoriedade (additionalInfo) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1622081540/Pagamentos+Autom+ticos+-+Regras+de+Obrigatoriedade+additionalInfo"
+}

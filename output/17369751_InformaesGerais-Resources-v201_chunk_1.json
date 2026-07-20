@@ -1,0 +1,6 @@
+{
+  "texto": "1 Visão Geral 2 Obtém a lista de recursos consentidos pelo cliente : ( GET /resources/v2/resources) Visão Geral A API Resources permite a consulta aos status dos recursos compartilhados no Open Finance Brasil - Fase 2, considerando a disponibilidade do recurso e também o status do consentimento relacionado. Obtém a lista de recursos consentidos pelo cliente : ( GET /resources/v2/resources) Método para obter a lista de recursos mantidos pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento. Dicionário de dados Fazer download do dicionário de dados Fazer download dos exemplos",
+  "paginaId": "17369751_Informa+es+Gerais+-+Resources+-+v.2.0.1",
+  "title": "Informações Gerais - Resources - v.2.0.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17369751/Informa+es+Gerais+-+Resources+-+v.2.0.1"
+}

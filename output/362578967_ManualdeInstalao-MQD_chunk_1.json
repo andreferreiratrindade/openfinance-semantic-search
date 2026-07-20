@@ -1,0 +1,6 @@
+{
+  "texto": "O presente documento fornece orientações para instalação do Motor de Qualidade de Dados nas Instituições Financeiras participantes do Open Finance Brasil. 1 Instalação 2 Configuração Instalação O primeiro passo é clonar o código do repositório (disponível no Github) para a sua pasta local. git clone https://github.com/OpenBanking-Brasil/mqd-client.git Open Em seguida, valide se o clone foi realizado corretamente em sua pasta local. ls -la Open Acesse a pasta do código criada localmente. cd mqd-client/ Open Após acessar a pasta, é necessário compilar e criar a imagem que será utilizada pelo Docker para o container onde o Motor de Qualidade de Dados estará alocado. docker build --no-cache -f infra/dockerfile/dockerfile-minimal -t mqd-client . Open A seguir, valide se a imagem foi criada corretamente.",
+  "paginaId": "362578967_Manual+de+Instala+o+-+MQD",
+  "title": "Manual de Instalação - MQD - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/362578967/Manual+de+Instala+o+-+MQD"
+}

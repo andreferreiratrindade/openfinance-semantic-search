@@ -1,0 +1,6 @@
+{
+  "texto": "Open Cancelamento dos pagamentos na ID Recomendações - ID Cenário: Consulta Busca: oferecer funcionalidades de pesquisa, classificação e filtros, para permitir que o usuário encontre seus pagamentos com facilidade. Open Busca de pagamentos na ID Cenário: Cancelamento Confirmação do cancelamento: em caso de tentativa de cancelamento de um pagamento individual por parte do usuário, exibir uma mensagem de confirmação da ação. Ex.: Deseja cancelar este pagamento para Telefonia S/A? Combinação de mensagens: combinar a mensagem de confirmação com a informação obrigatória de que o cancelamento do pagamento atual não impede o agendamento dos pagamentos futuros, conforme os parâmetros da autorização ativa. Ex.: Tem certeza que quer cancelar este pagamento para Telefonia S/A? Esta ação é irreversível e não impede o agendamento dos pagamentos futuros. Open Confirmação do cancelamento na ID",
+  "paginaId": "1828068863_v.22.00.01+Gest+o+de+Pix+Autom+tico",
+  "title": "v.22.00.01 Gestão de Pix Automático - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828068863/v.22.00.01+Gest+o+de+Pix+Autom+tico"
+}

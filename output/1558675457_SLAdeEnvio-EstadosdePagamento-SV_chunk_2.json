@@ -1,0 +1,6 @@
+{
+  "texto": "Não existe um percentual mínimo, envio recebimento de reporte fora do SLA de D+1 08:00 provoca a emissão de ticket. Arquivo de evidências Todo ticket aberto possui anexado um arquivo de evidências, onde são listados até 5 reportId para cada caso encontrado por dia, para facilitar a investigação das causas pelas organizações. Campos do arquivo de evidências oragnisation_id: id da organização reportadora do reporte name: nome da organização reportadora do reporte data_ref: data de referência do reporte (eventDateTime) qtd_reportes_fora_sla: quantidade de reportes enviados fora do SLA de D+1 08:00 evidencias_reports: reportId de exemplo",
+  "paginaId": "1558675457_SLA+de+Envio+-+Estados+de+Pagamento+-+SV",
+  "title": "SLA de Envio - Estados de Pagamento - SV - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1558675457/SLA+de+Envio+-+Estados+de+Pagamento+-+SV"
+}

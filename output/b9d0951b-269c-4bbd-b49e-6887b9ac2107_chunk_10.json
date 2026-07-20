@@ -1,0 +1,6 @@
+{
+  "texto": "§ 1º Os seguintes títulos contábeis devem ser segregados em subtítulos: I - 9.0.4.60.00-7 FINANCIAMENTOS EM CONTA MARGEM GARANTIDOS, todos com atributos CTZ: a) 9.0.4.60.10-0 Compra de Títulos; e b) 9.0.4.60.20-3 Depósitos em Margem; e II - 9.0.4.99.00-9 OURO EM CUSTÓDIA: a) 9.0.4.99.10-2 Própria, com atributos UBDKIFJACTSWERLMNHZ; e b) 9.0.4.99.20-5 De Terceiros, com atributos UBDKIFACTSWERLMNHZ. § 2º No registro contábil nas rubricas 9.0.4.50.00-0 EMPRÉSTIMOS EM CONTA MARGEM GARANTIDOS e 9.0.4.60.00-7 FINANCIAMENTOS EM CONTA MARGEM GARANTIDOS, a instituição deve reajustar os saldos dessas contas em função das oscilações do valor de mercado das garantias que registra e em decorrência dos reforços de margem atendidos. Art.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=275"
+}

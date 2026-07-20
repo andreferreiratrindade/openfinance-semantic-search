@@ -1,0 +1,6 @@
+{
+  "texto": "(Atualização da cadeia V3 dos certificados digitais) Minor Crítica Sincronizada Necessidade de implementar o mais breve possível, para correção de bugs, porém os participantes devem sincronizar o momento do início em produção Sim, processo simplificado Testes específicos/Direcionado s e incorporados na próxima certificação planejada Criação de plano de testes específicos para os cenários a serem avaliados. Ex.: Alteração de regra de negócio de campo que pode impedir a execução da funcionalidade Patch Não haverá quebra de contrato Não Apenas na próxima certificação planejada Ajustes para melhorar a descrição de um campo Legenda: 1- Em situações excepcionais, o Squad Sandbox e GT Especificações poderão decidir a melhor abordagem de testes. Ex.: Prazos de construção dos testes não atendem a criticidade do problema.",
+  "paginaId": "86835297_Certifica+o",
+  "title": "Certificação - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/86835297/Certifica+o"
+}

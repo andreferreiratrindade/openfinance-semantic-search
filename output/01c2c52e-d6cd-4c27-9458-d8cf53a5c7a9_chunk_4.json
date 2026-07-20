@@ -1,0 +1,6 @@
+{
+  "texto": "§ 5º O prestador de serviços de pagamento do usuário recebedor não deve enviar a instrução de pagamento caso a permissão concedida pelo usuário pagador ao usuário recebedor não esteja confirmada. § 6º As informações que deverão fazer parte da instrução de pagamento estarão dispostas no Catálogo de Serviços do SFN e no arcabouço normativo do Open Finance , caso o prestador de serviços de pagamento do usuário recebedor seja, respectivamente, o seu provedor de conta transacional ou um participante que presta serviço de iniciação de transação de pagamento. Art. 5º No âmbito do Pix Automático, o prestador de serviços de pagamento do usuário pagador deve agendar a ordem de pagamento até duas horas após o recebimento da instrução de pagamento do prestador de serviços de pagamento do usuário recebedor, em conformidade com as informações contidas na respectiva instrução de pagamento.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=436"
+}

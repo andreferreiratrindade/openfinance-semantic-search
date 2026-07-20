@@ -1,0 +1,6 @@
+{
+  "texto": "§ 1º Os seguintes títulos contábeis devem ser segregados em subtítulos: I - 3.0.4.30.00-4 DEPOSITÁRIOS DE VALORES EM CUSTÓDIA, todos com atributos UBDKIFJACTSWERLMNYZ: a) 3.0.4.30.10-7 Próprios; e b) 3.0.4.30.20-0 De Terceiros; II - 3.0.4.77.00-5 VALORES GARANTIDOS PELO TESOURO NACIONAL, todos com atributos UBDKIFJACTSWERLMNZ: a) 3.0.4.77.10-8 Risco Normal, que se destina ao registro dos valores para os quais seja atribuído fator de ponderação de 100% (cem por cento); e b) 3.0.4.77.20-1 Risco Reduzido, que se destina ao registro dos valores para os quais seja atribuído fator de ponderação 50% (cinquenta por cento); e III - 3.0.4.99.00-7 CUSTÓDIA DE OURO: a) 3.0.4.99.10-0 Própria, com atributos UBDKIFJACTSWERLMNHZ; e b) 3.0.4.99.20-3 De Terceiros, com atributos UBDKIFACTSWERLMNHZ. § 2º Fica dispensando o registro nos títulos 3.0.4.40.00-1 DEPOSITÁRIOS DE VALORES EM GARANTIA nos casos em que a garantia for mantida em poder do mutuário. Art.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=270"
+}

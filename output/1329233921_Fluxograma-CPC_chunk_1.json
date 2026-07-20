@@ -1,0 +1,6 @@
+{
+  "texto": "Fluxograma do processo de Portabilidade de Crédito no Open Finance Open Etapas Contrato de crédito celebrado entre o Cliente e a IF Credora Original; Cliente solicita a portabilidade de crédito junto a IF Proponente via Open Finance; IF Proponente envia solicitação da proposta via API Padronizada; Inicia-se o período da contraproposta, onde a IF Credora tem até 3 dias úteis para enviar uma proposta ao cliente ; Dentro do período de 3 dias úteis a IF Credora deverá informar a retenção do cliente ou informar o saldo devedor com os dados para o TED, via API padronizada; IF Proponente deverá efetivar a liquidação do contrato via TED na data do recebimento das informações; Em até 2 dias úteis a IF Credora deverá confirmar o recebimento da TED e enviar a documentação atestando a efetivação da Portabilidade.",
+  "paginaId": "1329233921_Fluxograma+-+CPC",
+  "title": "Fluxograma - CPC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1329233921/Fluxograma+-+CPC"
+}

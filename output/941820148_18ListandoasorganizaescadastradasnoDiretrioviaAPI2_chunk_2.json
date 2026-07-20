@@ -1,0 +1,6 @@
+{
+  "texto": "7. Uma vez que todos os valores estejam preenchidos, clique no botão Send . Você verá a resposta de dados JSON do servidor no painel inferior. Open NOTA: Para localizar uma organização mãe que pertença a um conglomerado, você poderá percorrer na lista de resposta de dados JSON do servidor, capturando o identificador no atributo ParentOrganisationReference das organizações filhas e localizar o mesmo ID na organização cujo o atributo RegistrationId contenha este mesmo valor.",
+  "paginaId": "941820148_18.+Listando+as+organiza+es+cadastradas+no+Diret+rio+via+API+2",
+  "title": "18. Listando as organizações cadastradas no Diretório via API (2) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941820148/18.+Listando+as+organiza+es+cadastradas+no+Diret+rio+via+API+2"
+}

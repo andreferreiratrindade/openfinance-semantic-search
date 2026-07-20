@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Finance Brasil - RAG Search</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: #004d40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #status-text {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .user-msg {
+            background: #e0f2f1;
+            color: #004d40;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-msg {
+            background: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .system-msg {
+            background: #fff3e0;
+            color: #e65100;
+            align-self: center;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        textarea {
+            flex: 1;
+            resize: none;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            height: 50px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #004d40;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:disabled,
+        textarea:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button:hover:not(:disabled) {
+            background: #00332a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container">
+        <header>
+            <h2>Open Finance Explorer</h2>
+            <p id="status-text">Downloading WebLLM Model (this happens once)...</p>
+            <select id="model-selector" style="margin: 10px; padding: 5px;">
+
+            </select>
+        </header>
+
+        <main id="chat-history">
+            <div class="message system-msg">
+                Hello! I can answer questions about Open Finance Brasil based on BCB regulations. What would you like to
+                know?
+            </div>
+        </main>
+
+        <div class="input-area">
+            <textarea id="user-input" placeholder="Ask about Open Finance Brasil..." disabled></textarea>
+            <button id="send-btn" disabled>Send</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { CreateMLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
+        import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers";
+        // DOM Elements
+        const statusText = document.getElementById('status-text');
+        const chatHistory = document.getElementById('chat-history');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const modelSelector = document.getElementById('model-selector');
+
+        let engine;
+        let embedder;
+
+        function estimateDownloadTime(sizeMB) {
+            const speedMBs = 2.5;
+            return Math.round(sizeMB / speedMBs);
+        }
+        var modelList = [];
+        async function initModelSelector() {
+            // 1. Clear existing
+            modelSelector.innerHTML = '';
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Selecione seu modelo";
+            modelSelector.appendChild(defaultOption);
+
+            // 2. Prepare models with their cache status
+            const modelsWithStatus = await Promise.all(
+                prebuiltAppConfig.model_list.map(async (model) => {
+                    const isCached = await (engine ? engine.hasModel(model.model_id) : false);
+                    return { ...model, isCached };
+                })
+            );
+
+            // 3. Sort: Cached models (isCached = true) come first
+            modelsWithStatus.sort((a, b) => b.isCached - a.isCached);
+
+            // 4. Populate
+            for (const model of modelsWithStatus) {
+                const statusLabel = model.isCached ? " (Cached)" : " (Download)";
+
+                const option = document.createElement('option');
+                option.value = model.model_id;
+                option.textContent = `${model.model_id} | ${statusLabel} | ${model.low_resource_required ? 'Low Resource' : 'Standard'} | vram required: ${model.vram_required_MB} MB`;
+
+                modelSelector.appendChild(option);
+            }
+        }
+
+
+
+        // --- 1. Initialize WebLLM --
+        async function initWebLLM() {
+            try {
+                const selectedModel = modelSelector.value;
+                statusText.textContent = `Loading ${selectedModel}...`;
+
+                engine = await CreateMLCEngine(selectedModel, {
+                    initProgressCallback: (progress) => {
+                        statusText.textContent = `Loading: ${Math.round(progress.progress * 100)}%`;
+                    },
+                    stream: true
+                });
+
+                statusText.textContent = "Loading semantic search model...";
+
+                embedder = await pipeline(
+                    "feature-extraction",
+                    "Xenova/paraphrase-multilingual-MiniLM-L12-v2"
+                  //  "Xenova/all-MiniLM-L6-v2"
+                );
+
+                statusText.textContent = "System Ready.";
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+            } catch (error) {
+                statusText.textContent = "Error loading model. Check console.";
+                console.error(error);
+            }
+        }
+
+        // --- Helper: Add message to UI ---
+        function appendMessage(role, text) {
+            const div = document.createElement('div');
+            div.className = `message ${role}-msg`;
+            div.textContent = text;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        async function searchQdrant(vector) {
+
+            const response = await fetch(
+                "http://localhost:3000/api/search",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        vector
+                    })
+                }
+            );
+
+
+            return await response.json();
+        }
+
+        // --- 2. Main Workflow ---
+        async function handleUserSubmit() {
+            const query = userInput.value.trim();
+            if (!query) return;
+
+            // Lock UI
+            userInput.value = '';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            appendMessage('user', query);
+            statusText.textContent = "Refining query via WebLLM...";
+
+            try {
+                // STEP A: Refine the query for MongoDB Vector Search
+                const refinementPrompt = `
+                System: Você é um especialista em Open Finance do Banco Central do Brasil. Sua única função é reescrever a pergunta do usuário para que ela utilize a terminologia técnica, formal e regulatória correta do BACEN.
+                Regras:
+                Não responda à pergunta.
+                Expanda siglas e termos coloquiais para suas definições legais (ex: "detentora" vira "instituição detentora de conta").
+                Retorne APENAS a nova pergunta reescrita. Nenhuma outra palavra.
+                User: ${query}`;
+
+                console.log("Refinement Prompt sent to WebLLM:", refinementPrompt);
+                const refReply = await engine.chat.completions.create({
+                    messages: [{ role: "user", content: refinementPrompt }],
+                    temperature: 0.1
+                });
+
+                const optimizedQuery = refReply.choices[0].message.content.trim();
+                console.log("Optimized Query sent to MongoDB:", optimizedQuery);
+                statusText.textContent = "Generating embedding...";
+
+                const embedding = await embedder(
+                    optimizedQuery,
+                    {
+                        pooling: "mean",
+                        normalize: true
+                    }
+                );
+
+                const vector = Array.from(embedding.data);
+
+                statusText.textContent = "Searching Qdrant...";
+               const response = await searchQdrant(vector);
+
+
+                // const context = response.result
+                //     .map(r => `
+                //     Source: ${r.payload.title}
+
+                //     URL: ${r.payload.url}
+
+                //     ${r.payload.text_content}
+                //     `)
+                //     .join("\n\n---------------------------\n\n");
+                const context = response
+                    .map(r => `...${r.payload.text_content}...`)
+                    .join("\n\n---------------------------\n\n");
+                console.log("Context retrieved:", context);
+
+                statusText.textContent = "Generating final answer...";
+
+                // STEP C: Ask WebLLM to formulate the final answer using the context
+                const finalPrompt = `
+                    System: Você é um arquiteto especialista no ecossistema do Open Finance Brasil.
+                    Responda à pergunta do usuário utilizando estritamente as informações fornecidas no Contexto abaixo.
+
+                    Regras Obrigatórias de Resposta:
+                    2. Seja claro, objetivo e técnico.
+                    3. Se a informação não puder ser extraída ou deduzida do contexto fornecido, diga textualmente somente o seguinte: "Não encontrei essa informação na documentação extraída."
+                    4. Ao final da resposta, cite explicitamente quais URLs (das fontes fornecidas no contexto) serviram de base para formular sua resposta.
+
+                    ---
+                    CONTEXTO:
+                    ${context}
+                    ---
+
+                    User: ${query}`;
+
+                console.log("Final Prompt sent to WebLLM:");
+                const finalReply = await engine.chat.completions.create({
+                    messages: [{ role: "user", content: finalPrompt }],
+                    temperature: 0.2
+                });
+
+                appendMessage('bot', finalReply.choices[0].message.content);
+
+            } catch (error) {
+                appendMessage('system', `Error: ${error.message}. Is your backend running?`);
+                console.error(error);
+            } finally {
+                // Unlock UI
+                statusText.textContent = "System Ready.";
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        // --- Event Listeners ---
+        sendBtn.addEventListener('click', handleUserSubmit);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleUserSubmit();
+            }
+        });
+
+        modelSelector.addEventListener('change', initWebLLM);
+        initModelSelector();
+        // Start the application
+        //initWebLLM();
+    </script>
+</body>
+
+</html>

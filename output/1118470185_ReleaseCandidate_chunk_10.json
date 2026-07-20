@@ -1,0 +1,6 @@
+{
+  "texto": "Descreve como o autenticador (por exemplo, um dispositivo FIDO) está anexado ao cliente que realiza a autenticação (ex: platform para autenticadores integrados como Face ID ou cross-platform para chaves de segurança USB). errorCodes: correção do campo, estava duplicado. Foi dividido em regras para statusCode 422 e statusCode 4xx / 5xx exceto 422, a exemplo de Iniciação de Pagamentos interval: incluído domínio do campo - SEMANAL, MENSAL, TRIMESTRAL, SEMESTRAL, ANUAL isRetryAccepted: incluído domínio do campo - TRUE, FALSE originalRecurringPaymentId: inclusão do endpoint /open-banking/automatic-payments/vx/pix​/recurring-payments​/{originalRecurringPaymentId}​/retry paymentReference: complementada a regra de preehchimento - Campo de preenchimento obrigatório caso seja um pagamento de Pix automático e deve ser enviado para critérios de coleta de métricas do ecossistema. Caso essa regra não seja respeitada, a instituição detentora da conta deve retornar um erro HTTP 422 com o código DETALHE_PAGAMENTO_INVALIDO.",
+  "paginaId": "1118470185_Release+Candidate",
+  "title": "Release Candidate - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1118470185/Release+Candidate"
+}

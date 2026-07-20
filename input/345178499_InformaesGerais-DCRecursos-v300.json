@@ -1,0 +1,6 @@
+{
+    "texto": "1\nVisão Geral\n2\nObtém a lista de recursos consentidos pelo cliente\n: (\nGET /resources/v3/resources)\nVisão Geral\nA API Recursos permite a consulta aos status dos recursos compartilhados no Open Finance Brasil - Dados do Cliente, considerando a disponibilidade do recurso e também o status do consentimento relacionado.\nObtém a lista de recursos consentidos pelo cliente\n: (\nGET /resources/v3/resources)\nMétodo para obter a lista de recursos mantidos pelo cliente na instituição transmissora e para as quais ele tenha fornecido consentimento.\nDicionário de dados\nFazer download do dicionário de dados\nFazer download dos exemplos",
+    "paginaId": "345178499_Informa+es+Gerais+-+DC+Recursos+-+v3.0.0",
+    "title": "Informações Gerais - [DC] Recursos - v3.0.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/345178499/Informa+es+Gerais+-+DC+Recursos+-+v3.0.0"
+}

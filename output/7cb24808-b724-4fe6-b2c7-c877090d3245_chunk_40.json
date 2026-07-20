@@ -1,0 +1,6 @@
+{
+  "texto": "34, deve corresponder ao resultado da seguinte fórmula: I - N = função de distribuição normal acumulada; II - N –1 = inversa da função de distribuição normal acumulada; III - PD = parâmetro Probabilidade de Descumprimento; IV - LGD = parâmetro Perda Dado o Descumprimento; V - M = parâmetro Prazo Efetivo de Vencimento; VI - b = coeficiente de ajuste do parâmetro M, calculado de acordo com a seguinte fórmula: b = (0,11852 – 0,05478 x ln(PD)) 2 ; e VII - R = fator de correlação. § 1º Para as exposições mencionadas no caput , o fator de correlação R deve corresponder ao resultado da seguinte fórmula: I - i = 1, nos casos de exposições a: a) instituições financeiras enquadradas no S1 ou no S2, conforme definidos na Resolução nº 4.553, de 2017, e na Resolução BCB nº 197, de 2022; e b) instituições não autorizadas pelo Banco Central do Brasil que desempenham atividades passíveis de serem conduzidas por instituição financeira; II - i = 0, nos demais casos; e III - e = constante neperiana.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=303"
+}

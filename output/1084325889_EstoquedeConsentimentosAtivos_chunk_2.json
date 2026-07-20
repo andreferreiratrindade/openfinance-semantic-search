@@ -1,0 +1,6 @@
+{
+  "texto": "Descrição funcional da API Campo Descrição Campo Descrição Data de Referência¹ Deve conter a data a que se referem os dados de consentimento enviados na mensagem. Formato: AAAA-MM-DD organisationId¹ Organização de envio da mensagem referente ao papel do Transmissor ou Receptor, conforme Role , a ser preenchido a partir do Certificado Papel (Role)¹ A ser preenchido com “CLIENT” ou “SERVER” Escopo de Dados¹ A ser preenchido com a Role “DADOS” Total de clientes únicos PF A ser preenchido com o total de clientes PF com consentimentos ativos. Formato: numérico inteiro natural Total de clientes únicos PJ A ser preenchido com o total de clientes PJ com consentimentos ativos.",
+  "paginaId": "1084325889_Estoque+de+Consentimentos+Ativos",
+  "title": "Estoque de Consentimentos Ativos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1084325889/Estoque+de+Consentimentos+Ativos"
+}

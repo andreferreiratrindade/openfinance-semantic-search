@@ -1,0 +1,6 @@
+{
+  "texto": "Gestão das transações na ID Requisitos - ID Open Gestão das trasnsações de Pix Saque e Pix Troco na ID Cenário: Consulta Comprovante de pagamento - geral: exibir as informações mínimas de um comprovante de pagamento com Pix Saque e Pix Troco via Open Finance conforme o arranjo de pagamento. Comprovante de pagamento - específicas: além das informações mínimas de um comprovante de pagamento com Pix Saque e Pix Troco via Open Finance conforme o arranjo de pagamento, exibir as seguintes informações específicas: Identificação da ITP: no comprovante do pagamento, exibir o nome da instituição responsável pela iniciação da transação de pagamento. Open Consulta às transações de Pix Saque e Pix Troco na ITP Recomendações - ID Cenário: Consulta Tarifa: destacar visualmente a eventual tarifa cobrada pela ID. Open Consulta à tarifa na ID",
+  "paginaId": "1828070524_v.22.00.01+Gest+o+de+Pix+Saque+e+Pix+Troco",
+  "title": "v.22.00.01 Gestão de Pix Saque e Pix Troco - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828070524/v.22.00.01+Gest+o+de+Pix+Saque+e+Pix+Troco"
+}

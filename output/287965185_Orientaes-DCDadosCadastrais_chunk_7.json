@@ -1,0 +1,6 @@
+{
+  "texto": "Orientações para instituições receptoras de dados No objeto paychecksBankLink serão compartilhadas informações de conta salário que se encontram abertas, entretanto, pelo fato de haver uma conta salário aberta, não é possível afirmar que há um vínculo empregatício ativo para o cliente. Recomenda-se o cruzamento das informações obtidas desse objeto com as transações expostas na API Contas, para melhor compreensão dos dados. No objeto portabilitiesReceived serão compartilhadas informações do empregador de portabilidade(s) recebida(s) pela transmissora, porém apenas por tais informações não é possível afirmar que tal portabilidade se encontre ativa ou que ainda exista o vínculo do cliente com o empregador ou com a instituição banco folha. Recomenda-se a análise das transações compartilhadas na API Contas para melhor compreensão dos dados.",
+  "paginaId": "287965185_Orienta+es+-+DC+Dados+Cadastrais",
+  "title": "Orientações - [DC] Dados Cadastrais - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/287965185/Orienta+es+-+DC+Dados+Cadastrais"
+}

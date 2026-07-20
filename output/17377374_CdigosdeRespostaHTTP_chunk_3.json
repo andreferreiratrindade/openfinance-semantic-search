@@ -1,0 +1,6 @@
+{
+  "texto": "429 Too Many Requests. A limitação é um Requisito Não Funcional . O titular dos dados deve incluir o cabeçalho Retry-After na resposta indicando quanto tempo o consumidor deve esperar antes de tentar novamente a operação. Sim Sim Sim Sim Ocorreu um erro no gateway da API ou no microsserviço. 500 Internal Server Error. A operação falhou. Sim Sim Sim Sim O serviço está indisponível no momento. 503 Service Unavailable. Sim Sim Sim Sim O servidor não pôde responder em tempo hábil. 504 Gateway Timeout. Retornado se ocorreu um tempo limite, mas um reenvio da solicitação original é viável (caso contrário, use 500 Internal Server Error ). Sim Sim Sim Sim",
+  "paginaId": "17377374_C+digos+de+Resposta+HTTP",
+  "title": "Códigos de Resposta HTTP - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17377374/C+digos+de+Resposta+HTTP"
+}

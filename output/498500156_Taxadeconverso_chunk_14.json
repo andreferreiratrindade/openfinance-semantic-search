@@ -1,0 +1,6 @@
+{
+  "texto": "WHERE 1=1 AND ts_to_date_gmt BETWEEN init_date AND end_date -- Seção \"Período de Apuração\" AND endpoint = '/open-banking/payments/v4/consents' -- Endpoint específico para Pagamentos AND httpmethod = 'POST' AND statuscode LIKE '2%' -- Seção \"Critérios de Exclusão do Denominador (Solicitações válidas)\" AND ( additionalinfo_dropreason = 'NONE' OR additionalinfo_dropreason IS NULL ) -- Seção \"Critérios de Exclusão do Denominador (Solicitações válidas)\" AND is_paired = 1 -- Seção \"Critérios de Exclusão do Denominador (Solicitações válidas)\" AND is_fvp = 0 AND ( COALESCE(additionalinfo_authorisationflowintent, additionalinfo_authorisationflow) <> 'FIDO_FLOW' OR COALESCE(additionalinfo_authorisationflowintent, additionalinfo_authorisationflow) IS NULL ) AND clientorgid <> serverorgid -- Tratamento de possíveis erros. Numerador de Pagamentos: -- As colunas que começam com \"is_\" são flags criadas ao longo do processo para validação.",
+  "paginaId": "498500156_Taxa+de+convers+o",
+  "title": "Taxa de conversão - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/498500156/Taxa+de+convers+o"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "1 Jornada sem redirecionamento 1.1 Notificação sobre a vinculação da conta Jornada sem redirecionamento Notificação sobre a vinculação da conta Os eventos que acionarão notificações na máquina de estados do vínculo de conta da jornada sem redirecionamento serão os status REJECTED e REVOKED; Open No diagrama de exemplo abaixo, é possível identificar como será o comportamento para a consulta do vínculo da conta entre a iniciadora de pagamentos e a detentora de contas; Open",
+  "paginaId": "200736888_Pagamentos+sem+redirecionamento+-+Webhook+-+v1.2.0",
+  "title": "Pagamentos sem redirecionamento - Webhook - v1.2.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/200736888/Pagamentos+sem+redirecionamento+-+Webhook+-+v1.2.0"
+}

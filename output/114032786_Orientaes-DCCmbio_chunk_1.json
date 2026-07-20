@@ -1,0 +1,6 @@
+{
+  "texto": "1 Tempestividade dos dados para API de Câmbio 2 Definição das regras dos recursos de compartilhamento 3 Visão da API Recursos para os Produtos de Câmbio 3.1 Regras de Negócio 3.2 Recomendação do uso de polling 3.3 Diagrama representacional do status da API Recursos 3.4 Regras para o retorno da API de produtos de câmbio de acordo com o status do Recurso (PENDING_AUTHORISATION, AVAILABLE, UNAVAILABLE E TEMPORARILY_UNAVAILABLE) e a transição entre status 3.5 Casos de uso de Câmbio e o respectivo status a ser informado pela API Recursos 3.6 Tabela descritiva das possibilidades de interação entre API Recursos e a API Câmbio 3.7 Regras quanto a interpretação pelas receptoras do status da API Recursos para os recursos de câmbio 3.8 Regras de busca na API Recursos em relação aos recursos das API de Câmbio Tempestividade dos dados para API de Câmbio A defasagem máxima em relação ao canal deve ser de até uma hora, devido ao fato da API de Câmbio não possuir atualizações tempestivas.",
+  "paginaId": "114032786_Orienta+es+-+DC+C+mbio",
+  "title": "Orientações - [DC] Câmbio - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/114032786/Orienta+es+-+DC+C+mbio"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "Disponibilizamos a lista de problemas conhecidos das especificações da API da Fase 4B na versão 1.x.x, contendo orientações às instituições participantes até que se publiquem as correções. Este arquivo poderá ser atualizado conforme novos itens sejam identificados. Sua eventual atualização será previamente comunicada através dos informes do Open Finance Brasil. ID Solucionado? Crítico API / Sessão Endpoint Campo Como está? Qual o problema? Como deveria ser? Orientação até publicação do ajuste Responsável apontamento Dicionário OK? Swagger OK? Comentário ID Solucionado? Crítico API / Sessão Endpoint Campo Como está? Qual o problema? Como deveria ser? Orientação até publicação do ajuste Responsável apontamento Dicionário OK? Swagger OK? Comentário BCLOG-F04-001 Sim Renda Variável balances - O retorno da API no endpoint balances /data ficou definido como array (lista) O retorno deveria ser um objeto, com uma única resposta Considerar o mínimo (minItens) e máximo (maxItens) de retorno de itens da lista igual a 1 GT Dados do cliente Não Não -",
+  "paginaId": "167313434_1.x.x+Problemas+conhecidos",
+  "title": "1.x.x – Problemas conhecidos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/167313434/1.x.x+Problemas+conhecidos"
+}

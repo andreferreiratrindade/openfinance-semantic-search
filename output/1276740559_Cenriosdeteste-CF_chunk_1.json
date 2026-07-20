@@ -1,0 +1,6 @@
+{
+  "texto": "Área de Cenários de Teste do CPC Esta seção é dedicada ao detalhamento completo dos cenários de teste desenvolvidos para o Consignado (Portabilidade de Crédito - Consignado). Aqui você encontrará documentação abrangente, organizada e sempre atualizada sobre cada caso de teste planejado para validação do sistema. Nossos cenários são elaborados para assegurar a qualidade, a confiabilidade e o atendimento aos requisitos funcionais do projeto. É importante destacar que esta documentação será mantida sempre atualizada com a última versão dos cenários . sempre que houver novas versões de sistema e houver necessidade de atualização dos cenários, estas atualizações serão refletidas imediatamente nesta página. Detalhes que estarão disponíveis dos cenários: Nome Tipo Descrição Objetivo Requisito de massa(quando houver) Se houver alteração, link evidenciando o que foi alterado Script Diagrama de sequência E uma página de changelog de cenários. Todo cenário que haver necessidade de alteração, o cenário v1 irá para esta página e o cenário v2 permanecerá na página principal.",
+  "paginaId": "1276740559_Cen+rios+de+teste+-+CF",
+  "title": "Cenários de teste - CF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1276740559/Cen+rios+de+teste+-+CF"
+}

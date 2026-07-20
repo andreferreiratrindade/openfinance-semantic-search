@@ -1,0 +1,6 @@
+{
+  "texto": "Ao receber uma requisição com o mesmo x-idempotency-key e com a claim data do JWT com conteúdo diferente do original a requisição deverá ser recusada com o HTTP Status 422 com código ERRO_IDEMPOTENCIA; Por outro lado, se a requisição reutilizar a mesma x-idempotency-key, mas contiver uma claim data diferente daquela enviada inicialmente, ela deve ser recusada com HTTP Status 422 e o código de erro ERRO_IDEMPOTENCIA. Da mesma forma, se a requisição contiver o mesmo x-idempotency-key, mas a claim iss não pertencer à organização que possui o software cliente (clientId), a solicitação deve ser recusada com HTTP Status 403. A validação de idempotência deve ser realizada no escopo de cada endpoint individualmente, ou seja, a reutilização de uma mesma chave x-idempotency-key entre endpoints diferentes deve ser permitida pela instituição credora. Open",
+  "paginaId": "1040547975_Idempot+ncia+-+v1.0.0-rc.1",
+  "title": "Idempotência - v1.0.0-rc.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1040547975/Idempot+ncia+-+v1.0.0-rc.1"
+}

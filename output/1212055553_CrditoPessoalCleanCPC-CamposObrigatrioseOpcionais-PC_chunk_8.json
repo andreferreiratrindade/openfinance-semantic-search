@@ -1,0 +1,6 @@
+{
+  "texto": "Exemplos: https://oauth2.cartaodummy.opf.instituicao/as/token.oauth2 https://instituicao.com.br/orgs/instituicao/reg Sim string CLIENT Todos POST GET PATCH /open-banking/credit-portability/v x /portabilities /open-banking/credit-portability/v x /portabilities/{portabilityId} /open-banking/credit-portability/v x /portabilities/{portabilityId}/account-data /open-banking/credit-portability/v x /portabilities/{portabilityId}/cancel /open-banking/credit-portability/v x /portabilities/{portabilityId}/payment /open-banking/credit-portability/v x /credit-operations/{contractId}/portability-eligibility v1 200 ^[- /:_.',0-9a-zA-Z]{0,200}$ https://openbanking.instituicao-1.com.br/opbk errorCode Registra os códigos de erro detalhados de uma requisição que resultou em um erro HTTP (série 4xx ou 5xx). Caso o HTTP Code seja 4XX ou 5XX, esse campo deve ser preenchido com a lista das strings obtidas em \".errors[].code\", devendo constar apenas um código de erro.",
+  "paginaId": "1212055553_Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC",
+  "title": "Crédito Pessoal Clean (CPC) - Campos Obrigatórios e Opcionais - PC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212055553/Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC"
+}

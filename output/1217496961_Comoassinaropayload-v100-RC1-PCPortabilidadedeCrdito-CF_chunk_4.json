@@ -1,0 +1,6 @@
+{
+  "texto": "+ Base64url( payload JWT ) + \".\" + Base64url( digital signature ) Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada Em caso de erro Na validação da assinatura pelo Provedor do Recurso a API deve retornar mensagem de erro HTTP com status code 400 e a resposta deve incluir na propriedade code do objeto de resposta de erro especificado na API (ResponseError) a indicação da falha com o conteúdo BAD_SIGNATURE. Erros na validação da mensagem recebida pela aplicação cliente (por exemplo, iniciador de pagamento) devem ser registrados, e o Provedor do Recurso (por exemplo, instituição detentora de conta) deve ser notificado.",
+  "paginaId": "1217496961_Como+assinar+o+payload+-+v1.0.0-RC.1+-+PC+Portabilidade+de+Cr+dito+-+CF",
+  "title": "Como assinar o payload - v1.0.0-RC.1 - [PC] Portabilidade de Crédito - CF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1217496961/Como+assinar+o+payload+-+v1.0.0-RC.1+-+PC+Portabilidade+de+Cr+dito+-+CF"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "O campo type reflete o sentido financeiro da movimentação (ENTRADA ou SAÍDA). O campo transactionType identifica sua natureza (por exemplo: APLICACAO, RESGATE, VENCIMENTO, EVENTO_PROGRAMADO). A seguir, o mapeamento padrão deve ser observado: Cenário type transactionType Cenário type transactionType Resgate total/parcial SAIDA RESGATE Vencimento de título SAIDA VENCIMENTO Pagamento de juros/cupom ENTRADA PAGAMENTO_JUROS Amortização programada ENTRADA AMORTIZACAO Outro evento não previsto — OUTROS Orientações de preenchimento para dados das APIs de Investimentos Os campos /data/remuneration/preFixedRate e /data/remuneration/postFixedIndexerPercentage , do endpoint GET investments/{investmentId }, passam a ser de envio obrigatório quando se tratar de produto com remuneração híbrida, a partir da versão 1.1.0. Não é necessário o reprocessamento de históricos de contratos cuja posição seja igual a zero para atender à nova regra.",
+  "paginaId": "102957060_Orienta+es+-+DC+Investimentos",
+  "title": "Orientações - [DC] Investimentos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/102957060/Orienta+es+-+DC+Investimentos"
+}

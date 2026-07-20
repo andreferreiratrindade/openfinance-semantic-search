@@ -1,0 +1,6 @@
+{
+  "texto": "Diagrama de sequência da Vinculação de Conta Open Vinculação de dispositivo para acesso as APIs Pagamentos e Pagamentos Automáticos (Pix Automático) Diagrama de sequência da Iniciação de Pagamentos Open Realização de transações de pagamentos imediatos, agendamento recorrente e agendamento único utilizando o dispositivo vinculado e API Pagamentos Diagrama de sequência da Iniciação de Pagamentos Automáticos (Pix Automático) Open Realização de transações de pagamentos iniciais avulsos imediatos ou agendados e o envio da recorrência de Pix Automático utilizando o dispositivo vinculado e API Pagamentos Automáticos",
+  "paginaId": "1436516460_Diagrama+de+Sequ+ncia+-+v2.2.0+-+SV+V+nculo+de+dispositivo",
+  "title": "Diagrama de Sequência - v2.2.0 - [SV] Vínculo de dispositivo - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1436516460/Diagrama+de+Sequ+ncia+-+v2.2.0+-+SV+V+nculo+de+dispositivo"
+}

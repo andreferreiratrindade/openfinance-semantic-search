@@ -1,0 +1,6 @@
+{
+  "texto": "O relatório deve ser aprovado e acompanhado da ciência do diretor responsável pelo compartilhamento de dados e serviços no âmbito do Open Finance Dados importantes: Versão 2.0 do Manual de Monitoramento do Open Finance IN BCB Nº 575: https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=575 Os itens monitorados do Manual de Monitoramento devem ser acompanhados pela Área de Gestão de Desconformidade (Quicksight) pelo link: https://desconformidades.openfinancebrasil.org.br/ A gestão de acesso à Plataforma de Visualização de Dados do Open Finance, que inclui o painel de desconformidades e outros dashboards, deverá ser realizada pelo administrador da instituição no Diretório de participantes através do cadastro de usuário de domínio da organização ‘PDV’ ou ‘SDV’ no sistema ‘Data Visualization Plataform’. Usuários PDV podem adicionar e excluir membros do grupo SDV; Usuários SDV têm acesso limitado, sem permissão para adicionar ou excluir membros.",
+  "paginaId": "922288135_Gest+o+de+Monitoramento+e+Medidas",
+  "title": "Gestão de Monitoramento e Medidas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/922288135/Gest+o+de+Monitoramento+e+Medidas"
+}
