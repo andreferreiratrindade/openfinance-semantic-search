@@ -150,10 +150,8 @@
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
     env.allowLocalModels = false;
 
-   // import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/+esm";
     import { createRxDatabase } from "https://esm.run/rxdb";
     import { getRxStorageDexie } from "https://esm.run/rxdb/plugins/storage-dexie";
-
 
     // DOM Elements
     const statusText = document.getElementById('status-text');
@@ -166,6 +164,60 @@
     let embedder;
     let db;
 
+    // --- FUNÇÃO DE EXPANSÃO (Small-to-Big Retrieval) ---
+    async function getExpandedContext(vectorResults, myDatabase) {
+        const chunksToFetchByFile = {};
+
+        // 1. Agrupa os índices vizinhos (anterior, atual, próximo) por arquivo
+        vectorResults.forEach(match => {
+            const file = match.source_file;
+            const index = match.chunk_index;
+
+            // Previne falha caso source_file ou chunk_index não existam no payload
+            if (!file || index === undefined) return; 
+
+            if (!chunksToFetchByFile[file]) {
+                chunksToFetchByFile[file] = new Set();
+            }
+
+            chunksToFetchByFile[file].add(Math.max(1, index - 1)); 
+            chunksToFetchByFile[file].add(index);
+            chunksToFetchByFile[file].add(index + 1); 
+        });
+
+        let finalContext = [];
+
+        // 2. Busca e consolida os chunks no RxDB
+        for (const [file, indexSet] of Object.entries(chunksToFetchByFile)) {
+            const uniqueIndexes = Array.from(indexSet).sort((a, b) => a - b);
+
+            const retrievedDocs = await myDatabase.chunks.find({
+                selector: {
+                    source_file: file,
+                    chunk_index: {
+                        $in: uniqueIndexes
+                    }
+                }
+            }).exec();
+
+            // Ordena em memória para não exigir criação de índices complexos no RxDB
+            retrievedDocs.sort((a, b) => a.chunk_index - b.chunk_index);
+
+            // Costura os textos removendo o prefixo "passage: " e usa a url como citação
+            const fileText = retrievedDocs
+                .map(doc => doc.text_content.replace("passage: ", "").trim())
+                .join("\n\n");
+            
+            // Usa a URL do primeiro chunk encontrado para garantir o link no contexto
+            const sourceUrl = retrievedDocs[0]?.url || file;
+
+            finalContext.push(`--- FONTE: ${sourceUrl} ---\n${fileText}`);
+        }
+
+        return finalContext.join("\n\n---------------------------\n\n");
+    }
+
+    // --- WEB WORKER PARA CÁLCULO DE VETORES ---
     const workerCode = `
         function cosineSimilarity(vecA, vecB) {
             let dotProduct = 0.0;
@@ -180,51 +232,34 @@
             return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
         }
 
-        // Listen for messages from the main thread
         self.onmessage = function(e) {
             const { queryVector, docs } = e.data;
 
-            // Run the heavy math loop
             const scoredDocs = docs.map(doc => {
                 return {
                     payload: {
                         title: doc.title,
                         url: doc.url,
-                        text_content: doc.text_content
+                        text_content: doc.text_content,
+                        source_file: doc.source_file,
+                        chunk_index: doc.chunk_index
                     },
                     score: cosineSimilarity(queryVector, doc.vector)
                 };
             });
 
-            // Sort and slice in the background
             const topMatches = scoredDocs
                 .sort((a, b) => b.score - a.score)
                 .slice(0, 4);
 
-            // Send the final result back to the main thread
             self.postMessage(topMatches);
         };
     `;
 
-    // 2. Instantiate the Inline Web Worker
     const blob = new Blob([workerCode], { type: 'application/javascript' });
     const searchWorker = new Worker(URL.createObjectURL(blob));
 
-    // Cosine Similarity calculation function executing locally
-    function cosineSimilarity(vecA, vecB) {
-        let dotProduct = 0.0;
-        let normA = 0.0;
-        let normB = 0.0;
-        for (let i = 0; i < vecA.length; i++) {
-            dotProduct += vecA[i] * vecB[i];
-            normA += vecA[i] * vecA[i];
-            normB += vecB[i] * vecB[i];
-        }
-        if (normA === 0 || normB === 0) return 0;
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-    }
-
-    // --- Initialize RxDB and pull items from GitHub Pages root ---
+    // --- Initialize RxDB ---
     async function initDatabase() {
         try {
             statusText.textContent = "Initializing local RxDB system...";
@@ -244,6 +279,8 @@
                     title: { type: 'string' },
                     url: { type: 'string' },
                     paginaId: { type: 'string' },
+                    source_file: { type: 'string' }, // ADICIONADO para a expansão funcionar
+                    chunk_index: { type: 'number' }, // ADICIONADO para a expansão funcionar
                     vector: { type: 'array', items: { type: 'number' } }
                 },
                 required: ['id', 'text_content', 'vector']
@@ -253,26 +290,19 @@
                 chunks: { schema: chunkSchema }
             });
 
-            // Check if data is already inside browser storage
             const existingCount = await db.chunks.find().exec();
 
             if (existingCount.length === 0) {
                 statusText.textContent = "RxDB syncing... downloading partitions.";
 
-                // Dynamically import data_0.js through data_9.js
                 for (let i = 0; i < 10; i++) {
                     try {
                         statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 10...`;
-
-                        // dynamic import() loads the file only when requested
                         const module = await import(`./src/data/data_${i}.js`);
-
                         if (module && module.chunksData) {
                             await db.chunks.bulkInsert(module.chunksData);
                         }
                     } catch (e) {
-                        console.warn(`Could not load data_${i}.js. It might not exist if the dataset is small.`, e);
-                        // If it fails (e.g. 404 because there were fewer than 10 files generated), we stop trying
                         break;
                     }
                 }
@@ -289,26 +319,10 @@
     async function initModelSelector() {
         modelSelector.innerHTML = '';
         const defaultOption = document.createElement('option');
-        defaultOption.value = "";
-        defaultOption.textContent = "Selecione seu modelo";
+        defaultOption.value = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
+        defaultOption.textContent = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
         modelSelector.appendChild(defaultOption);
-
-        const modelsWithStatus = await Promise.all(
-            prebuiltAppConfig.model_list.map(async (model) => {
-                const isCached = await (engine ? engine.hasModel(model.model_id) : false);
-                return { ...model, isCached };
-            })
-        );
-
-        modelsWithStatus.sort((b, a) => b.isCached - a.isCached);
-
-        for (const model of modelsWithStatus) {
-            const statusLabel = model.isCached ? " (Cached)" : " (Download)";
-            const option = document.createElement('option');
-            option.value = model.model_id;
-            option.textContent = `${model.model_id} ${statusLabel}`;
-            modelSelector.appendChild(option);
-        }
+        initWebLLM();
     }
 
     // --- Initialize Engine ---
@@ -326,7 +340,7 @@
             });
 
             statusText.textContent = "Loading Multilingual Embedder...";
-            embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-base", { dtype: "fp32" });
+            embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
 
             statusText.textContent = "System Ready.";
             userInput.disabled = false;
@@ -349,24 +363,18 @@
     async function localRxDBSearch(queryVector) {
         const allDocs = await db.chunks.find().exec();
 
-        // CRITICAL: Web Workers cannot accept complex objects with methods (like RxDB proxies).
-        // We must map them to plain JavaScript objects before sending.
         const plainDocs = allDocs.map(doc => ({
             title: doc.title,
             url: doc.url,
             text_content: doc.text_content,
+            source_file: doc.source_file, // ENVIANDO PARA O WORKER
+            chunk_index: doc.chunk_index, // ENVIANDO PARA O WORKER
             vector: doc.vector
         }));
 
-        // Wrap the worker event listener in a Promise so we can 'await' it in your main workflow
         return new Promise((resolve, reject) => {
-            // Resolve the promise when the worker replies
             searchWorker.onmessage = (e) => resolve(e.data);
-            
-            // Reject if something breaks
             searchWorker.onerror = (err) => reject(err);
-
-            // Send the data to the background thread to start the calculation
             searchWorker.postMessage({ queryVector, docs: plainDocs });
         });
     }
@@ -390,9 +398,10 @@
             Não responda à pergunta.
             Expanda siglas e termos coloquiais para suas definições legais (ex: "detentora" vira "instituição detentora de conta").
             Retorne APENAS a nova pergunta reescrita. Nenhuma outra palavra.
-            User: ${query}`;
+            User: ${query}
+            
+            Nova pergunta reescrita:`;
 
-            console.log(refinementPrompt);
             const refReply = await engine.chat.completions.create({
                 messages: [{ role: "user", content: refinementPrompt }],
                 temperature: 0.1
@@ -406,16 +415,12 @@
                
             const vector = Array.from(embedding.data);
 
-            console.log("embedding: ", optimizedQuery);
-
             statusText.textContent = "Scanning RxDB collection layers...";
             const matches = await localRxDBSearch(vector);
-            console.log("matches: ");
-            console.log(matches);
-
-            const context = matches
-            .map(m => `[Fonte: ${m.payload.url}]\n${m.payload.text_content}`)
-            .join("\n\n---------------------------\n\n");
+            
+            // INTEGRAÇÃO: Aqui chamamos a função Small-to-Big em vez de concatenar direto
+            statusText.textContent = "Expanding semantic context neighbors...";
+            const context = await getExpandedContext(matches.map(m => m.payload), db);
 
             statusText.textContent = "Synthesizing localized context query...";
 
@@ -454,7 +459,72 @@
         }
     }
 
-    // --- Event Listeners ---
+    async function checkSystemSpecs() {
+        const report = {
+            webGpuSupported: false,
+            gpuAdapterInfo: null,
+            estimatedRamGB: navigator.deviceMemory || "Unknown",
+            cpuCores: navigator.hardwareConcurrency || "Unknown",
+            availableStorageMB: 0,
+            isCompatible: false,
+            warnings: []
+        };
+
+        if (!navigator.gpu) {
+            report.warnings.push("WebGPU não é suportado neste navegador. Utilize o Chrome, Edge ou Brave atualizados.");
+        } else {
+            try {
+                const adapter = await navigator.gpu.requestAdapter();
+                if (adapter) {
+                    report.webGpuSupported = true;
+                    if (adapter.info) {
+                        report.gpuAdapterInfo = {
+                            architecture: adapter.info.architecture || "N/A",
+                            description: adapter.info.description || "N/A",
+                            vendor: adapter.info.vendor || "N/A"
+                        };
+                    } else {
+                        report.gpuAdapterInfo = "Disponível (Detalhes omitidos por privacidade)";
+                    }
+                } else {
+                    report.warnings.push("Nenhum adaptador WebGPU compatível encontrado no hardware.");
+                }
+            } catch (e) {
+                report.warnings.push("Erro ao inicializar WebGPU: " + e.message);
+            }
+        }
+
+        if (navigator.storage && navigator.storage.estimate) {
+            const estimate = await navigator.storage.estimate();
+            const availableBytes = estimate.quota - estimate.usage;
+            report.availableStorageMB = Math.round(availableBytes / (1024 * 1024));
+        }
+
+        const hasGpu = report.webGpuSupported;
+        const hasEnoughRam = report.estimatedRamGB === "Unknown" || report.estimatedRamGB >= 8;
+        const hasEnoughStorage = report.availableStorageMB > 7000; 
+
+        if (hasGpu && hasEnoughRam && hasEnoughStorage) {
+            report.isCompatible = true;
+        } else {
+            if (!hasEnoughRam) report.warnings.push("Memória RAM insuficiente. O sistema requer pelo menos 8GB.");
+            if (!hasEnoughStorage) report.warnings.push(`Espaço em disco insuficiente. Você tem ${report.availableStorageMB}MB livres, mas precisa de pelo menos 7000MB.`);
+        }
+
+        return report;
+    }
+
+    checkSystemSpecs().then((status) => {
+        console.log("--- Diagnóstico do Sistema ---", status);
+        
+        if (!status.isCompatible) {
+            console.error("Bloqueado: O computador do usuário não atende aos requisitos mínimos.");
+        } else {
+            console.log("Sucesso: Hardware compatível! Inicializando RAG local...");
+            initDatabase();
+        }
+    });
+
     sendBtn.addEventListener('click', handleUserSubmit);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -465,8 +535,6 @@
 
     modelSelector.addEventListener('change', initWebLLM);
 
-    // Trigger initialization pipeline sequentially
-    initDatabase();
     </script>
 </body>
 

@@ -15,7 +15,7 @@ async function bundleData() {
     for (const file of files) {
         count++;
         console.log(`Processing file ${count}: ${file}`);
-        if(count == 1000) break
+
         const rawContent = JSON.parse(fs.readFileSync(path.join(dataDirectory, file), 'utf8'));
         const items = Array.isArray(rawContent) ? rawContent : [rawContent];
 
