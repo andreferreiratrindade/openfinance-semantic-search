@@ -174,15 +174,15 @@
             const index = match.chunk_index;
 
             // Previne falha caso source_file ou chunk_index não existam no payload
-            if (!file || index === undefined) return; 
+            if (!file || index === undefined) return;
 
             if (!chunksToFetchByFile[file]) {
                 chunksToFetchByFile[file] = new Set();
             }
 
-            chunksToFetchByFile[file].add(Math.max(1, index - 1)); 
+            chunksToFetchByFile[file].add(Math.max(1, index - 1));
             chunksToFetchByFile[file].add(index);
-            chunksToFetchByFile[file].add(index + 1); 
+            chunksToFetchByFile[file].add(index + 1);
         });
 
         let finalContext = [];
@@ -207,7 +207,7 @@
             const fileText = retrievedDocs
                 .map(doc => doc.text_content.replace("passage: ", "").trim())
                 .join("\n\n");
-            
+
             // Usa a URL do primeiro chunk encontrado para garantir o link no contexto
             const sourceUrl = retrievedDocs[0]?.url || file;
 
@@ -295,9 +295,9 @@
             if (existingCount.length === 0) {
                 statusText.textContent = "RxDB syncing... downloading partitions.";
 
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 465; i++) {
                     try {
-                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 10...`;
+                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 465...`;
                         const module = await import(`./src/data/data_${i}.js`);
                         if (module && module.chunksData) {
                             await db.chunks.bulkInsert(module.chunksData);
@@ -399,7 +399,7 @@
             Expanda siglas e termos coloquiais para suas definições legais (ex: "detentora" vira "instituição detentora de conta").
             Retorne APENAS a nova pergunta reescrita. Nenhuma outra palavra.
             User: ${query}
-            
+
             Nova pergunta reescrita:`;
 
             const refReply = await engine.chat.completions.create({
@@ -411,13 +411,13 @@
             statusText.textContent = "Calculating local query vectors...";
 
             const queryForE5 = "query: " + optimizedQuery;
-            const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });  
-               
+            const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
+
             const vector = Array.from(embedding.data);
 
             statusText.textContent = "Scanning RxDB collection layers...";
             const matches = await localRxDBSearch(vector);
-            
+
             // INTEGRAÇÃO: Aqui chamamos a função Small-to-Big em vez de concatenar direto
             statusText.textContent = "Expanding semantic context neighbors...";
             const context = await getExpandedContext(matches.map(m => m.payload), db);
@@ -502,7 +502,7 @@
 
         const hasGpu = report.webGpuSupported;
         const hasEnoughRam = report.estimatedRamGB === "Unknown" || report.estimatedRamGB >= 8;
-        const hasEnoughStorage = report.availableStorageMB > 7000; 
+        const hasEnoughStorage = report.availableStorageMB > 7000;
 
         if (hasGpu && hasEnoughRam && hasEnoughStorage) {
             report.isCompatible = true;
@@ -516,7 +516,7 @@
 
     checkSystemSpecs().then((status) => {
         console.log("--- Diagnóstico do Sistema ---", status);
-        
+
         if (!status.isCompatible) {
             console.error("Bloqueado: O computador do usuário não atende aos requisitos mínimos.");
         } else {
