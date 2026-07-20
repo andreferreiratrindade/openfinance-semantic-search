@@ -1,6 +1,0 @@
-{
-  "texto": "Essas execuções ocorrem automaticamente, sem intervenção do usuário. Persistência: informações críticas, como client_id , consent_id , payment_id e refresh tokens , são armazenadas de forma segura entre as execuções para garantir a continuidade do fluxo. Temporização de negócio: os testes são alinhados às linhas do tempo reais dos pagamentos, por exemplo, D+2 e D+3, e alguns podem ser restritos a janelas específicas de execução, por exemplo, entre 21:00 e 23:59 BRT. Salvaguardas automáticas: execuções de acompanhamento somente são agendadas se o fluxo inicial for concluído com sucesso. Caso ocorra erro no início do processo, nenhuma execução adicional será disparada. Visibilidade: a Estrutura da Associação Open Finance pode visualizar as execuções agendadas, sua origem e seu status, como agendado, executado ou cancelado.",
-  "paginaId": "553255015_FVP+Manual",
-  "title": "FVP Manual - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/553255015/FVP+Manual"
-}

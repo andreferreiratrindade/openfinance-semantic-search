@@ -1,6 +1,0 @@
-{
-  "texto": "1 Financiamentos : (GET /financings/v2/contracts) 2 Financiamentos - Contrato : (GET /financings/v2/contracts/{contractId}) 3 Financiamentos - Garantias do Contrato : (GET /financings/v2/contracts/{contractId}/warranties) 4 Financiamentos - Pagamentos do Contrato : (GET /financings/v2/contracts/{contractId}/payments) 5 Financiamentos - Parcelas do Contrato : (GET /financings/v2/contracts/{contractId}/scheduled-instalments) Visão Geral A API Financings viabiliza o compartilhamento de informações das Operações de Crédito do tipo Financiamento. Financiamentos : (GET /financings/v2/contracts) Visão Geral Obtém dados referentes à operação de crédito de Financiamentos Tags: CNPJ (CNPJ Number) , CPF - Cadastro de Pessoa Física (CPF Number) e Financiamento (Financing) .",
-  "paginaId": "1101922322_Informa+es+Gerais+-+DC+Financiamento+-+v2.4.0-beta.1",
-  "title": "Informações Gerais - [DC] Financiamento - v2.4.0-beta.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1101922322/Informa+es+Gerais+-+DC+Financiamento+-+v2.4.0-beta.1"
-}

@@ -1,6 +1,0 @@
-{
-  "texto": "Operações de câmbio liquidadas ou canceladas em situações nas quais o cliente não mais possua acesso aos canais de atendimento eletrônico da instituição, devem retornar o status UNAVAILABLE. Casos de uso em que o cliente final efetue um consentimento para operações de câmbio para o qual um dos recursos (respeitando a RN001) exija a aprovação de múltiplas alçadas (PENDING_AUTHORISATION) e outro recurso esteja disponível para consulta (AVAILABLE), o comportamento esperado é que cada recurso tenha seu status representado de forma independente, disponibilizando imediatamente os recursos já aprovados. Operações de câmbio anuladas não são escopo de compartilhamento na API Recursos.",
-  "paginaId": "114032786_Orienta+es+-+DC+C+mbio",
-  "title": "Orientações - [DC] Câmbio - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/114032786/Orienta+es+-+DC+C+mbio"
-}

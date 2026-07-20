@@ -1,6 +1,0 @@
-{
-  "texto": "Toda atualização de especificação deve vir acompanhada de changelog , por exemplo: Dentro de um mesmo estágio: 1.0.0-beta.1 ➞ 1.0.0-beta.2; Entre estágios :2.0.0-beta.4 ➞ 2.0.0-rc.1; Entre versões: 4.0.0 ➞ 4.1.0. Open Definição sobre período de convivência de acordo com o tipo de versionamento Versionamento Restrições Nova versão da API (Current)​ Versão anterior da API (Deprecated) Possui data limite para implementação Necessita certificação Depreciação (Deprecated) Aposentadoria (Retired) Observação Major Não haverá mais do que duas versões em convivência Fornecedores²: Sim, no início do período de convivência Consumidores³: Sim, no final do período de convivência Sim 90 dias contados a partir do início em produção da nova versão em casos em que não houver período de piloto.",
-  "paginaId": "86835268_Tipos+de+Versionamento",
-  "title": "Tipos de Versionamento - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/86835268/Tipos+de+Versionamento"
-}

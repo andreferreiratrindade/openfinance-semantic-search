@@ -1,0 +1,6 @@
+{
+  "texto": "Art. 34. O agendamento do teste de operação em regime de contingência, de que trata a regulamentação que disciplina o STR, deverá ser realizado por intermédio da mensagem STR0043 (Participante requisita agendamento de teste de contingência Internet) do Catálogo de Serviços do SFN. Parágrafo único. O cancelamento do agendamento poderá ser realizado por meio da mensagem STR0044 (Participante requisita cancelamento de teste de contingência Internet), caso ainda não tenha sido ativada a operação em regime de contingência. CAPÍTULO VI DO AGENDAMENTO DE ORDENS DE TRANSFERÊNCIA Art. 35. O agendamento das ordens de transferência de fundos no STR aplica-se exclusivamente às mensagens do Grupo de Serviços STR. Art. 36. A grade horária para emissão de ordens de transferência de fundos agendadas obedecerá os horários definidos na regulamentação que disciplina o STR, ressalvado que o Banco Central prestará suporte aos usuários apenas nos dias úteis, a partir das 6h e até trinta minutos após o horário de fechamento do STR. Art. 37.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=287"
+}

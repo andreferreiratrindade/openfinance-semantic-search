@@ -1,6 +1,0 @@
-{
-  "texto": "O iniciador deve acatar o valor recebido do detentor. Até abril/2024 (lançamento da v4), não reportar as chamadas sem x-fapi-interaction-Id para PCM. Caso a chamada seja reportada para PCM, a chamada irá para o status “DISCARDED”.",
-  "paginaId": "239370570_v3.0.0+Problemas+conhecidos",
-  "title": "v3.0.0 – Problemas conhecidos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/239370570/v3.0.0+Problemas+conhecidos"
-}

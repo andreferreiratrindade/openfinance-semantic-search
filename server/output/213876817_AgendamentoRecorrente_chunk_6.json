@@ -1,0 +1,6 @@
+{
+  "texto": "Detentor deverá notificar via webhook o iniciador e o iniciador decidir se e como notificar o pagador Responsável pela geração do endToEndId Iniciador A data agendada no consentimento e a data agendada do E2EID podem ser distintas? Sim, somente nos casos do dia “não existir”. (ex.: agendamento para todo dia 31. Alguns meses não possuem dia 31) Qual é o localInstrument utilizado na liquidação? MANU | QRES | DICT Outras informações É possível habilitar crédito? Seguir a regra do arranjo. Habilitar na detentora no momento da adesão do consentimento. Na confirmação do consentimento é necessário um aviso ao cliente que o uso de linha de crédito pré-aprovada na instituição detentora de conta está habilitado e poderá ser alterado na detentora em ambiente de gestão do Pix Automático. Retentativas Seguir as regras do arranjo.",
+  "paginaId": "213876817_Agendamento+Recorrente",
+  "title": "Agendamento Recorrente - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/213876817/Agendamento+Recorrente"
+}

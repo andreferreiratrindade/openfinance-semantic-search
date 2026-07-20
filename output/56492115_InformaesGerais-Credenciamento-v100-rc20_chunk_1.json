@@ -1,6 +1,0 @@
-{
-  "texto": "1 Visão Geral 2 Conjunto de informações de Credenciamento para Pessoa Física : (GET /opendata-acquiring-services/v1/personals) 2.1 Dicionário de dados 3 Conjunto de informações de Credenciamento para Pessoa Jurídica : (GET /opendata-acquiring-services/v1/businesses) 3.1 Dicionário de dados Visão Geral As instituições financeiras participantes podem consultar as informações de credenciamento de outras instituições participantes Conjunto de informações de Credenciamento para Pessoa Física : (GET /opendata-acquiring-services/v1/personals) Método para disponibilizar as taxas e tarifas por serviços. Dicionário de dados Fazer download do dicionário de dados Conjunto de informações de Credenciamento para Pessoa Jurídica : (GET /opendata-acquiring-services/v1/businesses) Método para disponibilizar as taxas e tarifas por serviços. Dicionário de dados Fazer download do dicionário de dados",
-  "paginaId": "56492115_Informa+es+Gerais+-+Credenciamento+-+v1.0.0-rc2.0",
-  "title": "Informações Gerais - Credenciamento - v1.0.0-rc2.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/56492115/Informa+es+Gerais+-+Credenciamento+-+v1.0.0-rc2.0"
-}

@@ -1,6 +1,0 @@
-{
-  "texto": "Por exemplo, um sistema de monitoramento de servidores pode receber webhooks para alertar imediatamente a equipe de operações quando um servidor ficar offline. Integração com serviços de pagamento : Um serviço de pagamento online pode usar webhooks para notificar automaticamente um sistema de gerenciamento financeiro sobre transações concluídas, permitindo a atualização imediata das informações de contabilidade. Notificações em tempo real : Plataformas de mensagens instantâneas ou redes sociais podem utilizar webhooks para enviar notificações em tempo real para um aplicativo externo sempre que uma nova mensagem for recebida. Atualização de status de envio : Empresas de logística e entregas podem utilizar webhooks para fornecer atualizações em tempo real sobre o status de envio de pacotes, como mudanças de status (enviado, em trânsito, entregue), informações de rastreamento e horários estimados de entrega.",
-  "paginaId": "159318036_Informa+es+Gerais+-+Webhook+-+v1.0.0",
-  "title": "Informações Gerais - Webhook - v1.0.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/159318036/Informa+es+Gerais+-+Webhook+-+v1.0.0"
-}

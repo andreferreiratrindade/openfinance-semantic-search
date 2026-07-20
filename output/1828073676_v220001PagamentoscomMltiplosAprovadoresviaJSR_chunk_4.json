@@ -1,6 +1,0 @@
-{
-  "texto": "Prazo para atuação: informar o usuário solicitante sobre o prazo para atuação dos demais representantes e da necessidade de reinício do processo caso o prazo expire. Ex.: Os aprovadores têm até DD/MM/AAAA às HH:MM para confirmar a transação. Após essa data, uma nova ordem de pagamento deverá ser criada. Open Pendência de aprovação Cenário: Cancelamento da solicitação pelo usuário solicitante Confirmação do cancelamento : se o usuário solicitante cancelar a solicitação, informá-lo sobre o cancelamento. Exibição dos dados: exibir os dados do pagamento cancelado. Open Cancelamento da solicitação pelo usuário solicitante",
-  "paginaId": "1828073676_v.22.00.01+Pagamentos+com+M+ltiplos+Aprovadores+via+JSR",
-  "title": "v.22.00.01 Pagamentos com Múltiplos Aprovadores via JSR - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828073676/v.22.00.01+Pagamentos+com+M+ltiplos+Aprovadores+via+JSR"
-}

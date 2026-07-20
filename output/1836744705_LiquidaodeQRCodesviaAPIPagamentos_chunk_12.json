@@ -1,6 +1,0 @@
-{
-  "texto": "Regras estruturais da API Pix BCB para Troco: O campo valor.original da cobrança deve ser maior que 0.00 (representa o valor da compra). O campo valor.modalidadeAlteracao (nível da cobrança) deve ser 0 . O valor do troco está em valor.retirada.troco.valor . Se valor.retirada.troco.modalidadeAlteracao = 1, o valor do troco pode ser alterado pelo usuário pagador. O valor da compra ( valor.original ) não pode ser alterado . Regras de preenchimento: Campo API Regra Campo API Regra localInstrument QRDN (câmera/copia-e-cola) ou APDN (NFC) purpose CHANGE amount Preencher com o valor total da transação: valor.original (compra) + valor.retirada.troco.valor (troco). transactionIdentification Obrigatório. Preencher com o txid do payload.",
-  "paginaId": "1836744705_Liquida+o+de+QR+Codes+via+API+Pagamentos",
-  "title": "Liquidação de QR Codes via API Pagamentos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1836744705/Liquida+o+de+QR+Codes+via+API+Pagamentos"
-}

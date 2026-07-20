@@ -1,6 +1,0 @@
-{
-  "texto": "2.3 Cuidados com Firewall, WAF e Anti-DDoS Corporativos A instância MISP precisa ser mantida atualizada e potencialmente terá em seus eventos payloads maliciosos (malware, URLs de phishing e IoCs variados). É imprescindível que: A instância MISP possa acessar a Internet, principalmente os servidores de atualização do sistema operacional e as atualizações da plataforma; O WAF corporativo ou proxy reverso (se houver) não interfira no tráfego do MISP; Ferramentas Anti-DDoS não devem classificar acessos de instâncias parceiras como ataques. O participante deverá observar o uso de qualquer ferramenta de inspeção de tráfego em especial TLS/SSL, pois esses podem interferir no envio e recebimento de eventos. Referência: https://cert.br/misp/tutorial-ubuntu/",
-  "paginaId": "117243910_02.+Padr+o+de+Conectividade+entre+os+participantes+e+a+estrutura+de+governan+a",
-  "title": "02. Padrão de Conectividade entre os participantes e a estrutura de governança - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/117243910/02.+Padr+o+de+Conectividade+entre+os+participantes+e+a+estrutura+de+governan+a"
-}

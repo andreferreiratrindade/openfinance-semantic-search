@@ -1,6 +1,0 @@
-{
-  "texto": "https://example.api/open-banking/financings/v2/contracts/{contractId}/payments Observação: Endpoint com path variable, a exemplo {contractId}, podem ser enviados com ou sem chaves {}. Todos os endpoints das APIs classificadas como ‘Serviços’ deverão possuir a mesma disponibilidade do arranjo de pagamento ou do serviço aos quais estão associadas. A disponibilidade é checada no endpoint GET /discovery/status, conforme documentada no item API de Status . A cada 30 segundos, a API de status é requisitada com timeout de 1s. Será considerado uptime , se o retorno for: OK.",
-  "paginaId": "17891406_Disponibilidade",
-  "title": "Disponibilidade - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17891406/Disponibilidade"
-}

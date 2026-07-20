@@ -1,6 +1,0 @@
-{
-  "texto": "9. Renovação do Access Token O Cliente pode renovar via POST /oauth/token com grant_type=refresh_token . O AS verifica a validade dos consentimentos (TI e Dados). Se ao menos um consentimento ainda estiver válido → retorna novo access_token . Se ambos expiraram/revogados → retorna erro invalid_grant . 10. Revogação Revogação do Consentimento de Dados (Secundário) : Usuário envia DELETE /consents/{consentId} . Apenas o consentimento de Dados é revogado; o de TI permanece. Revogação do Consentimento de TI (Primário) : Usuário envia PATCH /recurring-consents/{recurringConsentId} . Revoga automaticamente o consentimento de Dados vinculado.",
-  "paginaId": "1129021472_Transfer+ncias+Inteligentes+-+JO+Jornada+Otimizada+v1.0",
-  "title": "Transferências Inteligentes - [JO] Jornada Otimizada v1.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1129021472/Transfer+ncias+Inteligentes+-+JO+Jornada+Otimizada+v1.0"
-}

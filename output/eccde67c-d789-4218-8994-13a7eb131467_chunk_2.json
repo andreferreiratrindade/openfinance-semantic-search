@@ -1,6 +1,0 @@
-{
-  "texto": "” (NR) “ Art. 3º-A A TED a favor de cliente de valor igual ou superior a R$15.000,00 (quinze mil reais) não poderá ser emitida por instituição que se conecta à RSFN por meio de PSTI. § 1º O limite máximo de que trata o caput não se aplica quando a instituição: I - acessar a RSFN por meio de um PSTI que tenha concluído o processo de credenciamento no Banco Central do Brasil, nos termos da regulamentação em vigor; e II - demonstrar, por meio de relatório de asseguração razoável emitido por empresa de auditoria independente registrada na Comissão de Valores Mobiliários – CVM, que: a) não compartilha com o PSTI as chaves privadas cadastradas no Banco Central do Brasil utilizadas para a assinatura das mensagens; b) valida a integridade das transações antes da assinatura, assegurando que os dados não tenham sido corrompidos ou manipulados durante o processo de geração da mensagem; e c) utiliza certificados distintos para ambientes diferentes.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=497"
-}

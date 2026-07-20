@@ -1,6 +1,0 @@
-{
-  "texto": "Intervalo de tempo do processo Tempo em milissegundos inteiros decorrido desde o registro do timestamp até a chegada do primeiro byte da resposta do server. Id da organização atuando como CLIENT¹ Identificador da organização de onde a chamada foi disparada. Id da organização atuando como SERVER¹ Identificador da organização para onde a chamada foi feita. clientSSId¹ Identificador do software statement de onde a chamada foi disparada. A PCM garante que foi esta orgId que obteve o token de acesso utilizado neste reporte. Papel¹ ENUM indicando se o reporte que está sendo enviado apresenta a visão do server ou do client. [ CLIENT, SERVER ] ¹ Campos com preenchimento obrigatório para que a mensagem seja considerada válida na ingestão Documentação da API Documentação da API - PCM",
-  "paginaId": "1212088321_Funcionalidade+e+Campos+-+PC",
-  "title": "Funcionalidade e Campos - PC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212088321/Funcionalidade+e+Campos+-+PC"
-}

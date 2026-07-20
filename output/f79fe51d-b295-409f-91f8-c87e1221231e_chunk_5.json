@@ -1,6 +1,0 @@
-{
-  "texto": "2º desta Instrução Normativa, com 8 casas decimais; - TaxaSelic corresponde à Taxa Selic (% a.a.) apurada para o dia da contratação da operação, divulgada diariamente na página do Banco Central do Brasil na internet; e - percentual corresponde ao percentual da Taxa Selic, fixado no art. 2º, § 2º, inciso II, da Resolução BCB nº 20, de 2020, válido na data da contratação da operação. Observação: O termo \"(1+ TaxaSelic)^(1/252)\" corresponde ao fator diário da Taxa Selic, arredondado em oito casas decimais, conforme divulgação diária na página do Banco Central do Brasil na internet. III – Valor financeiro da recompra pela instituição financeira V recompra = Quantidade títulos recompra x PU revenda Em que: - V recompra corresponde ao valor financeiro da recompra pela instituição financeira expresso com duas casas decimais, abandonando-se da terceira em diante; - Quantidade títulos recompra corresponde à quantidade de títulos (número inteiro) que estão sendo recomprados pela instituição financeira; - PU revenda corresponde ao preço unitário de revenda calculado na forma do item II deste Anexo.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=23"
-}

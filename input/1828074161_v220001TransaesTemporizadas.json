@@ -1,6 +1,0 @@
-{
-    "texto": "Visão geral\nA Jornada de Iniciação de Pagamento com\nTransações Temporizadas\né utilizada quando a Instituição Detentora de Conta\n(ID)\n, por diferentes motivos,\nsolicita uma análise adicional da transação de pagamento\n, o que resulta em um novo prazo para sua efetivação.\nNesses casos, a\nITP\ndeve garantir que,\nna etapa de\nEfetivação\n,\no usuário seja informado sobre a\nanálise em andamento\ne tenha a opção de decidir, nessa etapa, se deseja\nprosseguir ou cancelar\na solicitação.\nOpen\nDiagrama de sequência da Jornada de Pagamento com Transações Temporizadas\nNota\nNas interfaces ilustrativas, a Instituição Iniciadora de Transação de Pagamento (ITP) está sendo representada pela marca\nCloud Finance\n.",
-    "paginaId": "1828074161_v.22.00.01+Transa+es+Temporizadas",
-    "title": "v.22.00.01 Transações Temporizadas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828074161/v.22.00.01+Transa+es+Temporizadas"
-}

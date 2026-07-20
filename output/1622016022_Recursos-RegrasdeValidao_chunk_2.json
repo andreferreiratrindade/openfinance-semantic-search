@@ -1,6 +1,0 @@
-{
-  "texto": "Dica: não existe a opção de exportar as tabelas para Excel, porém pode-se selecionar o conteúdo da página com CTRL+A, copiar e colar no Excel. Dados Cadastrais e Transacionais Recursos Campo Regra Campo Regra consentId SE Role = CLIENT E endpoint = %/ressources/% E método = GET ENTÃO Se o consentId for nulo, retorna Nulo Se o consentId for vazio, retorna Vazio Se o REGEX do consentId não for ^urn:[a-zA-Z0-9][a-zA-Z0-9\\-]{0,31}:[a-zA-Z0-9()+,\\-.:=@;$_!*''%/?#]+, retorna Invalido tokenId SE Role = CLIENT E endpoint = %/resources/% ENTÃO Se o tokenId for nulo, retorna Nulo Se o tokenId for vazio, retorna Vazio",
-  "paginaId": "1622016022_Recursos+-+Regras+de+Valida+o",
-  "title": "Recursos - Regras de Validação - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1622016022/Recursos+-+Regras+de+Valida+o"
-}

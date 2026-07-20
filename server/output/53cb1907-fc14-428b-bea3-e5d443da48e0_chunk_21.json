@@ -1,0 +1,6 @@
+{
+  "texto": "3.5 SLAs do Service Desk O Service Desk deve observar o seguinte nível mínimo de serviço: Disponibilidade: I - 24 horas por dia, 7 dias por semana; II - 95% a cada 24 horas; e III - 99,5% a cada 3 meses. Desempenho das APIs: Tempo de resposta de percentil 95 em, no máximo, 1500ms. 4. Plataforma de Resolução de Disputas A plataforma de resolução de disputas é ambiente que integra o mecanismo para resolução de disputas de que trata o art. 44, inciso IV, da Resolução Conjunta nº 1, de 2020. Complementarmente ao disposto neste manual, a plataforma de resolução de disputas deve ser desenvolvida de acordo com os padrões técnicos e outras questões operacionais definidas em documentos elaborados pela Estrutura Responsável pela Governança do Open Finance . 4.1 SLAs da Plataforma de Resolução de Disputas A Plataforma de Resolução de Disputas deverá observar o seguinte nível mínimo de serviço: Disponibilidade: I - 24 horas por dia, 7 dias por semana; II - 95% a cada 24 horas; e III - 99,5% a cada 3 meses. 5.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=359"
+}

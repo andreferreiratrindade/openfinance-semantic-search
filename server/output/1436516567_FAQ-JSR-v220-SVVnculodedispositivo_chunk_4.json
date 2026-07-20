@@ -1,0 +1,6 @@
+{
+  "texto": "Para o endpoint /consents/{consentId}/authorise, deve rejeitar a solicitação com o código de erro ORIGEM_FIDO_INVALIDA. Para o endpoint /recurring-consents/{recurringConsentId}/authorise, deve rejeitar a solicitação com o código de erro ORIGEM_FIDO_INVALIDA. Fluxo Operação Durante a coleta dos sinais de riscos é possível retornar algum erro síncrono no POST /enrollment/{id}/risk-signals? Sim, é possível! Em linhas gerais, recomenda-se que o processamento de sinais de riscos ocorra de forma assíncrona, favorecendo o cumprimento dos requisitos não funcionais de desempenho dos endpoints de recursos. Fluxo Sinais de riscos A detentora de contas pode negar algum pagamento caso não tenha recebido todos ou um dos Sinais de risco opcionais? Sim, o apetite a risco fica a cargo da instituição detentora, caso entenda que as informações não são o suficiente para viabilizar o pagamento. Fluxo Sinais de riscos Quais certificações são necessárias para a detentora participante da Jornada Sem redirecionamento?",
+  "paginaId": "1436516567_FAQ+-+JSR+-+v2.2.0+-+SV+V+nculo+de+dispositivo",
+  "title": "FAQ - JSR - v2.2.0 - [SV] Vínculo de dispositivo - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1436516567/FAQ+-+JSR+-+v2.2.0+-+SV+V+nculo+de+dispositivo"
+}

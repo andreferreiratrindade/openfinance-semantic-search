@@ -1,0 +1,6 @@
+{
+  "texto": "O status desse reporte será SINGLE . { “role”: “CLIENT”, \"timestamp\": \"2022-08-31T17:43:13.622Z\", \"fapiInteractionId\": \"cd9a2e6b-0c33-403b-a8dd-544e95c63cd8\", \"endpoint\": \"/open-banking/unarranged-accounts-overdraft/v1/contracts/{contractId}/scheduled-instalments\", “additionalInfo”: { “consentId”: “uri:banrisul:6096c7f6-53a0-4c53-bc95-9c8d48b9a6cf“, “personType”: “PF“ } \"statusCode\": 408, \"httpMethod\": \"GET\", \"clientOrgId\": \"2a01e202-e8f0-5f5a-9651-ebc257371e6e\", \"serverOrgId\": \"062c5edb-4e83-5002-9981-e2a96c5ad41e\", \"processTimespan\": 120, \"clientSSId\": \"clientSSId\", \"endpointUriPrefix\": \"https://openbanking.instituicao.com.br/namespace\" } Cenário 4: DISCARDED Gerencianet envia um reporte sem o campo httpMethod, que é um campo obrigatório. O status do reporte será registrado como DISCARDED, e o status retorno da chamada será 400.",
+  "paginaId": "37945515_Manual+de+Integra+o",
+  "title": "Manual de Integração - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/37945515/Manual+de+Integra+o"
+}

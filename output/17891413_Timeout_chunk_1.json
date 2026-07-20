@@ -1,6 +1,0 @@
-{
-  "texto": "Definição do limite do tempo de espera (timeout) do servidor (server) pelo cliente (client) em 15 segundos. Definição do erro HTTP Status Code 504 (Gateway Timeout) como resposta do atingimento de timeout pelo servidor.",
-  "paginaId": "17891413_Timeout",
-  "title": "Timeout - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17891413/Timeout"
-}

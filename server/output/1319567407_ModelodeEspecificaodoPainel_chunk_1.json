@@ -1,0 +1,6 @@
+{
+  "texto": "# Modelo de Especificação do Painel ## 1. Visão geral do Painel ### Informações do Painel **Nome do Painel**: [Nome do Painel] **ID/Código do Painel**: [Identificador Único] **Versão**: [Número da Versão] **Criado por**: [Nome do Autor] **Data de Criação**: [YYYY-MM-DD] **Última atualização**: [YYY-MM-DD] **Status**: [Rascunho | Em Revisão | Aprovado | Produção] ### Propósito e Objetivos **Propósito do Negócio**: [Descreva o problema de negócios que este painel resolve] **Perguntas-chave respondidas**: [Pergunta 1] [Pergunta 2] [Pergunta 3] **Público-alvo**: [Quem usará este painel - por exemplo, Executivos, Equipe de Vendas, Operações] **Frequência de atualização**: [Tempo real | Horário | Daily | Semanal | Mensal] --- ## 2.",
+  "paginaId": "1319567407_Modelo+de+Especifica+o+do+Painel",
+  "title": "Modelo de Especificação do Painel - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1319567407/Modelo+de+Especifica+o+do+Painel"
+}

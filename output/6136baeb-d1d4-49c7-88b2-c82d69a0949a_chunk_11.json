@@ -1,6 +1,0 @@
-{
-  "texto": "Os dados retornados por elas não precisam ser dados reais e nem volumosos, pois o objetivo da disponibilização é dar ao Banco Central do Brasil, aos implementadores e aos consumidores das APIs mais um recurso para dirimir eventuais dúvidas acerca de suas especificações e implementações. É recomendado que o código inicial de implementações das APIs mencionado anteriormente seja complementado de forma a constituir-se nas implementações de exemplo. As informações disponibilizadas nos dicionários de dados devem ser consistentes com as especificações OpenAPI associadas. Todos os endpoints das APIs implementados devem ser previamente registrados no diretório de participantes. Todos os endpoints registrados que retornem listas, caso os parâmetros sejam válidos, devem retornar a lista associada, mesmo que uma seja lista vazia. Não é considerado um retorno válido o erro 404, neste cenário, quando não houver a informação associada.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=130"
-}

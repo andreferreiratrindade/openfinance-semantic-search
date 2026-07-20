@@ -1,0 +1,6 @@
+{
+  "texto": "Dicionário de Dados O dicionário de dados das APIs os dados de obrigatoriedade regulatória e técnica são refletidos respectivamente nas colunas “ Mandatoriedade Regulatória ” e “ Mandatoriedade Técnica ”. Xpath Nome Tipo de dado Mandatoriedade Regulatória Mandatoriedade Técnica Xpath Nome Tipo de dado Mandatoriedade Regulatória Mandatoriedade Técnica /data data Lista Obrigatório Obrigatório /data/accountId accountId Texto Obrigatório Obrigatório /data/type type Texto Obrigatório Obrigatório /data/compeCode compeCode Texto Obrigatório Obrigatório /data/branchCode branchCode Texto Obrigatório Obrigatório /data/number number Texto Obrigatório Obrigatório /data/address address Objeto Opcional Opcional Exemplo de documentação da mandatoriedade no dicionário de dados. Dados meramente ilustrativos.",
+  "paginaId": "225280001_Obrigatoriedade+de+Campos",
+  "title": "Obrigatoriedade de Campos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/225280001/Obrigatoriedade+de+Campos"
+}

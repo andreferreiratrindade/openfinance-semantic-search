@@ -1,6 +1,0 @@
-{
-    "texto": "1\nContexto sobre a API\n1.1\nConta de Pagamento Pós-paga (Credit Card)\n2\nPrefixo\n3\nLista de Endpoints\n4\nVisão de alto nível\nContexto sobre a API\nA API Cartões de Crédito foi derivada da API Produtos e Serviços, esta especificação inclui todos os artefatos relevantes para a Especificação de API sobre Cartões de Crédito para pessoa natural e pessoa jurídica de dados abertos.\nConta de Pagamento Pós-paga (Credit Card)\nReferente a cartão de crédito. Instrumento de pagamento que possibilita a aquisição de produtos e serviços com liquidação futura, de acordo com requisitos predeterminados, tais como limite de crédito e validade. O pagamento do valor correspondente ao produto ou ao serviço adquirido será efetuado ao emissor do cartão de crédito em data previamente acordada.\nPrefixo\n- Prefixo dos endpoints: /opendata-creditcards/v1\nLista de Endpoints\n- Contas pessoa Jurídica: GET /business-credit-cards\n- Contas Pessoa Natural: GET /personal-credit-cards\nVisão de alto nível\nOpen",
-    "paginaId": "1719173325_Informa+es+Gerais+-+DA+Cart+o+de+Cr+dito+-+v1.1.0",
-    "title": "Informações Gerais - [DA]  Cartão de Crédito - v1.1.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1719173325/Informa+es+Gerais+-+DA+Cart+o+de+Cr+dito+-+v1.1.0"
-}

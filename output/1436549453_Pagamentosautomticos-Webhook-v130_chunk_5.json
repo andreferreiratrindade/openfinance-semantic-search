@@ -1,6 +1,0 @@
-{
-  "texto": "As iniciadoras e/ou detentoras poderão criar mecanismos para tratar os cenários apresentados. Por exemplo, para o Cenário 1, a iniciadora pode optar por guardar a notificação por alguns segundos na espera da finalização do POST ou pode descartar a mensagem de imediato e utilizar o polling . Diagramas de Sequência No diagrama de exemplo abaixo, é possível identificar como será o comportamento da Iniciadora de pagamentos no processo de consulta de um pagamento . A detentora de contas envia uma notificação à instituição iniciadora de pagamento informando que ocorreu uma mudança significativa da máquina de estados da API e que a mesma deverá consultar o pagamento para obter mais informações.",
-  "paginaId": "1436549453_Pagamentos+autom+ticos+-+Webhook+-+v1.3.0",
-  "title": "Pagamentos automáticos - Webhook - v1.3.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1436549453/Pagamentos+autom+ticos+-+Webhook+-+v1.3.0"
-}

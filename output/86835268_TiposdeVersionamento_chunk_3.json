@@ -1,6 +1,0 @@
-{
-  "texto": "1 .0, v1. 2 .0 Patch : Contempla alterações de documentação para promover esclarecimentos no texto ou correções feitas no Swagger que não impactam em nada na funcionalidade das APIs; Permite alterações sem quebra de contrato no caso de correções de bugs ou cenários específicos que não demandem implementação por todos os participantes do ecossistema; Exemplos: v1.1. 1 , v1.1. 2 Antes da publicação ( release ) da versão estável ( stable ) possuímos estágios em que a versão sendo construída é considerada instável ( unstable ). No estágio unstable , a versão é considerada não finalizada e, por isso, deve ser submetida a testes e avaliações por parte do ecossistema até que alcance a maturidade necessária para ser considerada stable . No Open Finance Brasil, vamos trabalhar com duas extensões unstable que dividem o estágio em duas partes: Beta: estágio suficientemente evoluído para avaliações e testes externos, ainda pode possuir mudanças significativas.",
-  "paginaId": "86835268_Tipos+de+Versionamento",
-  "title": "Tipos de Versionamento - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/86835268/Tipos+de+Versionamento"
-}

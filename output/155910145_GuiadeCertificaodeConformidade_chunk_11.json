@@ -1,6 +1,0 @@
-{
-  "texto": "A cobrança da certificação é realizada por submissão, portanto, no momento da nova submissão, recomendamos que seja submetido o pedido de FAPI (private key, MTLS, PAR) e DCR juntos. Exceção para certificações FAPI e DCR emitidas até 27/06/2022 Para as certificações FAPI e DCR emitidas até 27/06/2022, em caráter de exceção, será considerado o prazo de expiração mais longo dentre as duas. Exemplo: Instituição com Certificações realizadas: § FAPI em 15/06/2021, § DCR em 30/11/2021 e § RP em 15/12/2021 Prazo para obter nova certificação: § FAPI e DCR até 30/11/2022 § RP até 15/12/2022. O prazo de expiração no Diretório (campo “expiration date of certification”) não será atualizado conforme a exceção, mas pedimos que as instituições considerem as políticas aqui informadas. Pagamento via Chicago Advisory Foi definido que o pagamento de certificações OIDF poderá ser intermediado, em caso de exceção, pela Chicago.",
-  "paginaId": "155910145_Guia+de+Certifica+o+de+Conformidade",
-  "title": "Guia de Certificação de Conformidade - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/155910145/Guia+de+Certifica+o+de+Conformidade"
-}

@@ -1,0 +1,6 @@
+{
+  "texto": "v 1.01 Objetivo desta página Demonstrar funcionalmente as regras de descartes de reportes realizados na PCM. Estas regras são utilizadas para aberturas de tickets e monitoramento através do dashboard de Monitoramento Operacional. Dica: não existe a opção de exportar as tabelas para Excel, porém pode-se selecionar o conteúdo da página com CTRL+A, copiar e colar no Excel. Opendata API Campo Regra Campo Regra endpoint Informação não enviada Invalid type: endpoint: Required: campo endpoint ausente Conteúdo inválido Missing property, endpoint can't be empty: campo endpoint não pode estar vazio Unlisted endpoint: endpoint: endpoint must be listed: endpoint enviado não é válido (consultar a tabela de endpoints aceitos pela PCM) httpMethod Informação não enviada Invalid type: httpMethod: Required: campo httpMethod ausente Conteúdo inválido Invalid field value, httpMethod: httpMethod must be in enum: conteúdo do campo httpMethod inválido Invalid value: httpMethod: Invalid enum value.",
+  "paginaId": "1212514305_Regras+de+Descarte+-+DA",
+  "title": "Regras de Descarte - DA - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212514305/Regras+de+Descarte+-+DA"
+}

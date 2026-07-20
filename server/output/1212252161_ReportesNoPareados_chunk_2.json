@@ -1,0 +1,6 @@
+{
+  "texto": "É calculado pela fórmula abaixo: Open De acordo com a Normativa 575 do Banco Central, o percentual esperado de pareamento é de no mínimo 95% desde 01/07/2025. Identificação do não-paraemento O processo de identificação do não-pareamento por organização é apurado da seguinte maneira: Open Neste exemplo, olhando para a organização A, vemos que foram enviados contra ela 5 reportes (2,3,4,5 e 8), sendo que somente 2 (3 e 5) foram enviados pela organização A. Note que, olhando para a organização A como faltante, os reportes 6 e 7 não são considerados, pois são comunicações entre outras organizações. Assim, teríamos um percentual de não pareamento igual a 2 / 5 = 40%, portanto fora do mínimo esperado e passível de recebimento de ticket. Arquivo de evidências Todo ticket aberto possui anexado um arquivo de evidências, onde são listados até 5 fapiInteractionId para cada caso encontrado por dia, para facilitar a investigação das causas pelas organizações.",
+  "paginaId": "1212252161_Reportes+N+o+Pareados",
+  "title": "Reportes Não Pareados - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212252161/Reportes+N+o+Pareados"
+}

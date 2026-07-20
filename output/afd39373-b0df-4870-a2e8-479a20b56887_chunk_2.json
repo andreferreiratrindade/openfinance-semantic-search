@@ -1,6 +1,0 @@
-{
-  "texto": "Art. 2º Para envio e consulta de informações e movimentação de recursos acerca do direcionamento de depósitos à vista captados pelas instituições financeiras para operações de microcrédito produtivo orientado de que trata a Resolução BCB nº 53, de 16 de dezembro de 2020, as instituições devem observar os seguintes procedimentos: I - instituições participantes do Sistema de Transferência de Reservas – STR com acesso principal pela Rede do Sistema Financeiro Nacional – RSFN: utilizar a RSFN; e II - demais instituições: utilizar o aplicativo STR-Web. Art. 3º Para a prestação das informações de que trata o art. 2º relativas a datas de referência a partir de 1º de janeiro de 2025, deve ser utilizada a mensagem “RCO0002 - IF informa Demonstrativo”, do Grupo de Serviços RCO, constante do Catálogo de Serviços do Sistema Financeiro Nacional, preenchendo o campo “CodRCO” com o valor “11 - Direcionamento Microfinanças”, observando os seguintes códigos do Dicionário de Domínios: I - CodItem 1102 - depósitos à vista que não devem ser computados no saldo dos depósitos sujeitos ao direcionamento, conforme art.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=558"
-}

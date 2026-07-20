@@ -1,6 +1,0 @@
-{
-  "texto": "Investigação para solução: verifique o tipo do dado de acordo com a documentação da API (swagger). Additional property not allowed Quando ocorre: quando uma propriedade adicional que não está na especificação da API é enviada. O detalhamento informa o campo adicional. Investigação para solução: remova os campos que não estejam definidos na API. Um erro comum é a escrita errada de um campo existente. Report is too old Quando ocorre: quando uma propriedade timestamp tem mais de 7 dias. Investigação para solução: altere a propriedade timestamp para que o campo tenha data inferior a 7 dias. OrganisationId doesn't exist on Directory. Quando ocorre: quando a propriedade organizationId não existe no diretório da open banking. Investigação para solução: altere a propriedade organizationId com um valor existente no diretório.",
-  "paginaId": "46170119_Troubleshooting+-+PCM",
-  "title": "Troubleshooting - PCM - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/46170119/Troubleshooting+-+PCM"
-}

@@ -1,0 +1,6 @@
+{
+  "texto": "3.1.2 O fluxo e o conteúdo das etapas da jornada simples de compartilhamento de serviço de iniciação de transação de pagamento, abrangendo, no mínimo: I - A identificação do cliente Nessa etapa, a instituição iniciadora de transação de pagamento deve identificar o cliente, conforme exigido pela regulamentação vigente. II - A seleção da instituição detentora de conta Nessa etapa, o cliente deve poder selecionar a instituição na qual detém a conta que será utilizada para o pagamento. Deve ser disponibilizado mecanismo de busca que propicie uma seleção ágil e clara da instituição desejada. Devem estar disponíveis para seleção todas as instituições participantes para fins de compartilhamento do serviço de iniciação de transação pagamento no Open Banking devidamente registradas como instituições detentoras de conta no Diretório de Participantes mantido pela Estrutura Responsável pela Governança do Open Banking . III - As informações sobre a transação de pagamento Nessa etapa, devem ser solicitadas ou apresentadas ao cliente as informações sobre o pagamento que será realizado.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=132"
+}

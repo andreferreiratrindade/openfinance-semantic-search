@@ -1,0 +1,6 @@
+{
+  "texto": "Alteração Pagamentos Automáticos - errorCodes Correção do campo, estava duplicado. Foi dividido em regras para statusCode 422 e statusCode 4xx / 5xx exceto 422, a exemplo de Iniciação de Pagamentos Linhas duplicadas para errorCodes Linhas separadas em 422 e demais erros, a exemplo da Iniciação de Pagamentos Inclusão Pagamentos Automáticos - interval Incluído domínio do campo Sem domínio delcarado SEMANAL, MENSAL, TRIMESTRAL, SEMESTRAL, ANUAL Inclusão Pagamentos Automáticos - isRetryAccepted Incluído domínio do campo Sem domínio delcarado TRUE, FALSE Alteração Pagamentos Automáticos - originalRecurringPaymentId Complemento da regra de preenchimento Preencher com o valor do campo \".data.originalRecurringPaymentId\" Deve ser preenchido quando paymentType for AUTOMATIC Preencher com o valor do campo \".data.originalRecurringPaymentId\" Para os endpoints /open-banking/automatic-payments/v x /pix/recurring-payments e /open-banking/automatic-payments/v x /pix/recurring-payments/{recurringPaymentId}, métodos GET e PATCH, a informação só deve ser enviada se retornado no response da API.",
+  "paginaId": "1118306305_Release+notes",
+  "title": "Release notes - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1118306305/Release+notes"
+}

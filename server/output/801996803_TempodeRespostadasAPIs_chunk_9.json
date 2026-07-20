@@ -1,0 +1,6 @@
+{
+  "texto": "Open Campos Descrição x-fapi-interaction-id identificador único do reporte Server servidor reportado na requisição Client cliente reportado na requisição Método HTTP método da requisição Endpoint endpoint da requisição Requisição (ms) tempo de resposta da requisição Importante: serão exibidos no máximo cinco evidências de reporte. Dados e Fontes Para o cálculo desta métrica, a fonte informacional é a Plataforma de Coleta de Métricas (PCM), que consolida os dados a partir dos reportes enviados pelas instituições participantes. Todos os métodos e recursos dos endpoints serão avaliados. Esses dados são consolidados na Plataforma Analítica de Dados (PAD), um repositório centralizado que serve como base para a análise e avaliação da métrica. Limitações e Considerações Atualmente, não há visibilidade ou conhecimento de limitações ou considerações adicionais para esta métrica. A análise será continuamente revisada e aprimorada conforme novos dados e informações se tornem disponíveis. Responsável pela Aprovação GT Arquitetura",
+  "paginaId": "801996803_Tempo+de+Resposta+das+APIs",
+  "title": "Tempo de Resposta das APIs - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/801996803/Tempo+de+Resposta+das+APIs"
+}

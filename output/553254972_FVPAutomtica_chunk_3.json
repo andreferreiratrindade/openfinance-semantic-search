@@ -1,6 +1,0 @@
-{
-  "texto": "Ocasionalmente, a equipe do motor de conformidade pode adicionar notas aos tickets junto com os logs de execução, especificando comportamentos ou ações esperadas da instituição. Open Página de Resultados Após cada execução da FVP automática, são geradas páginas de resultados de testes com os logs das execuções e detalhamentos dos pontos de falha, semelhante aos resultados do motor de conformidade. A URL base da plataforma é https://results.sandbox.directory.openbankingbrasil.org.br/TestID/index.html , onde TestID é uma sequência aleatória de caracteres que será fornecida à instituição após a abertura de um ticket no Service Desk. Para acessar os resultados, é necessário autenticar-se com credenciais do Diretório Open Finance e estar vinculado a uma organização ativa. Também não há possibilidade de indexar os resultados de testes existentes, então a instituição deve salvar o URI do teste para futuras consultas. Clients de Teste É responsabilidade da instituição realizar a checagem diária e a exclusão de eventuais clients remanescentes de execuções anteriores das FVPs.",
-  "paginaId": "553254972_FVP+Autom+tica",
-  "title": "FVP Automática - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/553254972/FVP+Autom+tica"
-}

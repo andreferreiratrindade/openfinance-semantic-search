@@ -1,6 +1,0 @@
-{
-    "texto": "As jornadas de Pagamento via Open Finance possibilitam que os usuários autorizem pagamentos imediatos, agendados e automáticos com Pix em uma Instituição Iniciadora de Transação de Pagamento (ITP) utilizando o saldo da sua Instituição Detentora de Conta (ID).\nEste capítulo apresenta os elementos de experiência do usuário necessários para a implementação dos serviços de pagamento com e sem redirecionamento (JSR) e variações de jornada no Open Finance com a definição dos requisitos e recomendações para as instituições participantes.",
-    "paginaId": "1828063016_v.22.00.01+Pagamentos",
-    "title": "v.22.00.01 Pagamentos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828063016/v.22.00.01+Pagamentos"
-}

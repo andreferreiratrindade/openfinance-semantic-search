@@ -1,0 +1,6 @@
+{
+  "texto": "Como mitigarmos esse risco? Do lado da iniciadora do pagamento: É necessário que seja enviado o POST/PATCH com um GUID de Idempotência. Caso o mesmo POST/PATCH seja reenviado por acidente ou precise ser reenviado, por qualquer motivo que seja, basta reenviar o POST/PATCH com o mesmo GUID de Idempotência. Do lado da detentora da conta: É necessário validar o GUID de Idempotência recebido. Caso tenha recebido o mesmo GUID de Idempotência, a nova mensagem de POST/PATCH não deve alterar o recurso e a resposta deve ser a mesma oferecida para a primeira requisição recebida. Importante reforçar que cada nova operação com POST/PATCH deverá ter um novo GUID de Idempotência. Conjunto inicial de regras propostas na aplicação da idempotência: A iniciadora/TPP não deve alterar o corpo da solicitação ao usar a mesma chave de idempotência.",
+  "paginaId": "728301590_SV+Idempot+ncia",
+  "title": "[SV] Idempotência - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/728301590/SV+Idempot+ncia"
+}

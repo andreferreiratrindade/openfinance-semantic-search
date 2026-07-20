@@ -1,0 +1,6 @@
+{
+    "texto": "Este fluxo representa o processo de validação executado na aplicação.\nOpen\nPassos\nPassos\nParticipante\nDescrição\nPassos\nParticipante\nDescrição\n0.\nVALIDATOR\nO componente de validação carrega regras de validação com base em arquivos JSON de configuração\n1., 2. e 3.\nMESSAGE_PROCESS_WORKER\nO componente Message Process Worker checa a Fila e em seguida solicita e recebe da Fila a lista de tarefas enfileiradas a serem processadas\n4.\nMESSAGE_PROCESS_WORKER\nPara cada uma das mensagens encontradas, o Message Process Worker envia a mensagem para o componente Validação\n5.\nVALIDATOR\nO componente valida se o Endpoint está na lista de endpoints válidos\n6.\nVALIDATOR\nO componente desserializa as informações\n7.\nVALIDATOR\nO componente valida o objeto usando um esquema JSON carregado anteriormente\n8.\nVALIDATOR\nRetorna a resposta de validação ao Worker\n9.\nMESSAGE_PROCESS_WORKER\nAs informações do resultado são salvas na memória",
+    "paginaId": "362578818_MDQ+-+Fluxo+de+Valida+o",
+    "title": "MDQ - Fluxo de Validação - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/362578818/MDQ+-+Fluxo+de+Valida+o"
+}

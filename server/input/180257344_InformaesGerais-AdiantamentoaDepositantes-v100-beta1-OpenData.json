@@ -1,0 +1,6 @@
+{
+    "texto": "1\nVisão Geral\n2\nObtém a lista de adiantamento de depositante\n: (GET /opendata-unarranged/v1/personal-unarranged-account-overdraft)\n2.1\nDicionário de dados\n3\nObtém a lista de adiantamento de depositante\n: (GET /opendata-unarranged/v1/business-unarranged-account-overdraft)\n3.1\nDicionário de dados\nVisão Geral\nAs API's descritas neste documento são referentes as APIs da fase OpenData do Open Finance Brasil.\nObtém a lista de adiantamento de depositante\n: (GET /opendata-unarranged/v1/personal-unarranged-account-overdraft)\nObtém a lista de adiantamento de depositante de Pessoa Natural.\nDicionário de dados\nFazer download do dicionário de dados\nObtém a lista de adiantamento de depositante\n: (GET /opendata-unarranged/v1/business-unarranged-account-overdraft)\nObtém a lista de adiantamento de depositante de Pessoa Jurídica.\nDicionário de dados\nFazer download do dicionário de dados",
+    "paginaId": "180257344_Informa+es+Gerais+-+Adiantamento+a+Depositantes+-+v1.0.0-beta.1+-+OpenData",
+    "title": "Informações Gerais - Adiantamento a Depositantes - v1.0.0-beta.1 - OpenData - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/180257344/Informa+es+Gerais+-+Adiantamento+a+Depositantes+-+v1.0.0-beta.1+-+OpenData"
+}

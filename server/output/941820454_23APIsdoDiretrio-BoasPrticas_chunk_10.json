@@ -1,0 +1,6 @@
+{
+  "texto": "Para acessar essas APIs protegidas, o participante deve gerar um token de acesso com o escopo directory:software , chamando o endpoint de token usando o tipo de grant_type client_credentials . As instruções para obter um token de acesso podem ser encontradas em https://docs.connect.raidiam.io/client-credentials-flow-obtain-access-token#YzDfh Autenticação e Acesso O fluxo de autenticação para as APIs restritas começa com o endpoint /.well-known/openid-configuration, que fornece os metadados necessários, incluindo URLs para obtenção do token de acesso (/token) e autorização (/auth). Após obter o token de acesso, os participantes podem usá-lo para acessar de forma segura as APIs restritas. Endpoints de Token : · Sandbox: https://matls-auth.sandbox.directory.openfinance.ae/token · Produção: https://matls-auth.directory.openfinance.ae/token Após obter o token de acesso, ele pode ser usado para acessar as operações GET de todas as APIs do Diretório que não retornam dados pessoais.",
+  "paginaId": "941820454_23.+APIs+do+Diret+rio+-+Boas+Pr+ticas",
+  "title": "23. APIs do Diretório - Boas Práticas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941820454/23.+APIs+do+Diret+rio+-+Boas+Pr+ticas"
+}

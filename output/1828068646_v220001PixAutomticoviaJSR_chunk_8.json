@@ -1,6 +1,0 @@
-{
-  "texto": "Identificador da autorização: exibir o código da autorização (número final do consentId , excluindo o prefixo urn:instituicao: ). Necessidade de saldo e limites disponíveis: informar ao usuário que a transação estará sujeita à disponibilidade de saldo e limites transacionais da conta de débito no momento da efetivação do pagamento. Alteração do valor máximo: informar o usuário, quando aplicável, que o valor máximo pode ser alterado. Uso do limite de crédito: informar que o uso do limite de crédito, quando disponível, em caso de transações com valor superior ao saldo disponível é habilitado por padrão e que pode ser desabilitado na Detentora. Pagamento inicial avulso: quando aplicável, exibir as informações do pagamento inicial avulso com todas as informações mínimas aplicáveis à efetivação de um pagamento imediato com Pix, conforme as regras do arranjo. Open Efetivação da autorização de pagamento com Pix Automático",
-  "paginaId": "1828068646_v.22.00.01+Pix+Autom+tico+via+JSR",
-  "title": "v.22.00.01 Pix Automático via JSR - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828068646/v.22.00.01+Pix+Autom+tico+via+JSR"
-}

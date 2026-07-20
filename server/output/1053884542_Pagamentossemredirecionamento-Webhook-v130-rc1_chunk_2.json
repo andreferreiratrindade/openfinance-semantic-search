@@ -1,0 +1,6 @@
+{
+  "texto": "STATUS_CHANGED: Indica que o estado do consentimento, do pagamento ou do vínculo de dispositivo foi alterado. Notificação sobre a vinculação da conta Os eventos que acionarão notificações na máquina de estados do vínculo de conta da jornada sem redirecionamento serão os status REJECTED e REVOKED; Open No diagrama de exemplo abaixo, é possível identificar como será o comportamento para a consulta do vínculo da conta entre a iniciadora de pagamentos e a detentora de contas; Open",
+  "paginaId": "1053884542_Pagamentos+sem+redirecionamento+-+Webhook+-+v1.3.0-rc.1",
+  "title": "Pagamentos sem redirecionamento - Webhook - v1.3.0-rc.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1053884542/Pagamentos+sem+redirecionamento+-+Webhook+-+v1.3.0-rc.1"
+}

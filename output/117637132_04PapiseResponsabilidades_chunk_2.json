@@ -1,6 +1,0 @@
-{
-  "texto": "A participação de outras instituições e times de resposta a incidentes neste compartilhamento deverá ser aprovada pelo Conselho Deliberativo. 4.3 Da estrutura de governança do Open Finance Brasil 4.3.1 Escritório de Segurança Monitorar os eventos e responder a incidentes de segurança relacionados com o ecossistema, através da implementação e gestão de um Security Operations Center (SOC), conforme descrito na política de segurança cibernética e plano de prevenção de resposta a incidentes. Providenciar a manutenção da plataforma MISP. Participar do compartilhamento de eventos de segurança, publicando e consumindo os indicadores de comprometimento. Controlar os acessos à plataforma MISP, solicitados por meio de chamados enviados ao Service Desk. Produzir métricas sobre a utilização da plataforma pelos participantes. 4.3.2 Área de Tecnologia do Open Finance Brasil Responsável pela operação da infraestrutura em que o ambiente do MISP estiver hospedado. Garantir a atualização do sistema operacional e do banco de dados; Garantir a execução dos backups.",
-  "paginaId": "117637132_04.+Pap+is+e+Responsabilidades",
-  "title": "04. Papéis e Responsabilidades - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/117637132/04.+Pap+is+e+Responsabilidades"
-}

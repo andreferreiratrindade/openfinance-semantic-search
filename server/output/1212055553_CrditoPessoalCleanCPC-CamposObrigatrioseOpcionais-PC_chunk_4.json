@@ -1,0 +1,6 @@
+{
+  "texto": "Este valor é de livre provimento pelo reportador. Não string CLIENT Todos POST GET PATCH /open-banking/credit-portability/v x /portabilities /open-banking/credit-portability/v x /portabilities/{portabilityId} /open-banking/credit-portability/v x /portabilities/{portabilityId}/account-data /open-banking/credit-portability/v x /portabilities/{portabilityId}/cancel /open-banking/credit-portability/v x /portabilities/{portabilityId}/payment /open-banking/credit-portability/v x /credit-operations/{contractId}/portability-eligibility v1 100 ^[- /:_.',0-9a-zA-Z]{0,100}$ uGQHwNupARo7I9E2PLJZph18a0M9y7DcUe7ITt3DqUOJd9NVjnskxf2 creationDateTime Data e hora em que a Proponente registrou a presente proposta (chamada ao POST /portabilities). Uma string com data e hora conforme especificação ISO8601, sempre com a utilização de timezone UTC-0 (UTC time format).",
+  "paginaId": "1212055553_Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC",
+  "title": "Crédito Pessoal Clean (CPC) - Campos Obrigatórios e Opcionais - PC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212055553/Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC"
+}

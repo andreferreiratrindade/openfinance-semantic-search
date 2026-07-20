@@ -1,0 +1,6 @@
+{
+  "texto": "III - 4.4.1.30.00-8 RECEBIMENTOS REMETIDOS, todos com atributos UBERLMYZ: a) 4.4.1.30.40-0 Liquidação Bilateral, que se destina ao registro dos recebimentos de valor igual ou superior ao valor de referência para liquidação bilateral de bloquetos de cobrança (VLB-Cobrança) remetidos a participantes de Liquidação Bilateral; e b) 4.4.1.30.90-5 Outros Sistemas de Liquidação; e IV - 4.4.1.50.00-2 RECEBIMENTOS REMETIDOS A REGULARIZAR, todos com atributos UBERLMYZ: a) 4.4.1.50.40-4 Liquidação Bilateral, que se destina ao registro dos recebimentos, de valor igual ou superior ao valor de referência para liquidação bilateral de bloquetos de cobrança (VLB-Cobrança), remetidos em devolução por participantes de Liquidação Bilateral; e b) 4.4.1.50.90-9 Outros Sistemas de Liquidação, que se destina ao registro dos recebimentos remetidos em devolução por participantes de outros sistemas de liquidação, para os quais não existam subtítulos específicos no Cosif. § 2º Nas agências centralizadas, o registro dos recebimentos remetidos à centralizadora deve ser feito em 4.5.2.40.00-7 DEPENDÊNCIAS NO PAÍS. Art. 26.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=271"
+}

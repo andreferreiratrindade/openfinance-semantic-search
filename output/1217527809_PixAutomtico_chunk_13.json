@@ -1,6 +1,0 @@
-{
-  "texto": "2 Usuário Pagador Ação Em ambiente do Recebedor: Pagador seleciona Pix Automático via Open Finance como forma de pagamento pelo serviço. 3 Usuário Pagador Ação Em ambiente do Recebedor: Pagador informa seus dados de pagamento e, opcionalmente, configura parâmetros de limite para a transação. 4 Usuário Pagador Comunicação Em ambiente do Recebedor: Dados são repassados ao Iniciador. 5 Iniciador Comunicação Recebe os dados enviados do Recebedor e inicia o processo de criação do consentimento. 6 Iniciador Ação Valida as informações recebidas do Recebedor. 7 Iniciador Ação Iniciador prepara o payload de envio do consentimento de longa duração atentando-se ao produto para o qual este consentimento está sendo criado. 8 Iniciador Comunicação Envia solicitação de criação de consentimento de longa duração para o Detentor ( POST /consents). Deve possuir o objeto “/data/recurringConfiguration/automatic/firstPayment” preenchido. Antes do envio o iniciador deve realizar a solicitação de token de acesso. “Grant-type” e “scopes” podem ser encontrado na especificação da API.",
-  "paginaId": "1217527809_Pix+Autom+tico",
-  "title": "Pix Automático - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1217527809/Pix+Autom+tico"
-}

@@ -1,6 +1,0 @@
-{
-  "texto": "Deve ser informado em UTC-0. Sim string <date-time> SERVER 28 2025-08-18T00:00:00Z paymentId Código único para identificar a transação de pagamento Sim string SERVER ^[a-zA-Z0-9][a-zA-Z0-9\\-]{0,99}$ d78fc4e5-37ca-4da3-adf2-9b082bf92280 paymentStatus Status de agendamento ou final do pagamento Sim enum<string> SERVER ACSC, RJCT, CANC, SCHD ACSC paymentType Tipo de pagamento realizado Sim enum<string> SERVER AUTOMATIC, IMMEDIATE, RECURRENT, SCHEDULED, SWEEPING RECURRENT statusReasonCode Razão do status informado. Sim string Campo atrelado ao status de pagamento. Quando o status for RJCT (Rejected), o valor deve ser preenchido com o motivo da rejeição (valores previstos em rejectionReason.Code). Quando o status for CANC (Cancelled), o valor deve ser preenchido com o motivo do cancelamento (valores previstos em cancellationReason.Code).",
-  "paginaId": "1211858945_Campos+Obrigat+rios+e+Opcionais+-+Estados+de+Pagamento+-+SV",
-  "title": "Campos Obrigatórios e Opcionais - Estados de Pagamento - SV - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1211858945/Campos+Obrigat+rios+e+Opcionais+-+Estados+de+Pagamento+-+SV"
-}

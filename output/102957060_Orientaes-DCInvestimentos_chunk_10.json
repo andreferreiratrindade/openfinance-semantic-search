@@ -1,6 +1,0 @@
-{
-  "texto": "Investimentos vencidos, resgatados ou que tiveram sua titularidade ou custódia transferida em situações nas quais o cliente não mais possua acesso aos canais de atendimento eletrônico da instituição, devem retornar o status UNAVAILABLE. Casos de uso que um cliente final efetue um consentimento para investimentos para o qual um dos recursos (respeitando a RN001) exija a aprovação de múltiplas alçadas (PENDING_AUTHORISATION) e outro recurso esteja disponível para consulta (AVAILABLE), o comportamento esperado e que cada recurso tenha seu status representado de forma independente, disponibilizando imediatamente os recursos já aprovados.",
-  "paginaId": "102957060_Orienta+es+-+DC+Investimentos",
-  "title": "Orientações - [DC] Investimentos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/102957060/Orienta+es+-+DC+Investimentos"
-}

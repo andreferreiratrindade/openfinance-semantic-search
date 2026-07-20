@@ -1,0 +1,6 @@
+{
+  "texto": "De acordo com a MEDIDA PROVISÓRIA No 2.200-2, DE 24 DE AGOSTO DE 2001, a utilização de PKI Privada é autorizada como mecanismo válido para autenticação e assinatura. Para o Open Finance Brasil, a utilização de PKI Privada para emissão de certificados de autenticação (cliente) e assinatura é permitido apenas quando provisionado pela entidade atuando como transmissora de dados, e quando a entidade receptora de dados não participa do Ecossistema de Open Finance Brasil de maneira a possuir cadastro no Serviço de Diretório do Open Finance Brasil e o certificado emitido deve possuir as mesmas características de chaves criptográficas, e atributos conforme especificados pelo Open Finance Brasil.",
+  "paginaId": "17379169_FAQ+Geral",
+  "title": "FAQ Geral - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17379169/FAQ+Geral"
+}

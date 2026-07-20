@@ -1,0 +1,6 @@
+{
+  "texto": "Instituições participantes com desempenho inferior a esse valor serão consideradas em desconformidade. No caso de versões de APIs em que haja período de piloto em produção, o cálculo do índice de qualidade de dados não deve contemplá-las, com vistas a permitir que essas APIs atinjam maior maturidade, devendo, contudo, estarem contempladas no cálculo do referido índice a partir da data de go-live . Durante o período do piloto em produção, os tickets gerados devem respeitar os prazos máximos estabelecidos no Manual de Serviços Prestados pela Estrutura de Governança do Open Finance e, por consequência, serem monitorados de acordo com a subseção 2.3 deste Manual, a fim de que a qualidade de dados seja também aprimorada na fase de piloto em produção. Para fins do processo de monitoramento, o período de apuração referente aos itens de que trata esta subseção é mensal.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=706"
+}

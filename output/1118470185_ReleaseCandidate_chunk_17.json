@@ -1,6 +1,0 @@
-{
-  "texto": "O dado real 123456789 não deve ser enviado no campo endpoint processTimespan: alteração da definição - Tempo em milissegundos inteiros decorrido desde o recebimento do request até o momento imediatamente anterior ao envio do primeiro byte da resposta. Remoção do campo tokenId, pois o mesmo não existe dentro do contexto de Dados Abertos Atualização das versões de API Atendimento: v2 Previdência: v2 Seguros: v2 Títulos de Capitalização: v2 Remoção do grupo Produtos e Serviços, que foi desmembrado em grupos menores Inclusão de novos grupos: Contas Cartão de Crédito Direitos Creditórios Descontados Empréstimos Financiamentos Adiantamento a Depositantes Em andamento Campos opcionais e obrigatórios / obrigatoriedade de additionalInfo Segurança Inclusão de página com os campos obrigatórios e opcionais de reportes de Segurança status: definição e domínio ajustados para conter somente os valores existentes para esta API consentId: complemento da regra de preenchimento - Deve ser preenchido com a mesma string obtida no campo .data.consentId retornado após a chamada inicial na API \"POST /consent”.",
-  "paginaId": "1118470185_Release+Candidate",
-  "title": "Release Candidate - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1118470185/Release+Candidate"
-}

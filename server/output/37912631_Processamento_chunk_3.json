@@ -1,0 +1,6 @@
+{
+  "texto": "Resolução de Divergências Registros com os status UNPAIRED e PAIRED_INCONSISTENT são considerados divergentes e deverão passar pelo processo de resolução. Este processo será oportunamente definido pelos GT responsáveis. Ciclo de vida do reporte O diagrama abaixo ilustra as interações entre os status de um reporte: Open Interação entre as partes de um reporte Um reporte deverá sempre estar em um dos seguinte status: DISCARDED O status DISCARDED indica que o reporte foi enviado pelo participante e será descartado para fins de composição de métricas. Ainda que não utilizado nas métricas, ele será persistido e só será utilizado em relatórios estatísticos, não sendo possível corrigí-lo e nem utilizá-lo em nenhum processo de negócio. Esse status é devolvido para o participante de maneira síncrona no momento da inclusão do reporte. Consulte a Documentação da API - PCM para informações sobre o schema a ser enviado. Transições : N/A (estado terminal) ACCEPTED O status ACCEPTED indica que a validação de formato do reporte não apresentou erros e este será enviado para processamento.",
+  "paginaId": "37912631_Processamento",
+  "title": "Processamento - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/37912631/Processamento"
+}

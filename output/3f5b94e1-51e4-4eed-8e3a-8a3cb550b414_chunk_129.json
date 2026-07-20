@@ -1,6 +1,0 @@
-{
-  "texto": "a) não compartilha com o PSTI as chaves privadas cadastradas no Banco Central do Brasil utilizadas para a assinatura das mensagens no âmbito do Pix; (Incluída pela Resolução BCB nº 496, de 5/9/2025) a) tiver por participante destinatário a Secretaria do Tesouro Nacional; ou (Redação dada pela Resolução BCB nº 503, de 18/9/2025.) b) valida a integridade das transações antes da assinatura, assegurando que os dados não tenham sido corrompidos ou manipulados durante o processo de geração da mensagem; (Incluída pela Resolução BCB nº 496, de 5/9/2025) b) for destinada ao pagamento de Guia do FGTS Digital – GFD. (Redação dada pela Resolução BCB nº 503, de 18/9/2025.) c) utiliza certificados distintos para ambientes diferentes (homologação e produção, por exemplo) para o Pix; e (Incluída pela Resolução BCB nº 496, de 5/9/2025) c) (Revogada pela Resolução BCB nº 506, de 26/9/2025.) d) adota certificados separados para assinatura de mensagens e para o estabelecimento de canal no Pix. (Incluída pela Resolução BCB nº 496, de 5/9/2025) d) (Revogada pela Resolução BCB nº 506, de 26/9/2025.)",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=1"
-}

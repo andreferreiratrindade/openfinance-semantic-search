@@ -1,6 +1,0 @@
-{
-  "texto": "8 QUANTIDADE Numérico 10 Caracteres Infomar a quantidade de ativos comprados/vendidos 9 PRECO Numérico 10 Caracteres Infomar o valor pago de cada ativo comprado/vendido. Não utilizar separadores, nem vírgula. Exemplos: Informar “1002302” para o valor de R$ 10.023,02; informar “10000” para o valor de R$ 100,00. 10 VALOR_TOTAL Numérico 20 Caracteres Infomar o valor total dos ativos comprados/vendidos na negociação. Não utilizar separadores, nem vírgula. Exemplos: Informar “1002302” para o valor de R$ 10.023,02; informar “10000” para o valor de R$ 100,00.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=636"
-}

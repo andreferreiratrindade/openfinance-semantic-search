@@ -1,6 +1,0 @@
-{
-  "texto": "Diagramas de Sequência No diagrama de exemplo abaixo, é possível identificar como será o comportamento da Iniciadora de pagamentos no processo de consulta de um pagamento . A detentora de contas envia uma notificação à instituição iniciadora de pagamento informando que ocorreu uma mudança significativa da máquina de estados da API e que a mesma deverá consultar o pagamento para obter mais informações.",
-  "paginaId": "1436549347_Pagamentos+-+Webhook+-+v1.3.0",
-  "title": "Pagamentos - Webhook - v1.3.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1436549347/Pagamentos+-+Webhook+-+v1.3.0"
-}

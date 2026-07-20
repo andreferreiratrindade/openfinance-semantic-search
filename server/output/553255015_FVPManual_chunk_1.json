@@ -1,0 +1,6 @@
+{
+  "texto": "Introdução A FVP Manual tem como objetivo validar, de forma controlada e em ambiente produtivo, se os fluxos e as respostas das APIs implementadas pelas instituições participantes estão em conformidade com os padrões técnicos definidos pelo Open Finance Brasil. Para isso, os testes exigem a autenticação e o consentimento do usuário, garantindo que os comportamentos esperados estejam sendo corretamente executados em ambiente de produção das instituições. Os testes realizados na FVP (Ferramenta de validação em produção) utilizam dados reais dos usuários em produção, tanto para o compartilhamento de dados quanto para as iniciações de transações de pagamentos. Por padrão, as informações relativas às execuções ficam disponibilizadas nos próprios logs de execução dos testes, sendo deletados da ferramenta após 1 hora do início do teste. Caso os logs de execução sejam baixados, eles estarão com informações sensíveis do usuário. Portanto, pedimos atenção redobrada dos usuários no cuidado com o manuseio e compartilhamento desses arquivos, especialmente quando realizados testes em contas de uso pessoal.",
+  "paginaId": "553255015_FVP+Manual",
+  "title": "FVP Manual - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/553255015/FVP+Manual"
+}

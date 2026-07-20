@@ -1,0 +1,6 @@
+{
+  "texto": "Ex.: Traga seu empréstimo 885320 para cá. Encaminhar o usuário diretamente para a etapa correspondente na jornada (Ex.: seleção do contrato, exibição da proposta, análise do pedido etc.) conforme o modelo adotado (síncrono ou assíncrono). Open Portabilidade de Crédito - Solicitação da Portabilidade de Crédito Recomendações -IP Cenário: Solicitação da Portabilidade de Crédito Saída do fluxo: em caso de jornada assíncrona, ao sair do fluxo, direcionar o usuário para a Área de Gestão de Pedidos para que ele possa visualizar o status do pedido (Ex.: Pedido em análise). Open Portabilidade de Crédito - Solicitação da Portabilidade de Crédito Etapa 4: Oferta Nesta etapa, o usuário é informado sobre a disponibilidade ou ausência de uma proposta (pela Proponente) ou de uma contraproposta (pela Credora), e pode acessá-la para análise. A Instituição Proponente e/ou a Instituição Credora deve garantir que essa comunicação ocorra de forma clara, apresentando todos os detalhes relevantes da proposta ou contraproposta, para que o usuário possa tomar uma decisão consciente.",
+  "paginaId": "1828077246_v.22.00.01+Jornada+de+CPC",
+  "title": "v.22.00.01 Jornada de CPC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828077246/v.22.00.01+Jornada+de+CPC"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "Roles: CLIENT Métodos: POST e GET Http Code: Todos menos 4xx e 5xx no POST endpoints: /open-banking/automatic-payments/v2/recurring-consents /open-banking/automatic-payments/v2/recurring-consents/{recurringConsentId} Importante: Para estes endpoints, caso se trate de uma Jornada Otimizada, em journeyIsLinked enviar TRUE; caso contrário, enviar FALSE. O campo journeyLinkId deve ser enviado caso journeyIsLinked seja TRUE.",
+  "paginaId": "1275625473_Jornada+Otimizada+-+SV",
+  "title": "Jornada Otimizada - SV - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1275625473/Jornada+Otimizada+-+SV"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "Dicionário de dados Campos de resposta do endpoint de /portabilities/{portabilityId}/payment. Fazer download do dicionário de dados Solicita o estorno da STR efetuada para liquidar o contrato consignado : (POST /portabilities/{portabilityId}/payment-reversal) Solicita o estorno da STR efetuada para liquidar o contrato consignado devido ao fato da Instituição Credora não ter desaverbado o contrato em tempo ábil conforme SLA definido pela SERPRO de 10 dias contados a partir da data de criação da solicitação da reserva da mergem para Instituição Proponente. Dicionário de dados Campos de resposta do endpoint de /portabilities/{portabilityId}/payment. Fazer download do dicionário de dados Obtém os dados necessários para identificar o contrato a ser portado junto a averbadora : (GET /credit-operations/{contractId}/registering-entity) Obtém os dados necessários para identificar o contrato a ser portado junto a averbadora. Dicionário de dados Campos de resposta do endpoint de /credit-operations/{contractId}/registering-entity.",
+  "paginaId": "1328185418_Documenta+o+T+cnica+-+CF",
+  "title": "Documentação Técnica - CF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1328185418/Documenta+o+T+cnica+-+CF"
+}

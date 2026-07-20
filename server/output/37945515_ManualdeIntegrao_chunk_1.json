@@ -1,0 +1,6 @@
+{
+  "texto": "O presente documento demonstra o uso das APIs da Plataforma de Coleta de Métricas. Referências Documentação da API A documentação oficial da API se encontra em Documentação da API - PCM Documentação funcional A documentação funcional pode ser encontrada em Plataforma de Coleta de Métricas Procedimento de integração Visão geral O diagrama abaixo ilustra os principais componentes da plataforma Open Para que reportes sejam enviados para a PCM é necessário que o participante obtenha um token de acesso, o que é feito através de um endpoint de autenticação que é acessível através de uma conexão mTLS. De posse do token, o participante pode efetuar os envios para os endpoints da API descritas na documentação. É necessário o uso de certificados válidos para a recuperação do token, em contrapartida os envios de reportes são feitos sem a necessidade de uma conexão mTLS.",
+  "paginaId": "37945515_Manual+de+Integra+o",
+  "title": "Manual de Integração - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/37945515/Manual+de+Integra+o"
+}

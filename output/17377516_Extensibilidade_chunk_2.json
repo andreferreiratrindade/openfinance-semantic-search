@@ -1,6 +1,0 @@
-{
-  "texto": "Para atender tanto as demandas de quem deseja estender as APIs (participantes) quanto as demandas de quem irá realizar o consumo (consumidor das APIs), foram definidos os critérios abaixo. É possível estender os padrões nos seguintes aspectos: O participante pode oferecer uma API completamente nova que não está coberta nos padrões definidos O participante pode oferecer novos endpoints em uma API que já foi definida no padrão O participante pode oferecer campos de entrada e retorno opcionais para um endpoint que já foi definido no padrão ID dos participantes Participantes que desejam estender os padrões devem adicionar seu prefixo para identificar todas as extensões. Campos adicionais no retorno de endpoints existentes ou em novos endpoints devem usar o prefixo do participante. O prefixo deve ser no formato exposto ao lado (4 letras) e não devem haver prefixos duplicados entre os participantes. Nesta documentação, quando tivermos que nos referir ao prefixo do participante, o termo <PID> será utilizado. Exemplos de Código Cada participantes terá um ID que representa a sua instituição.",
-  "paginaId": "17377516_Extensibilidade",
-  "title": "Extensibilidade - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17377516/Extensibilidade"
-}

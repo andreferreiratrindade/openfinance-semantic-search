@@ -1,6 +1,0 @@
-{
-  "texto": "Observações : Estão previstos versionamentos contínuos deste guia ao longo dos primeiros meses de implementação do Open Finance no Brasil. O escopo inicial deste guia é a orientação de uso da ferramenta provida pela Open ID Foundation (OIDF) (“Motor de Conformidade de Segurança”) para teste e certificação do escopo de segurança e da ferramenta disponibilizada pela Estrutura de Governança para teste e certificação de conformidade de APIs (“Motor de Conformidade Funcional”), enquanto as instruções para uso da Implementação de Referência (“Mock Bank”) serão disponibilizadas em uma versão futura desse guia. 1.1. Objetivos e Conceitos Gerais Para a entrada segura e assertiva no Ecossistema do Open Finance, a Estrutura de Governança irá disponibilizar um conjunto de ferramentas e infraestrutura para suportar o processo de testes e homologação dos produtos e serviços desenvolvidos pelas Instituições Participantes.",
-  "paginaId": "155910145_Guia+de+Certifica+o+de+Conformidade",
-  "title": "Guia de Certificação de Conformidade - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/155910145/Guia+de+Certifica+o+de+Conformidade"
-}

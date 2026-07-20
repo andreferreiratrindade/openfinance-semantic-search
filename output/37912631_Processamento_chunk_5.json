@@ -1,6 +1,0 @@
-{
-  "texto": "[5] Transiciona para PAIRED_INCONSISTENT caso um reporte seja enviado com o mesmo fapiInteractionId mas algum dado esteja inconsistênte entre os reportes. [8] Transiciona para SINGLE caso o reporte seja válido, mas não haja a possibilidade de conciliá-lo com outro reporte. PAIRED_INCONSISTENT O status PAIRED_INCONSISTENT significa que o reporte corrente possui uma contraparte com o mesmo fapiInteractionId , mas algum dado esteja inconsistente entre os reportes. Indica um reporte divergente . Transições : [6] Transiciona para PAIRED caso o processo de resolução de divergência\"*\" corrija um dos dois reportes. Processo a ser definido. PAIRED Indica que o reporte tem uma contraparte com o mesmo fapiInteractionId e os demais dados estão conciliados. Representa o estado final desejado em um fluxo correto. Transições : N/A (estado terminal)",
-  "paginaId": "37912631_Processamento",
-  "title": "Processamento - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/37912631/Processamento"
-}

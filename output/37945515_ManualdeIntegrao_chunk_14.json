@@ -1,6 +1,0 @@
-{
-  "texto": "No entanto, apenas o Banrisul poderá consultar esse reporte. { “role”: “CLIENT”, \"timestamp\": \"2022-08-31T17:43:13.622Z\", \"fapiInteractionId\": \"cd9a2e6b-0c33-403b-a8dd-544e95c63cd8\", \"endpoint\": \"/invalid_endpoint\", “additionalInfo”: { “consentId”: “uri:banrisul:6096c7f6-53a0-4c53-bc95-9c8d48b9a6cf“, “personType”: “PF“ } \"statusCode\": 200, \"httpMethod\": \"GET\", \"processTimespan\": 120, \"clientSSId\": \"clientSSId\", \"endpointUriPrefix\": \"https://openbanking.instituicao.com.br/namespace\" } [1] Padrão de certificação do Open Finance Brasil v2.1",
-  "paginaId": "37945515_Manual+de+Integra+o",
-  "title": "Manual de Integração - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/37945515/Manual+de+Integra+o"
-}

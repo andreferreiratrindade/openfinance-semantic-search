@@ -1,6 +1,0 @@
-{
-    "texto": "A\nVinculação de Conta\npara jornada de pagamentos Sem Redirecionamento (JSR)\npermite que o usuário vincule sua conta bancária e seu dispositivo a uma Instituição Iniciadora de Transação de Pagamento (ITP) para realizar pagamentos diretamente pela ITP, ou seja, sem redirecionamento para a ID, através de confirmação com as credenciais (biometria, senha ou PIN) usadas para desbloquear seu dispositivo.\nEste capítulo descreve o\nseguinte cenário da jornada de\nVinculação de Conta (JSR):\nA criação e confirmação da autorização de vinculação de conta, em que são definidos parâmetros como prazo, limites e, opcionalmente, o compartilhamento de dados de saldo e limite da conta via\nJornada Otimizada\n.",
-    "paginaId": "1828075124_v.22.00.01+Vincula+o+de+Conta+JSR",
-    "title": "v.22.00.01 Vinculação de Conta (JSR) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828075124/v.22.00.01+Vincula+o+de+Conta+JSR"
-}

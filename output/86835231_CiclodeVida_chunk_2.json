@@ -1,6 +1,0 @@
-{
-  "texto": "O evento de entrada em produção marcará o início desta etapa. Deprecated : etapa em que a versão atual (versão x) da API está sendo substituída pela próxima versão (x+1) em ambiente produtivo pelos participantes dando início ao período de convivência destas versões. O evento de entrada em produção da próxima versão da API marcará o início desta etapa. Retired : Etapa em que a versão da API se torna indisponível em ambiente produtivo. A retirada de versões “retired” das APIs é monitorada pela IN 441. Essa etapa consiste na remoção da API retired do ambiente produtivo. Responsabilidades e ações para a remoção do ambiente produtivo: Detentora/Transmissor: Descadastrar a API \"retired\" do Diretório; Detentora/Transmissor: Remover a API \"retired\" de seu API gateway; Iniciadora/Receptor: Garantir que não haverá mais acionamentos da API \"retired\", invalidando eventuais caches internos e acionando apenas o novo endpoint.",
-  "paginaId": "86835231_Ciclo+de+Vida",
-  "title": "Ciclo de Vida - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/86835231/Ciclo+de+Vida"
-}

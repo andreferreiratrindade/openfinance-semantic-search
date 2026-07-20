@@ -1,6 +1,0 @@
-{
-  "texto": "Sem ação data>date Descrição genérica sobre data do pagamento. Formato explícito: Timezone UTC-3 e formatação RFC-3339. Sem ação 2.4. Campos Modificados (Obrigatoriedade) Campo (XPath) Versão 1.0.0 Versão 2.0.0 Ação data>creditorAccount Opcional Obrigatório Ensejou o versionamento para versão 2.1.0, lançada em 25/04, tornando o campo opcional nos retornos de consulta de pagamento. data>localInstument Inexistente na consulta Obrigatório O campo deverá ser retornado durante a consulta à v2 com o valor original informado na sua criação. Conclusão: Adotando as ações necessárias, as consultas de recursos entre as versões (anterior e recente) devem ocorrer de forma suave pelas ITPs e Detentoras que sigam as especificações e realizem as adequações de retrocompatibilidade.",
-  "paginaId": "1178042602_Adapta+es+para+consultas+de+recursos+entre+as+vers+es+1.0.0+e+2.2.0+ou+superiores+da+API+Pagamentos+Autom+ticos",
-  "title": "Adaptações para consultas de recursos entre as versões 1.0.0 e 2.2.0 ou superiores da API Pagamentos Automáticos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1178042602/Adapta+es+para+consultas+de+recursos+entre+as+vers+es+1.0.0+e+2.2.0+ou+superiores+da+API+Pagamentos+Autom+ticos"
-}

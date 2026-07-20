@@ -1,6 +1,0 @@
-{
-  "texto": "Na família de payments-consents devem ser declarados os endpoints de consentimento. Na família de payments-pix devem ser declarado sos endpoints da forma de pagamento PIX. Demais formas de pagamentos devem ser cadastradas conforme as especificações avancem.",
-  "paginaId": "941819273_10.+Cadastrando+recursos+de+uma+API",
-  "title": "10. Cadastrando recursos de uma API - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941819273/10.+Cadastrando+recursos+de+uma+API"
-}

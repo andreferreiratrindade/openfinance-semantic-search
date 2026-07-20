@@ -1,0 +1,6 @@
+{
+    "texto": "A consulta via GET, para verificar o processamento da transação, pode ser efetuada a qualquer momento desde que se respeite os limites da seção \"Requisitos não Funcionais\". Como sugestão, é indicado que a instituição iniciadora do pagamento implemente um retry exponencial.\nControle de acesso\nOs endpoints para consultas (HTTP GET) deve apenas suportar acesso a partir de access_token emitido por meio de um\ngrant_type\ndo tipo\nclient credentials\n, como opção do uso do token vinculado ao consentimento (hybrid flow). Para evitar vazamento de informação, a detentora deve validar que o recurso consultado pertence ao\nclient_id\nque o criou e, caso haja divergências, retorne um erro HTTP 400.",
+    "paginaId": "728301611_SV+Recomenda+o+Uso+de+Polling+e+Controle+de+Acesso",
+    "title": "[SV] Recomendação Uso de Polling e Controle de Acesso - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/728301611/SV+Recomenda+o+Uso+de+Polling+e+Controle+de+Acesso"
+}

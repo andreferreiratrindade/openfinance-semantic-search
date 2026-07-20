@@ -1,6 +1,0 @@
-{
-  "texto": "3/2021 4.1 • Capítulo 11: -Página 47: alteração no texto do item 01 - O valor (Caso o usuário recebedor informe que o valor pode ser alterado utilizando o campo “Modalidade de alteração de valor”, conforme definido no Manual de Padrões para Iniciação do Pix, deve-se permitir a edição do valor pelo usuário pagador. Caso contrário, o valor não poderá ser editável). -Página 47: alteração no texto do item 02 - Usuário pagador pode cancelar o pagamento, mas não pode editar os dados do QR Code, à exceção do valor (caso permitido pelo usuário recebedor) e do campo de solicitação de informações ao pagador (se houver). • Pequenos ajustes de forma.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=337"
-}

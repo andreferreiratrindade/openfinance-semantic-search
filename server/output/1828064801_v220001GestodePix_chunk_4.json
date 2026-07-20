@@ -1,0 +1,6 @@
+{
+  "texto": "Identificação da ITP: exibir identificação da Instituição Iniciadora de Transação de Pagamento. Open Comprovante de pagamento concluído na ID Comprovante de transação não concluída: nos casos em que a transação não for concluída com sucesso — como status cancelado, expirado ou rejeitado — exibir os campos aplicáveis de acordo com a disponibilidade de informações no momento da falha, conforme definido pelo arranjo de pagamento. Open Comprovante de pagamento não concluído na ID",
+  "paginaId": "1828064801_v.22.00.01+Gest+o+de+Pix",
+  "title": "v.22.00.01 Gestão de Pix - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828064801/v.22.00.01+Gest+o+de+Pix"
+}

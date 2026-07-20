@@ -1,0 +1,6 @@
+{
+  "texto": "Isso ocorre devido à estruturação das URLs que, frequentemente, não incluem a identificação de versões minor. Por exemplo, uma URL típica ( https:// <host> /open-banking/consents/v2/consents) não detalha a versão minor, apenas o identificador da versão major (v2). Considere o seguinte cenário para ilustrar essa limitação: Open No exemplo anterior, a identificação precisa da versão minor não é possível devido à estrutura da URL. Neste contexto, a instituição poderia ser classificada como conforme no que diz respeito ao ambiente produtivo, ainda que haja uma desconformidade real devido à presença de uma versão descontinuada em operação. Responsável pela Aprovação AOF Gerência de Arquitetura e Plataforma (Diretoria de Eficiência Operacional) Gerência de Produto e Experiência (Diretoria de Tecnologia)",
+  "paginaId": "498499951_Retirada+das+vers+es+antigas+das+APIs+de+ambiente+produtivo+e+do+cadastro+no+diret+rio",
+  "title": "Retirada das versões antigas das APIs de ambiente produtivo e do cadastro no diretório - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/498499951/Retirada+das+vers+es+antigas+das+APIs+de+ambiente+produtivo+e+do+cadastro+no+diret+rio"
+}

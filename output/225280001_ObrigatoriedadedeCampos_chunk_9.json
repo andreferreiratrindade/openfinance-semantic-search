@@ -1,6 +1,0 @@
-{
-  "texto": "O uso do required para representar campos tecnicamente obrigatórios permite que geradores de código consigam automaticamente refletir a necessidade e regra de validações , inclusive forçando os erros técnicos no descumprimento de uma regra. Por outro lado, o uso do campo customizado x-regulatory-required não traz impactos técnicos , garantindo compatibilidade , porém exigindo que próprio desenvolvedor implemente as validações de cumprimento da regulação . Exemplo: Open No exemplo fictício, que representa os dados de uma conta , o regulador exige que os seus dados (o identificador único da conta, o seu tipo, instituição, agência e número) sejam obrigatoriamente informados . Entretanto, tecnicamente , contas do tipo pré-pagas não possuem agência e por isso o campo Branch se torna condicionado ao cenário em que a conta não é pré-paga. Dicionário de Dados O dicionário de dados das APIs os dados de obrigatoriedade regulatória e técnica são refletidos respectivamente nas colunas “ Mandatoriedade Regulatória ” e “ Mandatoriedade Técnica ”.",
-  "paginaId": "225280001_Obrigatoriedade+de+Campos",
-  "title": "Obrigatoriedade de Campos - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/225280001/Obrigatoriedade+de+Campos"
-}

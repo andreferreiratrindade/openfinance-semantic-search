@@ -1,6 +1,0 @@
-{
-  "texto": "5.4.2 SLA da disponibilidade Cada um dos endpoints das APIs categorizadas como \"Dados Abertos\", \"Dados Cadastrais e Transacionais\", \"Relatórios e Métricas\", por versão, e os endpoints das APIs de \"Segurança\" \"/ register \" e \"/ token \", deverão satisfazer os requisitos mínimos de disponibilidade abaixo: I - disponibilidade diária (calendário): 95%; e II - disponibilidade longa (média móvel de 90 dias), medida diariamente: 99,5%. As APIs classificadas como \"Serviços de Iniciação de Pagamentos\" seguem o definido na regulamentação do Pix. Informações adicionais: I - as medições devem ser feitas todos os dias, em todas as faixas de 1 minuto disponíveis, iniciando na primeira faixa (00:00:00-00:00:59) e terminando na última faixa (23:59:00-23:59:59), considerando o horário de Brasília; II - as medições de disponibilidade devem ser feitas para cada versão major dos endpoints em produção. Por exemplo, em períodos de convivência o endpoint de v1/ resources poderia estar disponível no mesmo período em que o endpoint de v2/ resources estaria também disponível.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=456"
-}

@@ -1,6 +1,0 @@
-{
-  "texto": "Formato AAAA-MM-DD hh:mm:ss reportado em UTC 0 Alteração Regra de Validação – paymentId Complemento da regra de validação da quantidade de paymentIds distintos para um mesmo consentId, passando a validar também a data do último pagamento Para paymentType RECURRENT, validar que não há mais de 60 paymentIds por consentId. Se houverem mais de 60, ingerir e criticar Para paymentType RECURRENT, validar que não há mais de 60 paymentIds por consentId s, independentemente do modelo de recorrência definido no consentimento. A data do último pagamento agendado não pode ultrapassar o correspondente dia e mês do segundo ano subsequente à data de criação do consentimento (Ex.: consentimento criado em 15/03/2026 admite agendamentos até 15/03/2028) . Se houverem mais de 60 ou a data do último pagamento não estiver de acordo com a regra, ingerir e criticar.",
-  "paginaId": "1118306305_Release+notes",
-  "title": "Release notes - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1118306305/Release+notes"
-}

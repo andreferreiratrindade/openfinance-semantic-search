@@ -1,0 +1,6 @@
+{
+  "texto": "Exemplos: De {custom:{dates:['2026-01-01','2026-02-01','2026-03-01'],additionalInformation:'qwerty'}} Para {custom:{dates:['2026-01-01','2026-02-01','2026-03-01']},additionalInformation:'qwerty'} De {monthly:{dayOfMonth:1,startDate:'2026-01-01',quantity:12}} Para {monthly:{dayOfMonth:1,startDate:'2026-01-01',quantity:12},additionalInformation:'qwerty'} Concluído Estoque de Consentimentos Alteração na regra de validação da quantidade de paymentId únicos por consentId: A quantidade máxima de pagamentos que podem transitar do iniciador para o detentor é de 60 pagamentos, independentemente do modelo de recorrência definido no consentimento. A data do último pagamento agendado não pode ultrapassar o correspondente dia e mês do segundo ano subsequente à data de criação do consentimento (prazo máximo de dois anos).",
+  "paginaId": "1118470185_Release+Candidate",
+  "title": "Release Candidate - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1118470185/Release+Candidate"
+}

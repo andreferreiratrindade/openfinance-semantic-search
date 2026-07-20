@@ -1,0 +1,6 @@
+{
+  "texto": "Métricas Operacionais do Processo A estruturação desse fluxo permite medir dois tempos distintos: A. Tempo de Atuação da Demanda Tempo entre: Abertura do ticket de solicitação → Abertura do primeiro ticket operacional Essa métrica indica quanto tempo levou para iniciar o tratamento da demanda . B. Tempo Operacional da Demanda Tempo entre: Abertura do ticket de solicitação → Encerramento do ticket de solicitação Essa métrica representa o tempo total necessário para execução da demanda , considerando a abertura de todos os tickets solicitados.",
+  "paginaId": "1632272390_10.+Solicita+o+e+Abertura+de+Tickets+pelo+N+vel+1",
+  "title": "10. Solicitação e Abertura de Tickets pelo Nível 1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1632272390/10.+Solicita+o+e+Abertura+de+Tickets+pelo+N+vel+1"
+}

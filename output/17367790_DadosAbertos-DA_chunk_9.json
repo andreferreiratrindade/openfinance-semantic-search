@@ -1,6 +1,0 @@
-{
-  "texto": "Todas as operações devem ser consideradas, mesmo que haja mais de 1 operação por cliente referente a mesma Modalidade e Indexador. Processo de apuração das taxas de operação (Investimento): Identificar eventos de operação na base; Enfileirar os valores em ordem crescente de grandeza Para operações com indexador CDI, DI, SELIC: considerar ERATE = RATE, desconsiderando SPREAD mas considerando a operação Para demais indexadores: considerar ERATE = SPREAD, para operações cujo RATE = 100%. Operações com RATE diferente de 100% deverão ser desconsideradas Definir menor (MenorVL) e maior valor (MaiorVL) relativos às operações enfileiradas em ordem crescente; Definir: (MaiorVL – MenorVL ) / 4 = Intervalo para definição faixas de valores (e se MenorVL = MaiorVL, então (MaiorVL – 0) / 4; Calcular a mediana dos valores em cada faixa; Calcular o percentual de operações por faixa, considerando a quantidade de valores em cada faixa.",
-  "paginaId": "17367790_Dados+Abertos+-+DA",
-  "title": "Dados Abertos - DA - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/17367790/Dados+Abertos+-+DA"
-}

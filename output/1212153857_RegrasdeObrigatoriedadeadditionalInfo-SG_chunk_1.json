@@ -1,6 +1,0 @@
-{
-  "texto": "v 1.02 Guia de leitura Se o campo não está listado, é porque não existe a obrigatoriedade de enviá-lo. Nos endpoints, a referência “v x ” indica que se aplicam às versões listadas na coluna “Versões”. Por exemplo, Endpoint “open-banking/automatic-payments/v x /recurring-consents/{recurringConsentId}” e Versões “v1 v2” significa que o endpoint é válido para as versões 1 e 2. Dica: para rolar a tabela horizontalmente, segure SHIFT e utilize o botão de rolagem do mouse. Dica: não existe a opção de exportar as tabelas para Excel, porém pode-se selecionar o conteúdo da página com CTRL+A, copiar e colar no Excel. Segurança Campo Grupo Definição Regra de preenchimento Roles Roles Http code Métodos Domínio Endpoints Tamanho máximo Padrão Exemplo Campo Grupo Definição Regra de preenchimento Roles Roles Http code Métodos Domínio Endpoints Tamanho máximo Padrão Exemplo consentId Token O consentId é o identificador único do consentimento e deverá ser um URN - Uniform Resource Name.",
-  "paginaId": "1212153857_Regras+de+Obrigatoriedade+additionalInfo+-+SG",
-  "title": "Regras de Obrigatoriedade (additionalInfo) - SG - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212153857/Regras+de+Obrigatoriedade+additionalInfo+-+SG"
-}

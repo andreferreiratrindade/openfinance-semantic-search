@@ -1,6 +1,0 @@
-{
-  "texto": "Ao cancelar o vínculo de conta, o compartilhamento de dados associado deixa de fazer sentido e deve ser cancelado automaticamente. Caso o usuário cancele apenas a autorização de dados e deseje posteriormente compartilhar seus dados de saldo e limite da conta, será necessário conceder uma nova autorização através da jornada padrão de Compartilhamento de Dados para que a ITP volte a ter acesso a essas informações. Fluxos de telas da Jornada Otimizada Os fluxos a seguir ilustram onde e como a Jornada Otimizada se integra à jornada de vinculação de conta, sem substituir os fluxos completos já descritos nos capítulos específicos. Nota Os fluxos são ilustrativos e têm como objetivo destacar a integração da Jornada Otimizada à experiência de pagamento. Para os fluxos completos, consulte o subcapítulo Vinculação de Conta . Jornada Otimizada em Vinculação de Conta Open",
-  "paginaId": "1828076684_v.22.00.01+Jornada+Otimizada+em+Vincula+o+de+Conta+JSR",
-  "title": "v.22.00.01 Jornada Otimizada em Vinculação de Conta (JSR) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828076684/v.22.00.01+Jornada+Otimizada+em+Vincula+o+de+Conta+JSR"
-}

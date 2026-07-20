@@ -1,0 +1,6 @@
+{
+  "texto": "Defina o tipo da operação para GET . 7. Vá para a guia Authorisation e na caixa de seleção Type selecione a opção Bearer Token . 8. Na coluna ao lado, no campo Token cole o access_token obtido na seção Obtendo um token de acesso para acessar as APIs do Diretório . 9. Uma vez que todos os valores estejam preenchidos, clique no botão Send . Você verá a resposta de dados JSON do servidor no painel inferior. Open",
+  "paginaId": "941820335_21.+Obtendo+um+Software+Statement+Assertion+via+API+2",
+  "title": "21. Obtendo um Software Statement Assertion via API (2) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941820335/21.+Obtendo+um+Software+Statement+Assertion+via+API+2"
+}

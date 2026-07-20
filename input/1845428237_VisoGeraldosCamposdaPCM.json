@@ -1,6 +1,0 @@
-{
-    "texto": "v 1.00\nOpen\nNome\nDA\nDC\nSV\nEP\nPC\nHF\nSG\nCO\nNome\nDA\nDC\nSV\nEP\nPC\nHF\nSG\nCO\nadditionalInfo\namountType\nauthenticatorAttachment\nauthorisationFlow\nauthorisationFlowIntent\ncancellationReason\ncancelledFrom\nclientIp\nclientOrgId\nclientSSId\ncompanyProfileInfo\nconsentId\nconsentsStockList\ncorrelationId\ncreatedAt\ncreationDateTime\ncreditPortabilityStatus\ndate\ndropReason\nendpoint\nendpointUriPrefix\nenrollmentId\nerror\nerrorCode\nerrorCodes\neventDateTime\nfapiInteractionId\ngrantType\nhasMinimumAmount\nhttpMethod\ninterval\nisFirstPayment\nisRetryAccepted\njourneyIsLinked\njourneyLinkId\nlocalInstrument\nnfcPayment\norgId\noriginalRecurringPaymentId\nos\nosVersion\npairedReportId\npaymentDate\npaymentId",
-    "paginaId": "1845428237_Vis+o+Geral+dos+Campos+da+PCM",
-    "title": "Visão Geral dos Campos da PCM - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1845428237/Vis+o+Geral+dos+Campos+da+PCM"
-}

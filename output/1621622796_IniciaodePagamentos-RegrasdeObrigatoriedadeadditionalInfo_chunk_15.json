@@ -1,6 +1,0 @@
-{
-  "texto": "Para o mesmo consentId não podem ser reportados nesta lista mais do que 60 paymentId. object CLIENT 201 POST /open-banking/payments/v x /pix/payments v4 v5 [{\"paymentId\":\"4d4dec4b-5960-4041-8099-1340b8c8a4bb\",\"consentId\":\"urn:bancoex:C1DD33123\",\"statusUpdateDateTime\":\"2026-02-08T19:53:53Z\",\"status\":\"ACSC\"}]'2021-01-01 paymentId Código ou identificador único informado pela instituição detentora da conta para representar a iniciação de pagamento​ string CLIENT 201 POST /open-banking/payments/v x /pix/payments v4 v5 4d4dec4b-5960-4041-8099-1340b8c8a4bb consentId Identificador único do consentimento criado para a iniciação de pagamento solicitada​ string CLIENT 201 POST /open-banking/payments/v x /pix/payments v4 v5 urn:bancoex:C1DD33123 statusUpdateDateTime Data e hora da última atualização da iniciação de pagamento",
-  "paginaId": "1621622796_Inicia+o+de+Pagamentos+-+Regras+de+Obrigatoriedade+additionalInfo",
-  "title": "Iniciação de Pagamentos - Regras de Obrigatoriedade (additionalInfo) - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1621622796/Inicia+o+de+Pagamentos+-+Regras+de+Obrigatoriedade+additionalInfo"
-}

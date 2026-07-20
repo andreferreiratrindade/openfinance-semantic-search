@@ -1,6 +1,0 @@
-{
-  "texto": "Ele é utilizado em casos onde a conciliação entre dois reportes não é possível. enum<string> ACCEPTED, DISCARDED, SINGLE SINGLE Campos adicionais retornados no GET O GET retorna todos os campos do POST e do response, além dos adicionais abaixo Campo Definição Tipo Tamanho máximo Exemplo Campo Definição Tipo Tamanho máximo Exemplo createdAt Carimbo do tempo do momento da criação do registro string <date-time> 28 2026-01-14 13:08:25.319000 UTC updatedAt Carimbo do tempo do momento da última atualização do registro string <date-time> 28 2026-01-14 15:53:50.978000 UTC",
-  "paginaId": "1798537221_Campos+Obrigat+rios+e+Opcionais+-+SG",
-  "title": "Campos Obrigatórios e Opcionais - SG - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1798537221/Campos+Obrigat+rios+e+Opcionais+-+SG"
-}

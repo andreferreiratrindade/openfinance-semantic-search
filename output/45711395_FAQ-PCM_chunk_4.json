@@ -1,6 +1,0 @@
-{
-  "texto": "Não há incoerência entre falar para não criticar a criação do consentimento, e informar se é ou não é cliente? Os impedimentos colocados na API de pagamentos dizem respeito ao que não informar ao iniciador no momento de criação de consentimento e, portanto, não se aplicam ao processo de reporte, que ocorre de forma assíncrona à criação do consentimento, e reporta-se ao perímetro central. Por este motivo, entendemos não haver incoerência entre as recomendações. O consentimento é criado sem qualquer crítica e, depois, em tempo de reporte, eventuais críticas ou complementação de dados são executadas para enviar o reporte apenas ao perímetro central.",
-  "paginaId": "45711395_FAQ+-+PCM",
-  "title": "FAQ - PCM - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/45711395/FAQ+-+PCM"
-}

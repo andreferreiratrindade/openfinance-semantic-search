@@ -1,6 +1,0 @@
-{
-  "texto": "Esta página reúne os requisitos e recomendações referentes à comunicação com o usuário e ao envio de notificações durante a jornada de iniciação de pagamento via Open Finance com múltiplos aprovadores, inclusive para alterações e cancelamentos feitos através da área de gestão. Nota Consulte a seção de Notificações nas páginas dos produtos de pagamentos para visualizar os demais requisitos e recomendações. Requisitos - ID Cenário: Ao solicitante Status da solicitação: notificar o usuário solicitante após a atuação de todos os aprovadores com a atualização de status da solicitação. Open Notificação ao solicitante na ID Cenário: Ao aprovador Notificação de pendência: notificar ativamente o(s) usuário(s) aprovador(es) imediatamente após a confirmação da solicitação pelo usuário solicitante. Ex.: push, SMS, e-mail etc. Open Notificação ao aprovador na ID",
-  "paginaId": "1828074127_v.22.00.01+Notifica+es+de+Pagamentos+com+M+ltiplos+Aprovadores",
-  "title": "v.22.00.01 Notificações de Pagamentos com Múltiplos Aprovadores - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828074127/v.22.00.01+Notifica+es+de+Pagamentos+com+M+ltiplos+Aprovadores"
-}

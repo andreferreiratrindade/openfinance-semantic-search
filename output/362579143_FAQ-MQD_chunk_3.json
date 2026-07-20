@@ -1,6 +1,0 @@
-{
-  "texto": "Mas ainda recomendamos o monitoramento constante do contêiner da aplicação, pois dependendo da carga entregue será necessário aumentar os recursos (RAM e CPU) para processar adequadamente todas as mensagens. Hoje não temos acesso ao repositório do Motor de Qualidade de Dados, há um previsão de quando ele será disponibilizado no Github? O acesso ao repositório do MQD pode ser solicitado através do Portal de Solicitação de Acessos através do link abaixo. https://openfinancebrasil.atlassian.net/servicedesk/customer/portal/1/group/17 Estou com uma dúvida que não está explicada nem na documentação neste FAQ. Como faço para fazer perguntas para especialistas em MQD? Você pode acessar o canal no Slack do Motor de Qualidade de Dados para sanar possíveis dúvidas sobre a instalação e funcionamento da feramenta.",
-  "paginaId": "362579143_FAQ+-+MQD",
-  "title": "FAQ - MQD - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/362579143/FAQ+-+MQD"
-}

@@ -1,0 +1,6 @@
+{
+  "texto": "O objetivo deles é validar as alterações ocorridas nas versões minor e patch. O propósito de homologar as alterações realizadas nas especificações, com o subconjunto apenas, é diminuir a quantidade e complexidade dos testes executados. Além disso, o processo de validação da minor e da patch diminui a burocracia do processo de certificação aplicado nas majors, através da supressão dos passos de submissão de documentos e processamento dos mesmos por parte do Squad Sandbox. No entanto, para um participante continuar apto a participar do Open Finance Brasil, ainda é necessário estar certificado e passar em 100% dos módulos de testes específicos obrigatórios e dos condicionais cabíveis do motor de certificação funcional. Novos entrantes deverão entrar com as versões mais atuais vigentes, mas detalhes serão informados de acordo com o caso específico.",
+  "paginaId": "86835297_Certifica+o",
+  "title": "Certificação - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/86835297/Certifica+o"
+}

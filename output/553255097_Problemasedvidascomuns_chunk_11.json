@@ -1,6 +1,0 @@
-{
-  "texto": "A causa dessa falha, após a finalização da jornada no ambiente da detentora, está relacionada ao fato de que, se o usuário que está realizando o teste não estiver logado no navegador padrão de seu dispositivo móvel, as informações transmitidas na URL de redirecionamento se perdem no momento em que o navegador solicita a autenticação. Isso ocorre pois o link de redirecionamento é único, ou seja, se ele for acessado uma vez, e a sessão do usuário não estiver ativa, o link se perde, resultando na falha do redirecionamento. Solução : Para execuções que são realizadas via leitura de QR Code, recomenda-se sempre realizar a autenticação em seus dispositivos móveis, no navegador em que será utilizado, previamente ao início ao início do teste. Isso garante que o fluxo de redirecionamento funcione corretamente e os parâmetros sejam transmitidos de forma adequada.",
-  "paginaId": "553255097_Problemas+e+d+vidas+comuns",
-  "title": "Problemas e dúvidas comuns - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/553255097/Problemas+e+d+vidas+comuns"
-}

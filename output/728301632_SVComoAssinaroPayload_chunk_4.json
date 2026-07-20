@@ -1,6 +1,0 @@
-{
-  "texto": "(método JWS Compact Serialization, conforme definido na [ RFC7515 ]). Formato da mensagem JWS: payload = Base64url( JOSEHeader ) + \".\" + Base64url( payload JWT ) + \".\" + Base64url( digital signature ) Veja ao lado exemplo de mensagem JWS assinada e codificada e um exemplo de mensagem JWS decodificada.",
-  "paginaId": "728301632_SV+Como+Assinar+o+Payload",
-  "title": "[SV] Como Assinar o Payload - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/728301632/SV+Como+Assinar+o+Payload"
-}

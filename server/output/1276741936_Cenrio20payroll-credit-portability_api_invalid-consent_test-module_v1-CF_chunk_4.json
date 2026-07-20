@@ -1,0 +1,6 @@
+{
+  "texto": "Status 403 - Validação de mensagem de erro 17 Chamada de endpoint PATCH /portabilities/{portabilityId}/cancel enviando: Authorization = token vinculado com consentimento com permissões de usuário. Status 403 - Validação de mensagem de erro 18 Chamada de endpoint GET portabilities/{portabilityId}/account-data enviando: Authorization = token vinculado com consentimento com permissões de usuário. Status 403 - Validação de mensagem de erro 19 Chamada de endpoint POST /portabilities/{portabilityId}/payment enviando: Authorization = token vinculado com consentimento com permissões de usuário. Status 403 - Validação de mensagem de erro 20 Fim do teste Diagrama de sequência Open",
+  "paginaId": "1276741936_Cen+rio+20+payroll-credit-portability_api_invalid-consent_test-module_v1+-+CF",
+  "title": "Cenário 20: payroll-credit-portability_api_invalid-consent_test-module_v1 - CF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1276741936/Cen+rio+20+payroll-credit-portability_api_invalid-consent_test-module_v1+-+CF"
+}

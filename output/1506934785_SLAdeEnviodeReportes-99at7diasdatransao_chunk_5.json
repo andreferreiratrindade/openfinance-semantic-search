@@ -1,6 +1,0 @@
-{
-  "texto": "Neste caso, se uma organização enviar reportes de 10 endpoints diferentes mas 1 deles estiver com SLA abaixo de 99%, o ticket será enviado independente do percentual dos outros endpoints. Arquivo de evidências Todo ticket aberto possui anexado um arquivo de evidências, onde são listados até 5 fapiInteractionId para cada caso encontrado por dia, para facilitar a investigação das causas pelas organizações.",
-  "paginaId": "1506934785_SLA+de+Envio+de+Reportes+-+99+at+7+dias+da+transa+o",
-  "title": "SLA de Envio de Reportes - 99% até 7 dias da transação - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1506934785/SLA+de+Envio+de+Reportes+-+99+at+7+dias+da+transa+o"
-}

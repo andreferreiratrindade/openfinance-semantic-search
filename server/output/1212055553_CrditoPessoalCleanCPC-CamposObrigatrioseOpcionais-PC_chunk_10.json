@@ -1,0 +1,6 @@
+{
+  "texto": "Mais informações em Cabeçalhos HTTP na documentação de produtos do Open Finance Brasil Para CLIENT: OBRIGATÓRIO em todos os cenários onde o x-fapi-interaction-id foi gerado, incluindo respostas com status 4xx (incluindo 408 - timeout), respostas com status 5xx recebidas e transações completadas com sucesso. Para SERVER: OBRIGATÓRIO quando o x-fapi-interaction-id foi recebido na requisição ou quando o Server gerou o x-fapi-interaction-id conforme especificação da API de Produto. Falhas de aplicação, validação, autorização, timeout, indisponibilidade de dependências ou erros internos (5xx) NÃO caracterizam, por si só, falha crítica para fins de ausência do x-fapi-interaction-id, desde que a requisição tenha sido recebida pelo Server.",
+  "paginaId": "1212055553_Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC",
+  "title": "Crédito Pessoal Clean (CPC) - Campos Obrigatórios e Opcionais - PC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212055553/Cr+dito+Pessoal+Clean+CPC+-+Campos+Obrigat+rios+e+Opcionais+-+PC"
+}

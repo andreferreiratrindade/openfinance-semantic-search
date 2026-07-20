@@ -1,6 +1,0 @@
-{
-  "texto": "A Taxa Selic, apurada pelo Banco Central do Brasil para o dia D, foi de 18,31% a.a.. Valor Financeiro [ida] = 139.238 x 974,06997666 = R$ 135.627.555,41 Cálculo do Valor Financeiro [volta] : - FatorSelic = (1+18,31/100)^(1/252)=1,00066744 - FatorAcréscimo = (1+6,00/100)^(1/252)=1,00023125 - FatorCusto = FatorSelic x FatorAcréscimo=1,00066744 x 1,00023125=1,00089884 - PU [volta] = 974,06997666 x 1,00089884=974,94550972 - Valor Financeiro [volta] = 139.238 x 974,94550972= R$ 135.749.462,88 IV - Observação: Quando o compromisso de recompra for honrado de forma parcelada, até a data de vencimento, aplicam-se os procedimentos descritos no Anexo III. ANEXO III PAGAMENTOS PARCIAIS I - Características: a) Em todas as modalidades de Redesconto do Banco Central do Brasil é admitida, até a data de vencimento da operação, liquidação de forma parcelada. No caso das operações que envolvam ativos com Preço Unitário-PU, de que são exemplos as intradia e as de um dia útil, o valor da última parcela deve ser o necessário a liquidar o valor remanescente existente no Banco Central do Brasil.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=234"
-}

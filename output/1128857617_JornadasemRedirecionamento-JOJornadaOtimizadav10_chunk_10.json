@@ -1,6 +1,0 @@
-{
-  "texto": "O pagamento ocorre sem redirecionamento (vinculado ao dispositivo autorizado). Retorno: paymentId e status Initiated . 9. Renovação do Access Token O Cliente pode renovar via POST /oauth/token com grant_type=refresh_token . O AS valida os consentimentos vinculados (JSR e Dados). Se ao menos um estiver válido → retorna novo access_token . Se ambos expirados/revogados → retorna erro invalid_grant . 10. Revogação Revogação do Consentimento de Dados (Secundário): Usuário envia DELETE /consents/{consentId} . Apenas o consentimento de Dados é revogado; o JSR permanece válido. Consequência: deixa de haver compartilhamento de saldo; novo consentimento de Dados deve ser criado se necessário. Revogação do Consentimento JSR (Primário): Usuário envia PATCH /enrollments/{enrollmentId} . Ao ser revogado, o JSR revoga automaticamente o consentimento de Dados vinculado.",
-  "paginaId": "1128857617_Jornada+sem+Redirecionamento+-+JO+Jornada+Otimizada+v1.0",
-  "title": "Jornada sem Redirecionamento - [JO] Jornada Otimizada v1.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1128857617/Jornada+sem+Redirecionamento+-+JO+Jornada+Otimizada+v1.0"
-}

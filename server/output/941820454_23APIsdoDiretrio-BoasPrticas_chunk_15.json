@@ -1,0 +1,6 @@
+{
+  "texto": "· Cache eficiente é crucial para reduzir a carga e garantir um uso suave da API, especialmente para dados majoritariamente estáticos, como /participants , .well-known/openid-configuration , e os diferentes tipos de keystores. Seguindo essas melhores práticas, os participantes podem garantir uma integração segura, eficiente e escalável dentro do ecossistema do Open Finance Brasil.",
+  "paginaId": "941820454_23.+APIs+do+Diret+rio+-+Boas+Pr+ticas",
+  "title": "23. APIs do Diretório - Boas Práticas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/941820454/23.+APIs+do+Diret+rio+-+Boas+Pr+ticas"
+}

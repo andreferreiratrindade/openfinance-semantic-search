@@ -1,6 +1,0 @@
-{
-  "texto": "As tabelas têm como objetivo deixar claro o De/Para entre o status apresentados para o usuário e os status técnicos das APIs. Open Compartilhamento de Dados - Status do compartilhamento de dados Requisitos - IR e IT Cenário: Geral Status: o status do compartilhamento deve estar relacionado com a combinação do status do consentimento e, conforme aplicável, das resources associadas a ele e do efetivo compartilhamento de dados cadastrais. PENDING AUTHORISATION > AVAILABLE > TEMPORARILY UNAVAILABLE > UNAVAILABLE Por exemplo: se um consentimento vigente está compartilhando normalmente dados de cadastro e transacionais, mas tem algum recurso com status UNAVAILABLE , o status para o usuário deve ser Ativo , pois status AVAILABLE na ordem de precedência, vem antes do status UNAVAILABLE . Por outro lado, se algum recurso está com status PENDING AUTHORISATION , então o status para o usuário final deve ser Pendente de autorização . Confira outros exemplos para casos de API com diferentes status a seguir.",
-  "paginaId": "1828062698_v.22.00.01+Gest+o+de+Compartilhamento+de+Dados",
-  "title": "v.22.00.01 Gestão de Compartilhamento de Dados - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828062698/v.22.00.01+Gest+o+de+Compartilhamento+de+Dados"
-}

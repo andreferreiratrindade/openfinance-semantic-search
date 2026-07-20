@@ -1,6 +1,0 @@
-{
-  "texto": "Esta página reúne os requisitos e recomendações referentes à comunicação com o usuário e ao envio de notificações durante as jornadas de pagamento via Open Finance que envolvam transações temporizadas, inclusive para cancelamentos feitos através da área de gestão. Essas comunicações podem ser feitas pela Iniciadora ou pela Detentora, conforme definido pelo arranjo de pagamento. Nota Consulte a página de Notificações de cada produto para visualizar os demais requisitos e recomendações. Recomendações - ITP Cenário: Sobre a solicitação Status da solicitação: caso o usuário saia da tela da ITP, notificá-lo via canal padrão da instituição sobre o andamento e/ou conclusão da solicitação. Exs.: Transação em análise. / Transação aprovada pela [ID]. Open Notificações da transação temporizada",
-  "paginaId": "1828074782_v.22.00.01+Notifica+es+de+Transa+es+Temporizadas",
-  "title": "v.22.00.01 Notificações de Transações Temporizadas - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828074782/v.22.00.01+Notifica+es+de+Transa+es+Temporizadas"
-}

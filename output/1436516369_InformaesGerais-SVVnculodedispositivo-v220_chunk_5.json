@@ -1,6 +1,0 @@
-{
-  "texto": "Visão Geral A Estrutura de Governança responsável pelo desenvolvimento da Jornada Sem Redirecionamento definiu que essa deverá utilizar: Endpoints para a etapa de vinculação de conta para a Jornada sem Redirecionamento; Utilizar os endpoints da versão vigente da API de Iniciação de Pagamentos, sem alterações na etapa de iniciação de pagamento para a jornada sem redirecionamento. Deste modo, todas as informações abaixo, também definidas para o serviço de iniciação de pagamentos com redirecionamento, se aplicam à jornada sem redirecionamento: Idempotência - v4.0.0 - [SV] Pagamentos Recomendação Uso de Polling e Controle de Acesso - v4.0.0 - [SV] Pagamentos Como Assinar o Payload - v4.0.0 - [SV] Pagamentos Assinatura de Mensagem vs Idempotência - v4.0.0 - [SV] Pagamentos Validação de informações no DICT - v4.0.0 - [SV] Pagamentos Convenções de formatação e fuso horário de campos de data e hora - v4.0.0 - [SV] Pagamentos",
-  "paginaId": "1436516369_Informa+es+Gerais+-+SV+V+nculo+de+dispositivo+-+v2.2.0",
-  "title": "Informações Gerais - [SV] Vínculo de dispositivo - v2.2.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1436516369/Informa+es+Gerais+-+SV+V+nculo+de+dispositivo+-+v2.2.0"
-}

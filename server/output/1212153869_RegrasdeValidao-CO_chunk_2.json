@@ -1,0 +1,6 @@
+{
+  "texto": "Dica: não existe a opção de exportar as tabelas para Excel, porém pode-se selecionar o conteúdo da página com CTRL+A, copiar e colar no Excel. Estoque de Consentimentos Campo Regra Campo Regra totalActiveConsents A soma das quantidades de estoques únicos PF e PJ (totalCustomerPF e totalCustomerPJ) não pode ser superior à soma dos estoques ativos Data do consentimento Deve haver envio dário clientOrgId Deve ser uma organização válida dentro do ecossistema Open Finance, e em casos de conglomerados, não pode ser diferente da organização reportadora quando o role for CLIENT serverOrgId Deve ser uma organização válida dentro do ecossistema Open Finance, e em casos de conglomerados, não pode ser diferente da organização reportadora quando o role for SERVER",
+  "paginaId": "1212153869_Regras+de+Valida+o+-+CO",
+  "title": "Regras de Validação - CO - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212153869/Regras+de+Valida+o+-+CO"
+}

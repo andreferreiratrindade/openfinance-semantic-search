@@ -1,6 +1,0 @@
-{
-  "texto": "Tipo do teste Teste funcional Descrição Criação e cancelamento de solicitação de portabilidade Objetivo Garante que o cliente crie e cancele um pedido de solicitação portabilidade Requisito de massa Um contrato com a categoria CONSIGNADO_SIAPE e com o campo status como 'DISPONIVEL' e o campo isEligible como 'TRUE' Versão anterior - Script Os passos abaixo são todas as requisições que serão feitas para a jornada do teste acima. Além das requisições temos as respostas esperada para cada requisição a ser realizada para respeitar o teste especifico. Este cenário se encontra no arquivo disponibilizado em uma página de WIKI no Gitlab disponibilizado pela Raidiam. Foi feita a tradução para português e criado um diagrama de sequência para auxilio no entendimento do cenário de teste.",
-  "paginaId": "1276740736_Cen+rio+5+payroll-credit-portability_api_user-cancelled-portability_test-module_v1+-+CF",
-  "title": "Cenário 5: payroll-credit-portability_api_user-cancelled-portability_test-module_v1 - CF - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1276740736/Cen+rio+5+payroll-credit-portability_api_user-cancelled-portability_test-module_v1+-+CF"
-}

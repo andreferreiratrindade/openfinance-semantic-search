@@ -1,6 +1,0 @@
-{
-  "texto": "A detentora de contas envia uma notificação à instituição iniciadora de pagamento informando que ocorreu uma mudança significativa da máquina de status da API e que a mesma deverá consultar o pagamento para obter mais informações. Exemplo : Open Diagrama de sequência da consulta de um consentimento por parte da iniciadora Open Diagrama de sequência da consulta de um pagamento por parte da iniciadora Premissas O payload será composto pela informação do timestamp do momento da alteração da situação do pagamento; A detentora de conta deve encaminhar o paymentId para iniciadora pela URL. Em caso de falha de notificação A iniciadora de pagamentos, ao perceber que não está recebendo as notificações oriundas da detentora de contas, poderá utilizar os endpoints de consulta para obter informações sobre o andamento de uma determinada transação do consentimento e/ou pagamento.",
-  "paginaId": "118915091_Informa+es+Gerais+-+Webhook+-+v1.0.0-beta.2",
-  "title": "Informações Gerais - Webhook - v1.0.0-beta.2 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/118915091/Informa+es+Gerais+-+Webhook+-+v1.0.0-beta.2"
-}

@@ -1,6 +1,0 @@
-{
-  "texto": "Os intervalos de minuto deverão ser calculados do segundo zero (0s:000ms) até o segundo 59 (59s:999ms). Por exemplo, a disponibilidade pontual de um endpoint referente ao minuto 11:34, de um determinado dia, no qual houve um total de requisições válidas com sucesso de 255 e um total de requisições válidas com erro de 4, é calculada da seguinte forma: ​ Dessa forma, obtém-se o indicador percentual para cada janela de tempo de 1 minuto. Cada período de 1 minuto será classificado como \"disponível\" ou \"indisponível\". Se a \"disponibilidade pontual\" da janela de tempo ficar abaixo de 95% isso indicará que ela será considerada como \"indisponível\", caso contrário será \"disponível\". Períodos que não tenham requisições válidas são considerados \"indefinidos\" e são desconsiderados para cálculo da disponibilidade. ​ A disponibilidade diária será calculada baseada nas informações das disponibilidades pontuais.",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=615"
-}

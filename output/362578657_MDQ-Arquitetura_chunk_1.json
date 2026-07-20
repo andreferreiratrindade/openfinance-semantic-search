@@ -1,6 +1,0 @@
-{
-  "texto": "Arquitetura Proxy reverso Diagramas de Sequência Fluxo da Receptora Fluxo da Transmissora Fluxo de Atualização de Configuração Fluxo de Validação Fluxo de Envio de Resultados Arquitetura Apesar de ter sido criada como um monolito, a aplicação MQD – Client foi desenvolvida com um desacoplamento em componentes, o que permitirá futuramente dividi-la em seções menores (microserviços) se necessário.",
-  "paginaId": "362578657_MDQ+-+Arquitetura",
-  "title": "MDQ - Arquitetura - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/362578657/MDQ+-+Arquitetura"
-}

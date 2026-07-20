@@ -1,6 +1,0 @@
-{
-  "texto": "Ademais, a meta é prevenir qualquer ponto de vulnerabilidade no ecossistema do Open Banking e, para tanto, medidas de segurança robustas devem alcançar inclusive o fornecimento de informações não sensíveis. 3.1 Proteção I - o acesso aos dados no âmbito do Open Banking deve ser realizado exclusivamente por meio de APIs; II - os sistemas e APIs relacionados ao Open Banking devem ser mantidos em rede interna segregada logicamente de redes ordinariamente utilizadas por estações de trabalho ou redes sem fio; III - as instituições transmissoras de dados devem implementar controles de tráfego de entrada e saída, de forma a permitir apenas o tráfego necessário para comunicação com as APIs de Open Banking .",
-  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
-  "title": "Exibe Normativo",
-  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=37"
-}

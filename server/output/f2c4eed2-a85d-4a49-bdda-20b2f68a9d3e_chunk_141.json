@@ -1,0 +1,6 @@
+{
+  "texto": "§ 4º A categoria de maturidade “k” é determinada de acordo com o prazo remanescente do instrumento financeiro derivativo, sendo igual a: I - 1 (um), se o prazo remanescente for menor que 1 (um) ano; II - 2 (dois), se o prazo remanescente for igual ou maior que um ano, e menor que 5 (cinco) anos; ou III - 3 (três), se o prazo remanescente for igual ou maior que 5 (cinco) anos. § 5º O VNE k é calculado por meio da seguinte fórmula: VNE k = ∑ δ * VNA * MF, em que: I - δ = delta padronizado relativo ao instrumento financeiro derivativo, definido no art. 19 deste Anexo; II - VNA = valor nocional ajustado, relativo ao instrumento financeiro derivativo de maturidade “k”; e III - MF = fator de maturidade relativo ao instrumento financeiro derivativo, calculado na forma definida no art. 20 deste Anexo. § 6º O VNA é calculado por meio da seguinte fórmula: VNA = DS * VN, em que: I - DS = maturidade padronizada relativa ao instrumento financeiro derivativo, calculado na forma definida no art. 21 deste Anexo; e II - VN = valor nocional do instrumento financeiro derivativo, observado o disposto no art. 22 deste Anexo.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=229"
+}

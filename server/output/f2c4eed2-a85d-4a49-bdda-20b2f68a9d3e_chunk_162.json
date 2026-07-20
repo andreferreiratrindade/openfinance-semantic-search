@@ -1,0 +1,6 @@
+{
+  "texto": "§ 6º Caso uma opção, a ser exercida se o ativo subjacente alcançar ou superar o preço de exercício predeterminado (opção digital ou binária), possa ser reproduzida por meio da compra ou venda de duas ou mais opções que somente podem ser exercidas na mesma data de vencimento, o VN é apurado considerando-se as opções utilizadas na sua reprodução, como se transacionadas separadamente. § 7º Para uma opção, a ser exercida em datas predeterminadas, que possua como ativo subjacente um swap , o VN é calculado considerando que S é igual ao período compreendido entre a data da apuração da exposição e a próxima data em que há a possibilidade de exercício. § 8º Caso o preço de exercício de uma opção, desconhecido no momento do pagamento de seu prêmio, seja um múltiplo do preço do ativo subjacente em uma data futura, o VN é calculado considerando: I - S = período compreendido entre a data da apuração da exposição e a data em que se define o preço de exercício; e II - T = período compreendido entre a data em que se define o preço de exercício e a data de vencimento da opção.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=229"
+}

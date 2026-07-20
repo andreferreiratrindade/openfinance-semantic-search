@@ -1,6 +1,0 @@
-{
-  "texto": "As regras de validação para cada campo podem ser consultadas em em cada domínio: Especificações por domínio Arquivo de evidências Todo ticket aberto possui anexado um arquivo de evidências, onde são listados até 5 fapiInteractionId para cada caso encontrado por dia, para facilitar a investigação das causas pelas organizações. Campos do arquivo de evidências role, orgid, nome: informações da organização que enviou os dados data_referencia: data GMT do envio do reporte data_deescartado: data em que foi feito o descarte do reporte serverorgid e clientorgid: dados das organizações envolvidas na comuicação api_family, api_version, endpoint, httpmethod, statuscode: identificação do reporte enviado *_status: campo ou additionalinfo que foi identificado como fora da qualidade establelecida pelo ecossistema OFB evidencias_de_fapi_*: lista de até 5 xfapis que foram criticados pelos motivos apresentados em cada campo/additionalinfo. No caso de Hybridflow, são os reportid relacionados.",
-  "paginaId": "1212219393_Qualidade+de+Dados",
-  "title": "Qualidade de Dados - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212219393/Qualidade+de+Dados"
-}

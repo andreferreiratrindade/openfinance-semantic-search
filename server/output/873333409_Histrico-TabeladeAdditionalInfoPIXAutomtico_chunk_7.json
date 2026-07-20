@@ -1,0 +1,6 @@
+{
+  "texto": "Diretrizes: NONE: quando o CPF (loggedUser) / CNPJ (businessEntity) possui credencial autenticadora e poderes suficientes para prosseguir o fluxo monitorado - exemplo: PF, cliente, que possui credencial ativa, mas não se autenticou; cliente que se autenticou utilizando a credencial correta. NO_CREDENTIAL: quando o CPF (loggedUser) / CNPJ (businessEntity) não for cliente ou não possuir credencial válida/ativa para prosseguir no fluxo monitorado. NO_AUTHORITY: quando o CPF (loggedUser) / CNPJ (businessEntity) consegue se autenticar, mas não dispõe de poderes ou alçadas para prosseguir no fluxo de compartilhamento de dados e serviços. NO_AUTHORITY_PERSON_MISMATCH: quando o CPF (loggedUser) não possui relação com a credencial utilizada na etapa de autenticação do Hybrid Flow - exemplo: consentimento criado para um CPF e autenticado por outro; criado para um CNPJ e autenticado por CPF sem relação com o CNPJ.",
+  "paginaId": "873333409_Hist+rico+-+Tabela+de+AdditionalInfo+PIX+Autom+tico",
+  "title": "Histórico - Tabela de AdditionalInfo PIX Automático - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/873333409/Hist+rico+-+Tabela+de+AdditionalInfo+PIX+Autom+tico"
+}

@@ -1,6 +1,0 @@
-{
-  "texto": "Contexto: Conforme IN nº 306 de 19/02/2022, o Item 2 do Anexo lista todas as APIs integrantes do Open Finance. Dentre elas, as APIs de Métricas são comum a todos os participantes do Open Finance Brasil, independentemente da fase de adesão. Relatórios e Métricas Situação do Ambiente Deve dar acesso a dados sobre a disponibilidade atual das implementações das APIs, bem como a dados sobre indisponibilidades programadas. Métricas Deve dar acesso a dados de performance de todas as APIs disponibilizadas. Sendo assim: Todas as instituições devem publicar essas APIs que monitoram a situação do ambiente; API Comum (Discovery) deve reportar os dados de disponibilidade e indisponibilidade programada de todas as APIs que a instituição oferece; API Comum (Discovery) deve ser atualizada conforme lançamento de novas APIs pela instituição ou atualização das APIs já existentes. GET /discovery/v2/status.",
-  "paginaId": "297501083_Informa+es+Gerais+-+API+Comum+Discovery+-+v2.0.0",
-  "title": "Informações Gerais - API Comum (Discovery) -  v2.0.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/297501083/Informa+es+Gerais+-+API+Comum+Discovery+-+v2.0.0"
-}

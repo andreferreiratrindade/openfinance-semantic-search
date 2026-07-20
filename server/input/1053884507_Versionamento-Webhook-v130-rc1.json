@@ -1,0 +1,6 @@
+{
+    "texto": "O\nVersionamento ocorrerá de forma desacoplada\nde qualquer API presente no ecossistema. Tal decisão tem por objetivo\npossibilitar\no\nreaproveitamento\nda\nespecificação\nquando o\nWebhook\nfor adotado para outras APIs no ecossistema do Open Finance, sendo assim:\nA\nversão\ndo\nWebhook não fará parte da URL base\ndo serviço, a URL base representa apenas o <host> da iniciadora que receberá as notificações;\nO restante da URL será formada da seguinte maneira: uma string \"/open-banking/webhook\", versão do Webhook, nome da API, sua versão e qual endpoint dentro da API que este Webhook notificará, por exemplo:\n/open-banking/webhook/[Versão do Webhook]/[nome_da_API]/[Versão_da_API]/[endpoint_da_API]\nUtilizando a API de Iniciação de Pagamentos como exemplo, ficaria da seguinte forma:\n/open-banking/webhook/[Versão do Webhook]/payments/[Versão_da_API]/consents/{consentId}\n/open-banking/webhook/[Versão do Webhook]/payments/[Versão_da_API]/pix/payments/{paymentId}",
+    "paginaId": "1053884507_Versionamento+-+Webhook+-+v1.3.0-rc.1",
+    "title": "Versionamento - Webhook - v1.3.0-rc.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1053884507/Versionamento+-+Webhook+-+v1.3.0-rc.1"
+}

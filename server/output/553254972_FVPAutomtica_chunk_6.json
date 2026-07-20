@@ -1,0 +1,6 @@
+{
+  "texto": "Em seguida, as informações obtidas são atualizadas. As informações incluem: Métodos de autorização suportados (chave privada ou MTLS) Se PAR é suportado, e se é obrigatório Com todas essas informações em mãos, uma série de planos de teste será criada para cada cenário potencial de teste válido. Aqui, o número de planos válidos por servidor de autorização depende do número de credenciais X variantes de autorização suportadas. Baseado nas informações extraídas, a FVP cria planos de teste para cada cenário potencial. O número de planos válidos por servidores de autorização depende do número de credenciais X supported_authorisation_variants, por exemplo, se um AS suporta duas variantes de autorização e os testes são feitos com dois tipos de software statments , 4 planos de teste válidos são gerados.",
+  "paginaId": "553254972_FVP+Autom+tica",
+  "title": "FVP Automática - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/553254972/FVP+Autom+tica"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "Período de exibição do status : manter o item de exibição com o status Sem proposta disponível por período definido pela própria Instituição Proponente. Justificativa para o status : na tela de detalhes do status Sem Proposta Disponível , exibir o motivo do status. Ex. Não encontramos uma oferta para o seu perfil. Open Gestão de Portabilidade de Crédito - Sem proposta disponível (IP) Cenário: Proposta disponível Exibição de status : no item de exibição, mostrar o status Proposta disponível quando houver uma proposta, mas o usuário ainda não a tiver aceitado ou recusado. Período de exibição do status: manter o item de exibição com o status Proposta disponível , por, no mínimo, dois dias, conforme legislação e regulação vigente. Exibição de comparativo : na tela de detalhes do status Proposta disponível , exibir o comparativo entre a proposta e o contrato original com os itens a seguir.",
+  "paginaId": "1828077699_v.22.00.01+Gest+o+de+CPC",
+  "title": "v.22.00.01 Gestão de CPC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1828077699/v.22.00.01+Gest+o+de+CPC"
+}

@@ -1,0 +1,6 @@
+{
+  "texto": "Essa funcionalidade está presente na API de pagamentos, a partir de sua versão 4.0.0. O link para a API pode ser encontrado abaixo. Pagamento único, imediato ou agendado, e agendamento recorrente Pagamentos únicos, agendados ou imediatos, são pagamentos que ocorrerão, por natureza e definição, apenas uma vez, instantâneos ou agendados para uma data futura. Já os agendamentos recorrentes representam mais de um pagamento agendado utilizando o mesmo consentimento. 3 - Regras de negócios para agendamentos recorrentes No quadro abaixo, entraremos com mais detalhes sobre as regras de negócio dos agendamentos recorrentes, o que deve-se considerar quando consumir o serviço e quais são os parâmetros necessários para utilizar corretamente o modelo de pagamentos descrito e passível de realização. Atentem-se que pagamentos únicos imediatos ou agendados não estão contemplados na documentação abaixo, visto que é um produto já consolidado no ecossistema, sua documentação não será alterada e nem contemplada neste guia.",
+  "paginaId": "213876817_Agendamento+Recorrente",
+  "title": "Agendamento Recorrente - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/213876817/Agendamento+Recorrente"
+}

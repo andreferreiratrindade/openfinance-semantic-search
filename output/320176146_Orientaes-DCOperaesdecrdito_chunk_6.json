@@ -1,6 +1,0 @@
-{
-  "texto": "Neste caso a Transmissora deve retornar um erro HTTP Status Code 403 - Forbidden com o conteúdo abaixo: { \"code\": \"STATUS_RESOURCE_PEDING_AUTHORISATION\", \"title\": \"Aguardando autorização de múltiplas alçadas\", \"detail\": \"(uso a critério do transmissor)\" } UNAVAILABLE: indica que o recurso (contrato) se encontra indisponível para consulta na API de Operação de crédito. Neste caso a Transmissora deve retornar um erro HTTP Status Code 403 - Forbidden com o conteúdo abaixo: { \"code\": \"STATUS_RESOURCE_UNAVAILABLE\", \"title\": \"Recurso indisponível\", \"detail\": \"(uso a critério do transmissor)\" } TEMPORARILY_UNAVAILABLE: indica que o recurso (contrato) se encontra temporariamente indisponível para consulta nas APIs de operações de crédito da modalidade em questão.",
-  "paginaId": "320176146_Orienta+es+-+DC+Opera+es+de+cr+dito",
-  "title": "Orientações - [DC] Operações de crédito - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/320176146/Orienta+es+-+DC+Opera+es+de+cr+dito"
-}

@@ -1,0 +1,6 @@
+{
+  "texto": "Parágrafo único. As funcionalidades de que trata o caput estarão dispostas no manual de Requisitos Mínimos para a Experiência do Usuário. Art. 11. No âmbito do Pix Automático, o prestador de serviços de pagamento do usuário recebedor, caso detenha a sua conta transacional, deve ofertar funcionalidades para que seu cliente possa fazer a gestão das permissões recebidas do usuário pagador e das instruções de pagamento. Parágrafo único. As funcionalidades de que trata o caput estarão dispostas no Manual de Padrões para Iniciação do Pix. Art. 12. No âmbito do Pix Agendado e de transações relativas ao Pix Cobrança para pagamentos com vencimento que tenham sido agendados, o prestador de serviços de pagamento do usuário pagador deve enviar a ordem de pagamento para liquidação no dia informado pelo seu cliente, entre zero hora e oito horas, sempre que houver recursos suficientes na conta transacional do usuário pagador, respeitado o limite transacional disponível para a respectiva operação.",
+  "paginaId": "www_bcb_gov_br_estabilidadefinanceira_exibenormativo",
+  "title": "Exibe Normativo",
+  "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Instru%C3%A7%C3%A3o%20Normativa%20BCB&numero=513"
+}

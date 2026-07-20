@@ -1,6 +1,0 @@
-{
-  "texto": "Ensure the ID is not \"00000000-0000-0000-0000-000000000000.\": formato do campo fapiInteractionId inválido httpMethod Informação não enviada Invalid type: httpMethod: Required: campo httpMethod ausente Conteúdo inválido Invalid format: : Unrecognized key(s) in object: 'httpmethod': conteúdo do campo httpMethod inválido Invalid value: httpMethod: Invalid enum value. Expected ‘GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', received 'HEAD’: conteúdo do campo httpMethod inválido, recebido conteúdo não determinado no enum do campo processTimespan Informação não enviada Invalid type: processTimespan: Required: campo processTimespan ausente Conteúdo inválido Invalid value: processTimespan must be greater than zero: campo processTimespan deve ter valor maior do que zero role Informação não enviada Invalid type: role: Required campo role ausente Conteúdo inválido Invalid value: role: Invalid enum value.",
-  "paginaId": "1212383245_Regras+de+Descarte+-+DC",
-  "title": "Regras de Descarte - DC - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/1212383245/Regras+de+Descarte+-+DC"
-}

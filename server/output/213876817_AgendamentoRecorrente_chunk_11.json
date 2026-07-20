@@ -1,0 +1,6 @@
+{
+  "texto": "41 Pagador Comunicação Pagador recebe notificação de sucesso. Alguns passos necessitam uma maior explicação do comportamento esperado do Iniciador ou Detentor dentro do fluxo, são esses: 12 - \"Cria o consentimento\": Iniciador preenche o payload de consentimento contendo o objeto schedule . O preenchimento deve seguir as informações providas pelo usuário Pagador durante o passo 2. Considerando dois casos de uso, vejamos o preenchimento dos payloads , o primeiro onde o usuário pagador está tentando pagar algo semanal e o segundo algo mensal, conforme seu objetivo financeiro. Semanal - Todas as sextas-feiras, a partir do dia 01 de janeiro de 2024, durante três semanas consecutivas. O campo quantity indica a quantidade de recorrências permitidas para esse consentimento.",
+  "paginaId": "213876817_Agendamento+Recorrente",
+  "title": "Agendamento Recorrente - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+  "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/213876817/Agendamento+Recorrente"
+}
