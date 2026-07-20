@@ -5,14 +5,17 @@ const { pipeline } = require('@huggingface/transformers');
 async function bundleData() {
     console.log("Loading embedding model...");
     // 1. Swap to e5-small and explicitly lock precision to q8
-    const embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-base", { dtype: "fp32" });
+    const embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
 
     const dataDirectory = path.join(__dirname, 'output');
     const files = fs.readdirSync(dataDirectory).filter(f => f.endsWith('.json'));
 
     const bundledPoints = [];
-
+    var count =0;
     for (const file of files) {
+        count++;
+        console.log(`Processing file ${count}: ${file}`);
+        if(count == 1000) break
         const rawContent = JSON.parse(fs.readFileSync(path.join(dataDirectory, file), 'utf8'));
         const items = Array.isArray(rawContent) ? rawContent : [rawContent];
 
@@ -40,7 +43,7 @@ async function bundleData() {
     // 3. Save into multiple files containing exactly 100 objects each
     const CHUNK_SIZE = 100;
     const outputDir = path.join(__dirname, 'src', 'data');
-    
+
     // Ensure the output directory exists
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
@@ -50,10 +53,10 @@ async function bundleData() {
     for (let i = 0; i < bundledPoints.length; i += CHUNK_SIZE) {
         const slice = bundledPoints.slice(i, i + CHUNK_SIZE);
         const jsContent = `export const chunksData = ${JSON.stringify(slice)};`;
-        
+
         const fileName = `data_${fileCount}.js`;
         fs.writeFileSync(path.join(outputDir, fileName), jsContent);
-        
+
         console.log(`Saved ${fileName} with ${slice.length} points.`);
         fileCount++;
     }
