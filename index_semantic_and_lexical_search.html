@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Finance Brasil - RAG Search (Hybrid Local Edition)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: #004d40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #status-text {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .user-msg {
+            background: #e0f2f1;
+            color: #004d40;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-msg {
+            background: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .system-msg {
+            background: #fff3e0;
+            color: #e65100;
+            align-self: center;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        textarea {
+            flex: 1;
+            resize: none;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            height: 50px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #004d40;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:disabled,
+        textarea:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button:hover:not(:disabled) {
+            background: #00332a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container">
+        <header>
+            <h2>Open Finance Explorer (Hybrid RAG)</h2>
+            <p id="status-text">Bootstrapping Database Architecture...</p>
+            <select id="model-selector" style="margin: 10px; padding: 5px;"></select>
+        </header>
+
+        <main id="chat-history">
+            <div class="message system-msg">
+                Hello! I am preparing the local RxDB dataset, Lexical Search, and LLM engine.
+            </div>
+        </main>
+
+        <div class="input-area">
+            <textarea id="user-input" placeholder="Warming up engine..." disabled></textarea>
+            <button id="send-btn" disabled>Send</button>
+        </div>
+    </div>
+
+ <script type="module">
+    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
+    env.allowLocalModels = false;
+
+    import { createRxDatabase } from "https://esm.sh/rxdb@15.3.0?bundle";
+    import { getRxStorageDexie } from "https://esm.sh/rxdb@15.3.0/plugins/storage-dexie?bundle";
+    import MiniSearch from 'https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/es/index.js';
+
+    // DOM Elements
+    const statusText = document.getElementById('status-text');
+    const chatHistory = document.getElementById('chat-history');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const modelSelector = document.getElementById('model-selector');
+    const totalItemSearched = 30;
+    const context_window_dinamic = 2;
+    
+    let engine;
+    let embedder;
+    let db;
+    let miniSearch;
+
+    // --- SETUP MINISEARCH (BM25 / LEXICAL) ---
+    miniSearch = new MiniSearch({
+        fields: ['title', 'text_content', 'url'], // Fields to search
+        storeFields: ['id', 'title', 'url', 'text_content', 'source_file', 'chunk_index'], // Fields to return
+        searchOptions: {
+            boost: { title: 2 }, // Give higher weight to matches in the title
+            prefix: true // Allows partial word matches
+        }
+    });
+
+    // --- RECIPROCAL RANK FUSION (RRF) ---
+    function calculateRRF(vectorResults, lexicalResults, k = 60) {
+        const rrfScores = new Map();
+
+        // 1. Process Vector Results
+        vectorResults.forEach((res, index) => {
+            const docId = res.payload.id;
+            const rank = index + 1;
+            rrfScores.set(docId, {
+                payload: res.payload,
+                score: 1.0 / (k + rank)
+            });
+        });
+
+        // 2. Process Lexical Results
+        lexicalResults.forEach((res, index) => {
+            const docId = res.id;
+            const rank = index + 1;
+            const lexicalScore = 1.0 / (k + rank);
+
+            if (rrfScores.has(docId)) {
+                rrfScores.get(docId).score += lexicalScore; // Combine scores
+            } else {
+                rrfScores.set(docId, {
+                    payload: res, 
+                    score: lexicalScore
+                });
+            }
+        });
+
+        // 3. Sort by combined RRF score and return
+        return Array.from(rrfScores.values())
+            .sort((a, b) => b.score - a.score)
+            .slice(0, totalItemSearched);
+    }
+
+    // --- FUNÇÃO DE EXPANSÃO (Small-to-Big Retrieval) ---
+    async function getExpandedContext(vectorResults, myDatabase) {
+        const limitedVectorResults = vectorResults.slice(0, totalItemSearched);
+        const MAX_CONTEXT_CHARS = 9600;
+        const chunksToFetchByFile = {};
+
+        limitedVectorResults.forEach(match => {
+            const file = match.source_file;
+            const index = match.chunk_index;
+
+            if (!file || index === undefined) return;
+
+            if (!chunksToFetchByFile[file]) {
+                chunksToFetchByFile[file] = new Set();
+            }
+
+            for (let i = -context_window_dinamic; i <= context_window_dinamic; i++) {
+                chunksToFetchByFile[file].add(Math.max(1, index + i));
+            }
+        });
+
+        let finalContextBlocks = [];
+        let currentTotalChars = 0;
+
+        for (const [file, indexSet] of Object.entries(chunksToFetchByFile)) {
+            const uniqueIndexes = Array.from(indexSet).sort((a, b) => a - b);
+
+            const retrievedDocs = await myDatabase.chunks.find({
+                selector: {
+                    source_file: file,
+                    chunk_index: {
+                        $in: uniqueIndexes
+                    }
+                }
+            }).exec();
+
+            retrievedDocs.sort((a, b) => a.chunk_index - b.chunk_index);
+            const fileText = retrievedDocs
+                .map(doc => doc.text_content.replace("passage: ", "").trim())
+                .join("\n\n");
+
+            const blockText = fileText;
+            
+            if (currentTotalChars + blockText.length > MAX_CONTEXT_CHARS) {
+                const remainingSpace = MAX_CONTEXT_CHARS - currentTotalChars;
+                if (remainingSpace > 200) {
+                    const truncatedBlock = blockText.substring(0, remainingSpace) + "\n...[Context truncated due to size limits]";
+                    finalContextBlocks.push(truncatedBlock);
+                }
+                console.warn("Context limit reached. Some lower-ranked search matches were omitted.");
+                break;
+            }
+
+            finalContextBlocks.push(blockText);
+            currentTotalChars += blockText.length;
+        }
+
+        return finalContextBlocks.join("\n\n---------------------------\n\n");
+    }
+
+    // --- WEB WORKER PARA CÁLCULO DE VETORES ---
+    // Atualizado para incluir o 'id' no payload para o RRF
+    const workerCode = `
+        function cosineSimilarity(vecA, vecB) {
+            let dotProduct = 0.0;
+            let normA = 0.0;
+            let normB = 0.0;
+            for (let i = 0; i < vecA.length; i++) {
+                dotProduct += vecA[i] * vecB[i];
+                normA += vecA[i] * vecA[i];
+                normB += vecB[i] * vecB[i];
+            }
+            if (normA === 0 || normB === 0) return 0;
+            return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        }
+
+        self.onmessage = function(e) {
+            const { queryVector, docs } = e.data;
+
+            const scoredDocs = docs.map(doc => {
+                return {
+                    payload: {
+                        id: doc.id,
+                        title: doc.title,
+                        url: doc.url,
+                        text_content: doc.text_content,
+                        source_file: doc.source_file,
+                        chunk_index: doc.chunk_index
+                    },
+                    score: cosineSimilarity(queryVector, doc.vector)
+                };
+            });
+
+            const topMatches = scoredDocs
+                .filter(doc => doc.score > 0.80)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, ${totalItemSearched});
+
+            self.postMessage(topMatches);
+        };
+    `;
+
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const searchWorker = new Worker(URL.createObjectURL(blob));
+
+    // --- Initialize RxDB & MiniSearch ---
+    async function initDatabase() {
+        try {
+            statusText.textContent = "Initializing local RxDB system...";
+
+            db = await createRxDatabase({
+                name: 'openfinancedb',
+                storage: getRxStorageDexie()
+            });
+
+            const chunkSchema = {
+                version: 0,
+                primaryKey: 'id',
+                type: 'object',
+                properties: {
+                    id: { type: 'string', maxLength: 100 },
+                    text_content: { type: 'string' },
+                    title: { type: 'string' },
+                    url: { type: 'string' },
+                    paginaId: { type: 'string' },
+                    source_file: { type: 'string' }, 
+                    chunk_index: { type: 'number' }, 
+                    vector: { type: 'array', items: { type: 'number' } }
+                },
+                required: ['id', 'text_content', 'vector']
+            };
+
+            await db.addCollections({
+                chunks: { schema: chunkSchema }
+            });
+
+            const existingCount = await db.chunks.find().exec();
+
+            if (existingCount.length === 0) {
+                statusText.textContent = "RxDB syncing... downloading partitions.";
+
+                for (let i = 0; i < 70; i++) {
+                    try {
+                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 70...`;
+                        const module = await import(`./src/data/data_${i}.js`);
+                        if (module && module.chunksData) {
+                            await db.chunks.bulkInsert(module.chunksData);
+                        }
+                    } catch (e) {
+                        break;
+                    }
+                }
+            }
+
+            // Carregar todos os documentos para o MiniSearch (Lexical Engine)
+            statusText.textContent = "Indexing Lexical Search (BM25)...";
+            const allDocs = await db.chunks.find().exec();
+            
+            const docsForLexical = allDocs.map(doc => ({
+                id: doc.id,
+                title: doc.title,
+                text_content: doc.text_content,
+                url: doc.url,
+                source_file: doc.source_file,
+                chunk_index: doc.chunk_index
+            }));
+            
+            miniSearch.addAll(docsForLexical);
+
+            statusText.textContent = "Databases synced and ready. Preparing models...";
+            await initModelSelector();
+        } catch (err) {
+            statusText.textContent = "Failed syncing data layout layers.";
+            console.error(err);
+        }
+    }
+
+    async function initModelSelector() {
+        modelSelector.innerHTML = '';
+        const model = "Llama-3.2-3B-Instruct-q4f16_1-MLC";
+        const defaultOption = document.createElement('option');
+        defaultOption.value = model;
+        defaultOption.textContent = model;
+        modelSelector.appendChild(defaultOption);
+        initWebLLM();
+    }
+
+    // --- Initialize Engine ---
+    async function initWebLLM() {
+        try {
+            const selectedModel = modelSelector.value;
+            if(!selectedModel) return;
+
+            statusText.textContent = `Loading ${selectedModel}...`;
+
+            engine = await CreateMLCEngine(selectedModel, {
+                initProgressCallback: (progress) => {
+                    statusText.textContent = `Loading LLM: ${Math.round(progress.progress * 100)}%`;
+                },
+                chatOpts: {
+                    context_window_size: 4096
+                }
+            });
+
+            statusText.textContent = "Loading Multilingual Embedder...";
+            embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
+
+            statusText.textContent = "System Ready.";
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+        } catch (error) {
+            statusText.textContent = "Error bootstrapping local runtime engine.";
+            console.error(error);
+        }
+    }
+
+    function appendMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = `message ${role}-msg`;
+        div.textContent = text;
+        chatHistory.appendChild(div);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    // --- Execute RxDB Local Semantic Vector Search ---
+    async function localRxDBSearch(queryVector) {
+        const allDocs = await db.chunks.find({
+            selector: {
+                url: {
+                    $regex: 'https://openfinancebrasil\\.atlassian\\.net',
+                    $options: 'i' 
+                }
+            }
+        }).exec();
+
+        const plainDocs = allDocs
+            .filter(doc => doc.text_content && doc.text_content.length > 300)
+            .map(doc => ({
+                id: doc.id, // Ensure ID is passed for RRF correlation
+                title: doc.title,
+                url: doc.url,
+                text_content: doc.text_content,
+                source_file: doc.source_file,
+                chunk_index: doc.chunk_index,
+                vector: doc.vector
+            }));
+
+        return new Promise((resolve, reject) => {
+            searchWorker.onmessage = (e) => resolve(e.data);
+            searchWorker.onerror = (err) => reject(err);
+            searchWorker.postMessage({ queryVector, docs: plainDocs });
+        });
+    }
+
+    // --- Main Workflow ---
+    async function handleUserSubmit() {
+        const originalQuery = userInput.value.trim();
+        if (!originalQuery) return;
+
+        userInput.value = '';
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+
+        appendMessage('user', originalQuery);
+        statusText.textContent = "Refining intent parameters...";
+
+        try {
+            // Passo 1: Otimização de Busca (LLM)
+            const refinementPrompt = `
+                Papel:
+                Você é um assistente especialista em otimização de consultas de busca. Sua tarefa é transformar entradas de conversação de usuários em consultas de busca semântica altamente eficazes, otimizadas para um banco de dados vetorial.
+
+                Objetivo:
+                Pegar a entrada bruta do usuário e reescrevê-la para maximizar a recuperação de documentos relevantes com base na similaridade de cosseno (cosine similarity) e embeddings de vetores densos.
+
+                Instruções:
+                    1. Eliminar Ruído: Remova todos os preenchimentos de conversação, saudações e palavras desnecessárias.
+                    2. Extrair Conceitos Centrais: Identifique as entidades principais, ações e restrições.
+                    3. Expansão de Consulta (Domínio Financeiro): Adicione de 2 a 3 sinônimos ou termos técnicos altamente relevantes.
+                    4. Foco Contextual: Assuma que TODOS os documentos de destino referem-se ao Open Finance Brasil.
+
+                Formato de Saída:
+                    Retorne APENAS a string da consulta de busca otimizada. Não inclua explicações, texto introdutório ou aspas.
+
+                Entrada do Usuário: ${originalQuery}
+                Saída:`;
+
+            const refReply = await engine.chat.completions.create({
+                messages: [{ role: "user", content: refinementPrompt }],
+                temperature: 0.1
+            });
+
+            const optimizedQuery = refReply.choices[0].message.content.trim();
+            console.log("Vector Query:", optimizedQuery);
+
+            // Passo 2: Busca Vetorial Semântica
+            statusText.textContent = "Calculating local query vectors...";
+            const queryForE5 = "query: " + optimizedQuery;
+            const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
+            const vector = Array.from(embedding.data);
+            
+            statusText.textContent = "Scanning RxDB (Semantic)...";
+            const vectorMatches = await localRxDBSearch(vector);
+
+            // Passo 3: Busca Lexical/BM25 (MiniSearch) usando a query original
+            statusText.textContent = "Scanning MiniSearch (Lexical)...";
+            // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
+            const lexicalMatches = miniSearch.search(originalQuery);
+
+            // Passo 4: Reciprocal Rank Fusion (RRF)
+            statusText.textContent = "Fusing Hybrid Results...";
+            const fusedMatches = calculateRRF(vectorMatches, lexicalMatches);
+            console.log("Hybrid RRF Top Matches:", fusedMatches);
+
+            if (fusedMatches.length === 0) {
+                appendMessage('bot', "Não encontrei essa informação na documentação extraída.");
+                statusText.textContent = "System Ready.";
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                return; 
+            }
+
+            // Passo 5: Expansão Contextual (Small-to-Big)
+            statusText.textContent = "Expanding semantic context neighbors...";
+            const context = await getExpandedContext(fusedMatches.map(m => m.payload), db);
+
+            // Passo 6: Geração da Resposta Final
+            statusText.textContent = "Synthesizing localized context query...";
+
+            const finalPrompt = `
+                Papel:
+                    Você é um especialista em atendimento e suporte focado no ecossistema do Open Finance Brasil. Sua missão é responder às dúvidas dos usuários de forma clara, didática e segura, baseando-se EXCLUSIVAMENTE no contexto de referência fornecido.
+
+                Objetivo:
+                    Utilizar as informações técnicas recuperadas da base de conhecimento (CONTEXTO) para responder à PERGUNTA_DO_USUÁRIO. A resposta deve preencher a lacuna entre o jargão técnico/regulatório e a linguagem do dia a dia.
+
+                Instruções e Regras de Segurança:
+                    Fidelidade ao Contexto: Baseie sua resposta apenas no texto fornecido na variável CONTEXTO. Não invente dados.
+                    Tradução de Jargões: Explique brevemente termos técnicos para o usuário final, mantendo o tom acessível.
+                    Gestão de Lacunas: Se o CONTEXTO não contiver a resposta, responda educadamente que você não possui essa informação.
+                    Estrutura e Clareza: Formate a resposta para facilitar a leitura (parágrafos curtos, negrito, listas).
+
+                ---
+                CONTEXTO:
+                ${context}
+                ---
+
+                PERGUNTA_DO_USUÁRIO: ${originalQuery}`;
+
+            const finalReply = await engine.chat.completions.create({
+                messages: [{ role: "user", content: finalPrompt }],
+                temperature: 0.1
+            });
+
+            appendMessage('bot', finalReply.choices[0].message.content);
+
+        } catch (error) {
+            appendMessage('system', `Execution fault error: ${error.message}`);
+            console.error(error);
+        } finally {
+            statusText.textContent = "System Ready.";
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+        }
+    }
+
+    async function checkSystemSpecs() {
+        const report = {
+            webGpuSupported: false,
+            gpuAdapterInfo: null,
+            estimatedRamGB: navigator.deviceMemory || "Unknown",
+            cpuCores: navigator.hardwareConcurrency || "Unknown",
+            availableStorageMB: 0,
+            isCompatible: false,
+            warnings: []
+        };
+
+        if (!navigator.gpu) {
+            report.warnings.push("WebGPU não é suportado neste navegador. Utilize o Chrome, Edge ou Brave atualizados.");
+        } else {
+            try {
+                const adapter = await navigator.gpu.requestAdapter();
+                if (adapter) {
+                    report.webGpuSupported = true;
+                    if (adapter.info) {
+                        report.gpuAdapterInfo = {
+                            architecture: adapter.info.architecture || "N/A",
+                            description: adapter.info.description || "N/A",
+                            vendor: adapter.info.vendor || "N/A"
+                        };
+                    } else {
+                        report.gpuAdapterInfo = "Disponível (Detalhes omitidos por privacidade)";
+                    }
+                } else {
+                    report.warnings.push("Nenhum adaptador WebGPU compatível encontrado no hardware.");
+                }
+            } catch (e) {
+                report.warnings.push("Erro ao inicializar WebGPU: " + e.message);
+            }
+        }
+
+        if (navigator.storage && navigator.storage.estimate) {
+            const estimate = await navigator.storage.estimate();
+            const availableBytes = estimate.quota - estimate.usage;
+            report.availableStorageMB = Math.round(availableBytes / (1024 * 1024));
+        }
+
+        const hasGpu = report.webGpuSupported;
+        const hasEnoughRam = report.estimatedRamGB === "Unknown" || report.estimatedRamGB >= 8;
+        const hasEnoughStorage = report.availableStorageMB > 7000;
+
+        if (hasGpu && hasEnoughRam && hasEnoughStorage) {
+            report.isCompatible = true;
+        } else {
+            if (!hasEnoughRam) report.warnings.push("Memória RAM insuficiente. O sistema requer pelo menos 8GB.");
+            if (!hasEnoughStorage) report.warnings.push(`Espaço em disco insuficiente. Você tem ${report.availableStorageMB}MB livres, mas precisa de pelo menos 7000MB.`);
+        }
+
+        return report;
+    }
+
+    checkSystemSpecs().then((status) => {
+        console.log("--- Diagnóstico do Sistema ---", status);
+
+        if (!status.isCompatible) {
+            console.error("Bloqueado: O computador do usuário não atende aos requisitos mínimos.");
+        } else {
+            console.log("Sucesso: Hardware compatível! Inicializando RAG local...");
+            initDatabase();
+        }
+    });
+
+    sendBtn.addEventListener('click', handleUserSubmit);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleUserSubmit();
+        }
+    });
+
+    modelSelector.addEventListener('change', initWebLLM);
+
+    </script>
+</body>
+
+</html>
