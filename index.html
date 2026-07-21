@@ -319,9 +319,10 @@
 
     async function initModelSelector() {
         modelSelector.innerHTML = '';
+        const model = "Llama-3.2-3B-Instruct-q4f16_1-MLC"
         const defaultOption = document.createElement('option');
-        defaultOption.value = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
-        defaultOption.textContent = "Llama-3.1-8B-Instruct-q4f16_1-MLC";
+        defaultOption.value = model;
+        defaultOption.textContent = model;
         modelSelector.appendChild(defaultOption);
         initWebLLM();
     }
@@ -433,6 +434,15 @@
             statusText.textContent = "Scanning RxDB collection layers...";
             const matches = await localRxDBSearch(vector);
             console.log(matches);
+
+            // Safety check: if no chunks passed the 80% threshold
+            if (matches.length === 0) {
+                appendMessage('bot', "Não encontrei essa informação na documentação extraída.");
+                statusText.textContent = "System Ready.";
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                return; // Stop execution here, don't ping the LLM
+            }
             // INTEGRAÇÃO: Aqui chamamos a função Small-to-Big em vez de concatenar direto
             statusText.textContent = "Expanding semantic context neighbors...";
             const context = await getExpandedContext(matches.map(m => m.payload), db);
