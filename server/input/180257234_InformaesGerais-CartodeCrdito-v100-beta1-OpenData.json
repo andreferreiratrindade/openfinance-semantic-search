@@ -1,0 +1,6 @@
+{
+    "texto": "1\nVisão Geral\n2\nObtém a lista de cartão de crédito\n: (GET /opendata-creditcards/v1/personal-credit-cards)\n2.1\nDicionário de dados\n3\nObtém a lista de cartão de crédito\n: (GET /opendata-creditcards/v1/business-credit-cards)\n3.1\nDicionário de dados\nVisão Geral\nA API descrita neste documento é referente as API Credit Cards da fase OpenData do Open Finance Brasil.\nObtém a lista de cartão de crédito\n: (GET /opendata-creditcards/v1/personal-credit-cards)\nObtém dados sobre cartões de crédito pessoa natural.\nDicionário de dados\nFazer download do dicionário de dados\nObtém a lista de cartão de crédito\n: (GET /opendata-creditcards/v1/business-credit-cards)\nObtém dados sobre cartões de crédito pessoa jurídica.\nDicionário de dados\nFazer download do dicionário de dados",
+    "paginaId": "180257234_Informa+es+Gerais+-+Cart+o+de+Cr+dito+-+v1.0.0-beta.1+-+OpenData",
+    "title": "Informações Gerais - Cartão de Crédito - v1.0.0-beta.1 - OpenData - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/180257234/Informa+es+Gerais+-+Cart+o+de+Cr+dito+-+v1.0.0-beta.1+-+OpenData"
+}

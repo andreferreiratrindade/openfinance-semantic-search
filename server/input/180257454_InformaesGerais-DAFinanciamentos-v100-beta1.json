@@ -1,0 +1,6 @@
+{
+    "texto": "1\nVisão Geral\n2\nObtém a lista de Financiamentos de Pessoa Natural\n: (GET /opendata-financings/v1/personal-financings)\n2.1\nDicionário de dados\n3\nObtém a lista de Financiamentos de Pessoa Jurídica\n: (GET /opendata-financings/v1/business-financings)\n3.1\nDicionário de dados\nVisão Geral\nA API descrita neste documento é referente as API Financings da fase OpenData do Open Finance Brasil.\nObtém a lista de Financiamentos de Pessoa Natural\n: (GET /opendata-financings/v1/personal-financings)\nObtém a lista de Financiamentos de Pessoa Natural.\nDicionário de dados\nFazer download do dicionário de dados\nObtém a lista de Financiamentos de Pessoa Jurídica\n: (GET /opendata-financings/v1/business-financings)\nObtém a lista de Financiamentos de Pessoa Jurídica.\nDicionário de dados\nFazer download do dicionário de dados",
+    "paginaId": "180257454_Informa+es+Gerais+-+DA+Financiamentos+-+v1.0.0-beta.1",
+    "title": "Informações Gerais - [DA] Financiamentos - v1.0.0-beta.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
+    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/180257454/Informa+es+Gerais+-+DA+Financiamentos+-+v1.0.0-beta.1"
+}
