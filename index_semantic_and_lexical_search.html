@@ -162,7 +162,7 @@
     const modelSelector = document.getElementById('model-selector');
     const totalItemSearched = 30;
     const context_window_dinamic = 2;
-    
+
     let engine;
     let embedder;
     let db;
@@ -202,7 +202,7 @@
                 rrfScores.get(docId).score += lexicalScore; // Combine scores
             } else {
                 rrfScores.set(docId, {
-                    payload: res, 
+                    payload: res,
                     score: lexicalScore
                 });
             }
@@ -256,7 +256,7 @@
                 .join("\n\n");
 
             const blockText = fileText;
-            
+
             if (currentTotalChars + blockText.length > MAX_CONTEXT_CHARS) {
                 const remainingSpace = MAX_CONTEXT_CHARS - currentTotalChars;
                 if (remainingSpace > 200) {
@@ -339,8 +339,8 @@
                     title: { type: 'string' },
                     url: { type: 'string' },
                     paginaId: { type: 'string' },
-                    source_file: { type: 'string' }, 
-                    chunk_index: { type: 'number' }, 
+                    source_file: { type: 'string' },
+                    chunk_index: { type: 'number' },
                     vector: { type: 'array', items: { type: 'number' } }
                 },
                 required: ['id', 'text_content', 'vector']
@@ -371,7 +371,7 @@
             // Carregar todos os documentos para o MiniSearch (Lexical Engine)
             statusText.textContent = "Indexing Lexical Search (BM25)...";
             const allDocs = await db.chunks.find().exec();
-            
+
             const docsForLexical = allDocs.map(doc => ({
                 id: doc.id,
                 title: doc.title,
@@ -380,7 +380,7 @@
                 source_file: doc.source_file,
                 chunk_index: doc.chunk_index
             }));
-            
+
             miniSearch.addAll(docsForLexical);
 
             statusText.textContent = "Databases synced and ready. Preparing models...";
@@ -440,17 +440,9 @@
 
     // --- Execute RxDB Local Semantic Vector Search ---
     async function localRxDBSearch(queryVector) {
-        const allDocs = await db.chunks.find({
-            selector: {
-                url: {
-                    $regex: 'https://openfinancebrasil\\.atlassian\\.net',
-                    $options: 'i' 
-                }
-            }
-        }).exec();
+        const allDocs = await db.chunks.find().exec();
 
         const plainDocs = allDocs
-            .filter(doc => doc.text_content && doc.text_content.length > 300)
             .map(doc => ({
                 id: doc.id, // Ensure ID is passed for RRF correlation
                 title: doc.title,
@@ -478,6 +470,7 @@
         sendBtn.disabled = true;
 
         appendMessage('user', originalQuery);
+        console.log("original query: " + originalQuery)
         statusText.textContent = "Refining intent parameters...";
 
         try {
@@ -514,7 +507,7 @@
             const queryForE5 = "query: " + optimizedQuery;
             const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
             const vector = Array.from(embedding.data);
-            
+
             statusText.textContent = "Scanning RxDB (Semantic)...";
             const vectorMatches = await localRxDBSearch(vector);
 
@@ -522,18 +515,20 @@
             statusText.textContent = "Scanning MiniSearch (Lexical)...";
             // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
             const lexicalMatches = miniSearch.search(originalQuery);
-
+            console.log("Lexical Matches: ");
+            console.log(lexicalMatches);
             // Passo 4: Reciprocal Rank Fusion (RRF)
             statusText.textContent = "Fusing Hybrid Results...";
             const fusedMatches = calculateRRF(vectorMatches, lexicalMatches);
-            console.log("Hybrid RRF Top Matches:", fusedMatches);
+            console.log("Hybrid RRF Top Matches:");
+            console.log(fusedMatches);
 
             if (fusedMatches.length === 0) {
                 appendMessage('bot', "Não encontrei essa informação na documentação extraída.");
                 statusText.textContent = "System Ready.";
                 userInput.disabled = false;
                 sendBtn.disabled = false;
-                return; 
+                return;
             }
 
             // Passo 5: Expansão Contextual (Small-to-Big)
