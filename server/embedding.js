@@ -9,8 +9,8 @@ const exportDir = path.join(__dirname, 'src', 'data');
 
 // Configuração de Chunking
 const TEXT_CHUNK_SIZE = 800; // Pode subir para 1200 se quiser mais contexto para o Llama
-const TEXT_CHUNK_OVERLAP = 150; 
-const E5_PREFIX = "passage: "; 
+const TEXT_CHUNK_OVERLAP = 150;
+const E5_PREFIX = "passage: ";
 
 // Configuração de Exportação
 const EXPORT_BATCH_SIZE = 100;
@@ -106,8 +106,8 @@ async function buildRAGDatabase() {
             const data = JSON.parse(content);
             const rawText = data.texto || data.text_content || "";
             const sanitizedText = cleanText(rawText);
-            
-            if(sanitizedText && sanitizedText.length < 300) break;          
+
+            if(sanitizedText && sanitizedText.length < 300) continue;
 
 
             // Quebra o texto usando a API nativa
@@ -117,7 +117,7 @@ async function buildRAGDatabase() {
 
             for (let i = 0; i < chunks.length; i++) {
                 const chunkText = chunks[i];
-                
+
                 // O prefixo "passage: " é injetado apenas para o cálculo do vetor
                 const textToEmbed = E5_PREFIX + chunkText;
                 const embedding = await embedder(textToEmbed, { pooling: "mean", normalize: true });
