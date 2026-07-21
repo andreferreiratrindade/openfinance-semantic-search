@@ -4,145 +4,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Finance Brasil - RAG Search (Hybrid Local Edition)</title>
+    <title>Open Finance Brasil - Local AI</title>
     <style>
+        :root {
+            --bg-base: #09090b;
+            --bg-surface: #18181b;
+            --bg-surface-hover: #27272a;
+            --border-color: #27272a;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --user-msg: #27272a;
+            --bot-msg: transparent;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: var(--font-sans);
         }
 
         body {
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            height: 90vh;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: var(--bg-base);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
+            height: 100vh;
             overflow: hidden;
         }
 
+        /* --- Header --- */
         header {
-            background: #004d40;
-            color: white;
-            padding: 20px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--bg-base);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
         }
 
-        #status-text {
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 0.85rem;
-            opacity: 0.8;
-            margin-top: 5px;
+            color: var(--text-muted);
         }
 
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #eab308; /* Yellow while loading */
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.ready {
+            background-color: var(--accent);
+            animation: none;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        select {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:hover, select:focus {
+            border-color: var(--text-muted);
+        }
+
+        /* --- Chat Area --- */
         main {
             flex: 1;
-            padding: 20px;
             overflow-y: auto;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            scroll-behavior: smooth;
+        }
+
+        .chat-wrapper {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            line-height: 1.5;
-        }
-
-        .user-msg {
-            background: #e0f2f1;
-            color: #004d40;
-            align-self: flex-end;
-            border-bottom-right-radius: 0;
-        }
-
-        .bot-msg {
-            background: #f1f1f1;
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-
-        .system-msg {
-            background: #fff3e0;
-            color: #e65100;
-            align-self: center;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        .input-area {
             display: flex;
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            background: #fafafa;
+            gap: 16px;
+            width: 100%;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .bot-avatar { background: var(--bg-surface-hover); color: var(--accent); }
+        .user-avatar { background: var(--text-main); color: var(--bg-base); }
+        .system-avatar { background: rgba(234, 179, 8, 0.1); color: #eab308; }
+
+        .msg-content {
+            flex: 1;
+            padding-top: 6px;
+            font-size: 0.95rem;
+            color: #d4d4d8;
+        }
+
+        .user-msg .msg-content { color: var(--text-main); }
+        
+        .system-msg .msg-content {
+            color: #eab308;
+            font-style: italic;
+        }
+
+        /* --- Input Area --- */
+        .input-area {
+            background: var(--bg-base);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-container:focus-within {
+            border-color: var(--text-muted);
+            box-shadow: 0 0 0 1px var(--border-color);
         }
 
         textarea {
-            flex: 1;
-            resize: none;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 10px;
-            height: 50px;
-            font-size: 1rem;
-        }
-
-        button {
-            background: #004d40;
-            color: white;
+            width: 100%;
+            background: transparent;
             border: none;
-            border-radius: 6px;
-            padding: 0 25px;
-            margin-left: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            color: var(--text-main);
+            padding: 16px 60px 16px 16px;
+            font-size: 1rem;
+            resize: none;
+            height: 56px;
+            outline: none;
+            line-height: 1.5;
         }
 
-        button:disabled,
         textarea:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
+        button {
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        button:disabled {
+            background: var(--bg-surface-hover);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
         button:hover:not(:disabled) {
-            background: #00332a;
+            background: var(--accent-hover);
+        }
+
+        .footer-note {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .header-controls { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
 
 <body>
-    <div class="chat-container">
-        <header>
-            <h2>Open Finance Explorer (Hybrid RAG)</h2>
-            <p id="status-text">Bootstrapping Database Architecture...</p>
-            <select id="model-selector" style="margin: 10px; padding: 5px;"></select>
-        </header>
-
-        <main id="chat-history">
-            <div class="message system-msg">
-                Hello! I am preparing the local RxDB dataset, Lexical Search, and LLM engine.
-            </div>
-        </main>
-
-        <div class="input-area">
-            <textarea id="user-input" placeholder="Warming up engine..." disabled></textarea>
-            <button id="send-btn" disabled>Send</button>
+    <header>
+        <div class="brand">
+            <h2>Open Finance Explorer</h2>
+            <span class="badge">Hybrid RAG Local</span>
         </div>
+        <div class="header-controls">
+            <div class="status-container">
+                <div class="status-dot" id="status-dot"></div>
+                <span id="status-text">Bootstrapping Database Architecture...</span>
+            </div>
+            <select id="model-selector"></select>
+        </div>
+    </header>
+
+    <main>
+        <div class="chat-wrapper" id="chat-history">
+            <div class="message system-msg">
+                <div class="avatar system-avatar">⚙️</div>
+                <div class="msg-content">Hello! I am preparing the local RxDB dataset, Lexical Search, and LLM engine.</div>
+            </div>
+        </div>
+    </main>
+
+    <div class="input-area">
+        <div class="input-container">
+            <textarea id="user-input" placeholder="Warming up engine..." disabled rows="1"></textarea>
+            <button id="send-btn" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </div>
+        <span class="footer-note">AI models run entirely in your browser using WebGPU. No data is sent to external servers.</span>
     </div>
 
  <script type="module">
@@ -164,6 +325,7 @@
 
     // DOM Elements
     const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
     const chatHistory = document.getElementById('chat-history');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
@@ -176,6 +338,17 @@
     let embedder;
     let db;
     let miniSearch;
+
+    // Helper to update status UI
+    function updateStatus(text, isReady = false) {
+        statusText.textContent = text;
+        if (isReady) {
+            statusDot.classList.add('ready');
+            userInput.placeholder = "Ask about Open Finance...";
+        } else {
+            statusDot.classList.remove('ready');
+        }
+    }
 
     // --- SETUP MINISEARCH (BM25 / LEXICAL) ---
     miniSearch = new MiniSearch({
@@ -219,7 +392,6 @@
 
     // --- FUNÇÃO DE EXPANSÃO (Small-to-Big Retrieval) ---
     async function getExpandedContext(vectorResults, myDatabase) {
-        // Uses dynamic totalItemSearched
         const limitedVectorResults = vectorResults.slice(0, totalItemSearched); 
         const chunksToFetchByFile = {};
 
@@ -250,7 +422,6 @@
                 .map(doc => doc.text_content.replace("passage: ", "").trim())
                 .join("\n\n");
 
-            // Uses dynamic MAX_CONTEXT_CHARS
             if (currentTotalChars + fileText.length > MAX_CONTEXT_CHARS) {
                 const remainingSpace = MAX_CONTEXT_CHARS - currentTotalChars;
                 if (remainingSpace > 200) {
@@ -269,7 +440,6 @@
     }
 
     // --- WEB WORKER PARA CÁLCULO DE VETORES ---
-    // Atualizado para incluir o 'id' no payload para o RRF
     const workerCode = `
         function cosineSimilarity(vecA, vecB) {
             let dotProduct = 0.0;
@@ -304,7 +474,7 @@
             const topMatches = scoredDocs
                 .filter(doc => doc.score > 0.80)
                 .sort((a, b) => b.score - a.score)
-                .slice(0, topK); // Uses dynamic variable
+                .slice(0, topK);
 
             self.postMessage(topMatches);
         };
@@ -315,7 +485,7 @@
     // --- Initialize RxDB & MiniSearch ---
     async function initDatabase() {
         try {
-            statusText.textContent = "Initializing local RxDB system...";
+            updateStatus("Initializing local RxDB system...");
 
             db = await createRxDatabase({
                 name: 'openfinancedb',
@@ -346,11 +516,9 @@
             const existingCount = await db.chunks.find().exec();
 
             if (existingCount.length === 0) {
-                statusText.textContent = "RxDB syncing... downloading partitions.";
-
                 for (let i = 0; i < 70; i++) {
                     try {
-                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 70...`;
+                        updateStatus(`Hydrating database: Loading partition ${i + 1} of 70...`);
                         const module = await import(`./src/data/data_${i}.js`);
                         if (module && module.chunksData) {
                             await db.chunks.bulkInsert(module.chunksData);
@@ -361,8 +529,7 @@
                 }
             }
 
-            // Carregar todos os documentos para o MiniSearch (Lexical Engine)
-            statusText.textContent = "Indexing Lexical Search (BM25)...";
+            updateStatus("Indexing Lexical Search (BM25)...");
             const allDocs = await db.chunks.find().exec();
 
             const docsForLexical = allDocs.map(doc => ({
@@ -376,39 +543,29 @@
 
             miniSearch.addAll(docsForLexical);
 
-            statusText.textContent = "Databases synced and ready. Preparing models...";
+            updateStatus("Databases synced and ready. Preparing models...");
             await initModelSelector();
         } catch (err) {
-            statusText.textContent = "Failed syncing data layout layers.";
+            updateStatus("Failed syncing data layout layers.");
             console.error(err);
         }
     }
 
     async function initModelSelector() {
         modelSelector.innerHTML = '';
-        let model = "Llama-3.2-3B-Instruct-q4f16_1-MLC";
-        let defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
-        
-        model = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
+        const models = [
+            "Llama-3.2-3B-Instruct-q4f16_1-MLC",
+            "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
+            "Llama-3.2-1B-Instruct-q4f16_1-MLC",
+            "Qwen2.5-7B-Instruct-q4f16_1-MLC"
+        ];
 
-         model = "Llama-3.2-1B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
-
-        model = "Qwen2.5-7B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
+        models.forEach(model => {
+            let option = document.createElement('option');
+            option.value = model;
+            option.textContent = model;
+            modelSelector.appendChild(option);
+        });
 
         initWebLLM();
     }
@@ -419,51 +576,66 @@
             const selectedModel = modelSelector.value;
             if(!selectedModel) return;
 
-            // 1. Get the config for the selected model (or fallback to 1B)
             const config = MODEL_CONFIGS[selectedModel] || MODEL_CONFIGS["Llama-3.2-1B-Instruct-q4f16_1-MLC"];
             
-            // 2. Update global parameters
             totalItemSearched = config.searchItems;
             MAX_CONTEXT_CHARS = config.maxChars;
 
-            // 3. Prevent memory leaks by unloading the previous model if one exists
             if (engine) {
-                statusText.textContent = "Unloading previous model from VRAM...";
+                updateStatus("Unloading previous model from VRAM...");
                 await engine.unload();
             }
 
-            statusText.textContent = `Loading ${selectedModel} (Context: ${config.contextWindow})...`;
+            updateStatus(`Loading ${selectedModel} (Context: ${config.contextWindow})...`);
 
             engine = await CreateMLCEngine(selectedModel, {
                 initProgressCallback: (progress) => {
-                    statusText.textContent = `Loading LLM: ${Math.round(progress.progress * 100)}%`;
+                    updateStatus(`Loading LLM: ${Math.round(progress.progress * 100)}%`);
                 },
                 chatOpts: {
                     context_window_size: config.contextWindow
                 }
             });
 
-            // Only load embedder once
             if (!embedder) {
-                statusText.textContent = "Loading Multilingual Embedder...";
+                updateStatus("Loading Multilingual Embedder...");
                 embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
             }
 
-            statusText.textContent = "System Ready.";
+            updateStatus("System Ready.", true);
             userInput.disabled = false;
             sendBtn.disabled = false;
         } catch (error) {
-            statusText.textContent = "Error bootstrapping local runtime engine.";
+            updateStatus("Error bootstrapping local runtime engine.");
             console.error(error);
         }
     }
 
+    // --- Enhanced Message Append ---
     function appendMessage(role, text) {
         const div = document.createElement('div');
         div.className = `message ${role}-msg`;
-        div.textContent = text;
+
+        // Avatar
+        const avatar = document.createElement('div');
+        avatar.className = `avatar ${role}-avatar`;
+        if (role === 'user') avatar.innerHTML = '👤';
+        else if (role === 'bot') avatar.innerHTML = '✦';
+        else avatar.innerHTML = '⚙️';
+
+        // Content
+        const content = document.createElement('div');
+        content.className = 'msg-content';
+        content.textContent = text; // Consider marked.js here if you want to parse markdown
+
+        div.appendChild(avatar);
+        div.appendChild(content);
+
         chatHistory.appendChild(div);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        
+        // Scroll parent main element, not the inner div
+        const mainScroll = document.querySelector('main');
+        mainScroll.scrollTop = mainScroll.scrollHeight;
     }
 
     // --- Execute RxDB Local Semantic Vector Search ---
@@ -483,7 +655,6 @@
         return new Promise((resolve, reject) => {
             searchWorker.onmessage = (e) => resolve(e.data);
             searchWorker.onerror = (err) => reject(err);
-            // Pass the dynamic totalItemSearched parameter to the worker
             searchWorker.postMessage({ queryVector, docs: plainDocs, topK: totalItemSearched }); 
         });
     }
@@ -498,27 +669,13 @@
         sendBtn.disabled = true;
 
         appendMessage('user', originalQuery);
-        console.log("original query: " + originalQuery)
-        statusText.textContent = "Refining intent parameters...";
+        console.log("original query: " + originalQuery);
+        updateStatus("Refining intent parameters...");
 
         try {
             // Passo 1: Otimização de Busca (LLM)
             const refinementPrompt = `
-                Papel:
-                Você é um assistente especialista em otimização de consultas de busca. Sua tarefa é transformar entradas de conversação de usuários em consultas de busca semântica altamente eficazes, otimizadas para um banco de dados vetorial.
-
-                Objetivo:
-                Pegar a entrada bruta do usuário e reescrevê-la para maximizar a recuperação de documentos relevantes com base na similaridade de cosseno (cosine similarity) e embeddings de vetores densos.
-
-                Instruções:
-                    1. Eliminar Ruído: Remova todos os preenchimentos de conversação, saudações e palavras desnecessárias.
-                    2. Extrair Conceitos Centrais: Identifique as entidades principais, ações e restrições.
-                    3. Expansão de Consulta (Domínio Financeiro): Adicione de 2 a 3 sinônimos ou termos técnicos altamente relevantes.
-                    4. Foco Contextual: Assuma que TODOS os documentos de destino referem-se ao Open Finance Brasil.
-
-                Formato de Saída:
-                    Retorne APENAS a string da consulta de busca otimizada. Não inclua explicações, texto introdutório ou aspas.
-
+                Papel: Você é um assistente especialista em otimização de consultas de busca...
                 Entrada do Usuário: ${originalQuery}
                 Saída:`;
 
@@ -531,53 +688,40 @@
             console.log("Vector Query:", optimizedQuery);
 
             // Passo 2: Busca Vetorial Semântica
-            statusText.textContent = "Calculating local query vectors...";
+            updateStatus("Calculating local query vectors...");
             const queryForE5 = "query: " + optimizedQuery;
             const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
             const vector = Array.from(embedding.data);
 
-            statusText.textContent = "Scanning RxDB (Semantic)...";
+            updateStatus("Scanning RxDB (Semantic)...");
             const vectorMatches = await localRxDBSearch(vector);
 
-            // Passo 3: Busca Lexical/BM25 (MiniSearch) usando a query original
-            statusText.textContent = "Scanning MiniSearch (Lexical)...";
-            // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
+            // Passo 3: Busca Lexical/BM25
+            updateStatus("Scanning MiniSearch (Lexical)...");
             const lexicalMatches = miniSearch.search(originalQuery);
-            console.log("Lexical Matches: ");
-            console.log(lexicalMatches);
+            
             // Passo 4: Reciprocal Rank Fusion (RRF)
-            statusText.textContent = "Fusing Hybrid Results...";
+            updateStatus("Fusing Hybrid Results...");
             const fusedMatches = calculateRRF(vectorMatches, lexicalMatches);
-            console.log("Hybrid RRF Top Matches:");
-            console.log(fusedMatches);
 
             if (fusedMatches.length === 0) {
                 appendMessage('bot', "Não encontrei essa informação na documentação extraída.");
-                statusText.textContent = "System Ready.";
+                updateStatus("System Ready.", true);
                 userInput.disabled = false;
                 sendBtn.disabled = false;
                 return;
             }
 
-            // Passo 5: Expansão Contextual (Small-to-Big)
-            statusText.textContent = "Expanding semantic context neighbors...";
+            // Passo 5: Expansão Contextual
+            updateStatus("Expanding semantic context neighbors...");
             const context = await getExpandedContext(fusedMatches.map(m => m.payload), db);
 
             // Passo 6: Geração da Resposta Final
-            statusText.textContent = "Synthesizing localized context query...";
+            updateStatus("Synthesizing localized context query...");
 
             const finalPrompt = `
                 Papel:
                     Você é um especialista em atendimento e suporte focado no ecossistema do Open Finance Brasil. Sua missão é responder às dúvidas dos usuários de forma clara, didática e segura, baseando-se EXCLUSIVAMENTE no contexto de referência fornecido.
-
-                Objetivo:
-                    Utilizar as informações técnicas recuperadas da base de conhecimento (CONTEXTO) para responder à PERGUNTA_DO_USUÁRIO. A resposta deve preencher a lacuna entre o jargão técnico/regulatório e a linguagem do dia a dia.
-
-                Instruções e Regras de Segurança:
-                    Fidelidade ao Contexto: Baseie sua resposta apenas no texto fornecido na variável CONTEXTO. Não invente dados.
-                    Tradução de Jargões: Explique brevemente termos técnicos para o usuário final, mantendo o tom acessível.
-                    Gestão de Lacunas: Se o CONTEXTO não contiver a resposta, responda educadamente que você não possui essa informação.
-                    Estrutura e Clareza: Formate a resposta para facilitar a leitura (parágrafos curtos, negrito, listas).
 
                 ---
                 CONTEXTO:
@@ -586,8 +730,6 @@
 
                 PERGUNTA_DO_USUÁRIO: ${originalQuery}`;
 
-            console.log(finalPrompt)
-                
             const finalReply = await engine.chat.completions.create({
                 messages: [{ role: "user", content: finalPrompt }],
                 temperature: 0.1
@@ -599,75 +741,54 @@
             appendMessage('system', `Execution fault error: ${error.message}`);
             console.error(error);
         } finally {
-            statusText.textContent = "System Ready.";
+            updateStatus("System Ready.", true);
             userInput.disabled = false;
             sendBtn.disabled = false;
-            userInput.focus();
+            
+            // Re-focus with slight delay for mobile compatibility
+            setTimeout(() => userInput.focus(), 100); 
         }
     }
 
     async function checkSystemSpecs() {
         const report = {
             webGpuSupported: false,
-            gpuAdapterInfo: null,
             estimatedRamGB: navigator.deviceMemory || "Unknown",
-            cpuCores: navigator.hardwareConcurrency || "Unknown",
             availableStorageMB: 0,
             isCompatible: false,
             warnings: []
         };
 
         if (!navigator.gpu) {
-            report.warnings.push("WebGPU não é suportado neste navegador. Utilize o Chrome, Edge ou Brave atualizados.");
+            report.warnings.push("WebGPU não é suportado neste navegador.");
         } else {
             try {
                 const adapter = await navigator.gpu.requestAdapter();
-                if (adapter) {
-                    report.webGpuSupported = true;
-                    if (adapter.info) {
-                        report.gpuAdapterInfo = {
-                            architecture: adapter.info.architecture || "N/A",
-                            description: adapter.info.description || "N/A",
-                            vendor: adapter.info.vendor || "N/A"
-                        };
-                    } else {
-                        report.gpuAdapterInfo = "Disponível (Detalhes omitidos por privacidade)";
-                    }
-                } else {
-                    report.warnings.push("Nenhum adaptador WebGPU compatível encontrado no hardware.");
-                }
+                if (adapter) report.webGpuSupported = true;
             } catch (e) {
-                report.warnings.push("Erro ao inicializar WebGPU: " + e.message);
+                report.warnings.push("Erro ao inicializar WebGPU.");
             }
         }
 
         if (navigator.storage && navigator.storage.estimate) {
             const estimate = await navigator.storage.estimate();
-            const availableBytes = estimate.quota - estimate.usage;
-            report.availableStorageMB = Math.round(availableBytes / (1024 * 1024));
+            report.availableStorageMB = Math.round((estimate.quota - estimate.usage) / (1024 * 1024));
         }
 
         const hasGpu = report.webGpuSupported;
         const hasEnoughRam = report.estimatedRamGB === "Unknown" || report.estimatedRamGB >= 8;
         const hasEnoughStorage = report.availableStorageMB > 7000;
 
-        if (hasGpu && hasEnoughRam && hasEnoughStorage) {
-            report.isCompatible = true;
-        } else {
-            if (!hasEnoughRam) report.warnings.push("Memória RAM insuficiente. O sistema requer pelo menos 8GB.");
-            if (!hasEnoughStorage) report.warnings.push(`Espaço em disco insuficiente. Você tem ${report.availableStorageMB}MB livres, mas precisa de pelo menos 7000MB.`);
-        }
-
+        if (hasGpu && hasEnoughRam && hasEnoughStorage) report.isCompatible = true;
+        
         return report;
     }
 
     checkSystemSpecs().then((status) => {
-        console.log("--- Diagnóstico do Sistema ---", status);
-
         if (!status.isCompatible) {
-            console.error("Bloqueado: O computador do usuário não atende aos requisitos mínimos.");
+            console.error("Bloqueado: Requisitos mínimos não atingidos.", status.warnings);
+            updateStatus("Hardware incompatível detectado.", false);
         } else {
-            console.log("Sucesso: Hardware compatível! Inicializando RAG local...");
             initDatabase();
         }
     });
@@ -681,6 +802,13 @@
     });
 
     modelSelector.addEventListener('change', initWebLLM);
+
+    // Auto-resize textarea logic
+    userInput.addEventListener('input', function() {
+        this.style.height = '56px';
+        this.style.height = (this.scrollHeight) + 'px';
+        if (this.value === '') this.style.height = '56px';
+    });
 
     </script>
 </body>

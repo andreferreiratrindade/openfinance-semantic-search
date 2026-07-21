@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenFin Model Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Estilos Globais (Mantidos do original) */
+        :root {
+            --bg-color: #FAF9F6;
+            --card-bg: #FFFFFF;
+            --primary-teal: #006064;
+            --primary-hover: #004d40;
+            --secondary-purple: #957DAD;
+            --destructive-red: #D32F2F;
+            --status-green: #388E3C;
+            --border-color: #E0E0E0;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --chat-header-bg: #D1E3F8;
+            --progress-bg: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container { width: 100%; max-width: 1200px; padding: 20px; }
+
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 30px;
+        }
+
+        .logo-container { font-size: 24px; font-weight: 500; color: var(--primary-teal); }
+
+        .profile-icon {
+            width: 40px; height: 40px; border-radius: 50%;
+            background-color: var(--border-color); overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .profile-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+        h2.section-title { font-size: 18px; font-weight: 500; margin-bottom: 20px; margin-top: 30px; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+        .model-card {
+            background-color: var(--card-bg); border-radius: 8px; padding: 20px;
+            border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative;
+        }
+        .model-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .model-card.active { border: 2px solid var(--primary-teal); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; }
+        .model-title { font-size: 16px; font-weight: 500; margin: 0; color: var(--text-primary); }
+        .active-status { font-size: 12px; font-weight: 500; color: var(--status-green); }
+
+        .delete-icon {
+            color: var(--destructive-red); cursor: pointer; font-size: 16px;
+            background: none; border: none; padding: 0;
+        }
+        .delete-icon:hover { opacity: 0.8; }
+
+        .data-divider { color: var(--border-color); margin: 0 10px; }
+        .card-stats { display: flex; font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+
+        .btn {
+            display: inline-block; width: 100%; padding: 10px; text-align: center;
+            border-radius: 4px; border: none; cursor: pointer; font-size: 14px;
+            font-weight: 500; transition: background-color 0.2s; box-sizing: border-box;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background-color: var(--primary-teal); color: white; }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); }
+        .btn-secondary { background-color: var(--secondary-purple); color: white; }
+        .btn-secondary:hover:not(:disabled) { opacity: 0.9; }
+
+        /* NOVOS ESTILOS: Barra de Progresso */
+        .progress-container {
+            width: 100%; margin-top: 15px; display: none;
+        }
+        .progress-bar-bg {
+            width: 100%; height: 8px; background-color: var(--progress-bg);
+            border-radius: 4px; overflow: hidden; margin-bottom: 5px;
+        }
+        .progress-bar-fill {
+            height: 100%; width: 0%; background-color: var(--primary-teal);
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 12px; color: var(--text-secondary); display: flex; justify-content: space-between;
+        }
+
+        /* Chat */
+        .chat-container {
+            background-color: var(--card-bg); border-radius: 8px; margin-top: 50px;
+            border: 1px solid var(--border-color); overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .chat-header {
+            background-color: var(--chat-header-bg); padding: 20px; text-align: center;
+            font-weight: 500; border-bottom: 1px solid var(--border-color);
+        }
+        .chat-history { height: 400px; padding: 20px; overflow-y: auto; background-color: white; }
+        
+        .chat-bubble { max-width: 70%; padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.5; font-size: 14px; }
+        .chat-bubble.bot { background-color: #F1F1F1; align-self: flex-start; }
+        .chat-bubble.user { background-color: var(--chat-header-bg); color: var(--text-primary); align-self: flex-end; margin-left: auto; }
+
+        .chat-input-area { display: flex; padding: 15px; background-color: #FAF9F6; border-top: 1px solid var(--border-color); gap: 10px; }
+        .chat-input { flex-grow: 1; padding: 12px; border-radius: 4px; border: 1px solid var(--border-color); font-family: inherit; }
+        .chat-input:focus { outline: none; border-color: var(--primary-teal); }
+        .btn-send {
+            width: auto; background-color: #EAEAEA; color: var(--text-primary); padding: 10px 20px;
+            border-radius: 4px; border: none; display: flex; align-items: center; gap: 8px; font-weight: 500; cursor: pointer;
+        }
+        .btn-send:hover { background-color: #E0E0E0; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <header class="app-header">
+        <div class="logo-container">OpenFin</div>
+        <div class="profile-icon">
+            <img src="path_to_profile_image.jpg" alt="Profile Avatar" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%3E%3Crect%20width%3D%2240%22%20height%3D%2240%22%20fill%3D%22%23cccccc%22%2F%3E%3C%2Fsvg%3E';">
+        </div>
+    </header>
+
+    <section>
+        <h2 class="section-title">Modelos prontos para serem utilizados</h2>
+        <div class="card-grid" id="ready-models-grid">
+            
+            <div class="model-card active">
+                <div class="card-header">
+                    <div>
+                        <h3 class="model-title">Qwen2.5-7B-instruct-q4f16_1-MC</h3>
+                        <span class="active-status">Ativo / Selecionado</span>
+                    </div>
+                    <button class="delete-icon" onclick="deleteModel(this)" title="Excluir Modelo"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="card-stats">
+                    <span>5,30 GB</span><span class="data-divider">|</span><span>VRAM 4,5GB</span>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="card-header">
+                    <h3 class="model-title">Gemma 2.3 00912-MC</h3>
+                    <button class="delete-icon" onclick="deleteModel(this)" title="Excluir Modelo"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="card-stats">
+                    <span>5,30 GB</span><span class="data-divider">|</span><span>VRAM 4,5GB</span>
+                </div>
+                <button class="btn btn-primary">Selecionar</button>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Modelos disponíveis para download</h2>
+        <div class="card-grid" id="download-models-grid">
+            
+            <div class="model-card">
+                <div class="card-header">
+                    <h3 class="model-title">Qwen9.5-B-instruct-q4f16_1-MC</h3>
+                </div>
+                <div class="card-stats">
+                    <span>5,30 GB</span><span class="data-divider">|</span><span>VRAM 4,5GB</span>
+                </div>
+                <button class="btn btn-secondary" onclick="startDownload(this, 5.3, 4.5)">Download</button>
+                
+                <!-- Estrutura da barra de progresso (oculta inicialmente) -->
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span class="progress-percent">0%</span>
+                        <span class="progress-size">0 / 5.30 GB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="card-header">
+                    <h3 class="model-title">DeepSeek asds6_1-MC</h3>
+                </div>
+                <div class="card-stats">
+                    <span>6,10 GB</span><span class="data-divider">|</span><span>VRAM 6GB</span>
+                </div>
+                <button class="btn btn-secondary" onclick="startDownload(this, 6.1, 6)">Download</button>
+                
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span class="progress-percent">0%</span>
+                        <span class="progress-size">0 / 6.10 GB</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="chat-container">
+        <!-- O Chat permanece inalterado para o escopo desta funcionalidade -->
+        <div class="chat-header">Chat open finance</div>
+        <div class="chat-history">
+            <div class="chat-bubble bot">Olá! Sou seu assistente OpenFin. Com qual modelo posso ajudar você hoje?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Digite sua pergunta aqui...">
+            <button class="btn-send">Send <i class="fas fa-paper-plane"></i></button>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // 1. Função para verificar os requisitos do sistema
+    async function checkSystemRequirements(requiredSpaceGB, requiredVramGB) {
+        try {
+            // Verifica espaço em disco (se o navegador suportar a API Storage)
+            if (navigator.storage && navigator.storage.estimate) {
+                const estimate = await navigator.storage.estimate();
+                const availableSpaceGB = (estimate.quota - estimate.usage) / (1024 ** 3);
+                
+                if (availableSpaceGB < requiredSpaceGB) {
+                    alert(`❌ Requisito falhou: Espaço insuficiente.\nNecessário: ${requiredSpaceGB}GB\nDisponível: ${availableSpaceGB.toFixed(2)}GB`);
+                    return false;
+                }
+            } else {
+                console.warn("API de Storage não suportada pelo navegador. Ignorando checagem de disco.");
+            }
+
+            // Verifica Memória (Navegadores não leem VRAM, usamos deviceMemory como proxy - retorna max 8GB por privacidade)
+            const systemRam = navigator.deviceMemory || 4; // Fallback se não suportado
+            if (systemRam < requiredVramGB && systemRam !== 8) { 
+                // Apenas alerta, pois a web API é limitada para ler hardware dedicado
+                const confirmRam = confirm(`⚠️ Aviso de Sistema:\nO modelo pede ${requiredVramGB}GB de VRAM, mas detectamos ~${systemRam}GB de RAM compartilhada.\nO modelo pode ficar lento. Deseja continuar mesmo assim?`);
+                if (!confirmRam) return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error("Erro ao checar requisitos", error);
+            return true; // Falha silenciosa para não bloquear o usuário caso a API web falhe
+        }
+    }
+
+    // 2. Lógica de Download
+    async function startDownload(btnElement, sizeGB, vramGB) {
+        // Valida requisitos
+        const meetsRequirements = await checkSystemRequirements(sizeGB, vramGB);
+        if (!meetsRequirements) return;
+
+        // Pede permissão explícita por conta do tamanho do arquivo
+        const userAgreed = confirm(`Este modelo tem aproximadamente ${sizeGB} GB.\nDependendo da sua conexão, isso pode levar alguns minutos. Deseja iniciar o download?`);
+        
+        if (!userAgreed) return;
+
+        // Manipula a UI do card para mostrar progresso
+        const card = btnElement.closest('.model-card');
+        const progressContainer = card.querySelector('.progress-container');
+        const progressBar = card.querySelector('.progress-bar-fill');
+        const progressPercentText = card.querySelector('.progress-percent');
+        const progressSizeText = card.querySelector('.progress-size');
+
+        btnElement.style.display = 'none'; // Esconde o botão
+        progressContainer.style.display = 'block'; // Mostra a barra
+
+        // Simulação de Download
+        let currentProgress = 0;
+        const downloadInterval = setInterval(() => {
+            // Simula um download variando a velocidade
+            currentProgress += (Math.random() * 5) + 2; 
+            
+            if (currentProgress >= 100) {
+                currentProgress = 100;
+                clearInterval(downloadInterval);
+                finishDownload(card);
+            }
+
+            // Atualiza UI
+            progressBar.style.width = `${currentProgress}%`;
+            progressPercentText.innerText = `${Math.floor(currentProgress)}%`;
+            
+            const downloadedGB = (currentProgress / 100) * sizeGB;
+            progressSizeText.innerText = `${downloadedGB.toFixed(2)} / ${sizeGB} GB`;
+
+        }, 500); // Atualiza a cada 0.5s
+    }
+
+    // 3. Função chamada quando o download chega a 100%
+    function finishDownload(card) {
+        setTimeout(() => {
+            alert("Download concluído com sucesso!");
+            
+            // Aqui você poderia mover o card da seção de "Disponíveis" para "Prontos".
+            // Para manter o protótipo simples, vamos apenas resetar a UI do card indicando que ele foi baixado.
+            card.querySelector('.progress-container').style.display = 'none';
+            
+            const btn = card.querySelector('.btn');
+            btn.style.display = 'block';
+            btn.className = 'btn btn-primary';
+            btn.innerText = 'Selecionar';
+            btn.onclick = null; // Remove o evento de download
+            
+        }, 500);
+    }
+
+    // 4. Deletar Cache / Excluir Modelo
+    function deleteModel(deleteBtnElement) {
+        const card = deleteBtnElement.closest('.model-card');
+        const modelName = card.querySelector('.model-title').innerText;
+        
+        // Pede confirmação antes de excluir
+        const confirmDelete = confirm(`Tem certeza que deseja apagar os arquivos em cache do modelo "${modelName}" do seu sistema?`);
+        
+        if (confirmDelete) {
+            // Efeito visual de exclusão
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            
+            setTimeout(() => {
+                card.remove(); // Remove o elemento do DOM
+            }, 300); // Espera a transição do CSS
+        }
+    }
+</script>
+
+</body>
+</html>

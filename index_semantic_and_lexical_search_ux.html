@@ -4,133 +4,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Finance Brasil - RAG Search (Hybrid Local Edition)</title>
+    <title>Open Finance Brasil - RAG Search</title>
+    <!-- Modern Font and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
+        :root {
+            --bg-body: #F3F4F6;
+            --bg-surface: #FFFFFF;
+            --primary-teal: #006064;
+            --primary-hover: #004d40;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --msg-user: #E0F2F1;
+            --msg-bot: #F9FAFB;
+            --msg-sys-bg: #FEF3C7;
+            --msg-sys-text: #92400E;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: #f4f4f9;
+            background-color: var(--bg-body);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: var(--text-main);
         }
 
         .chat-container {
             width: 100%;
-            max-width: 800px;
-            height: 90vh;
-            background: white;
+            max-width: 900px;
+            height: 92vh;
+            background: var(--bg-surface);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.02);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
+        /* Header Styling */
         header {
-            background: #004d40;
-            color: white;
-            padding: 20px;
-            text-align: center;
+            background: var(--bg-surface);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-titles {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-titles h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-teal);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         #status-text {
-            font-size: 0.85rem;
-            opacity: 0.8;
-            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        #status-text::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #F59E0B; /* Warning/Loading color */
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .ready #status-text::before {
+            background-color: #10B981; /* Success color */
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        #model-selector {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #model-selector:focus {
+            border-color: var(--primary-teal);
+        }
+
+        /* Chat History */
         main {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            background-color: #FFFFFF;
         }
 
         .message {
             max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            line-height: 1.5;
+            padding: 14px 18px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            word-wrap: break-word;
         }
 
         .user-msg {
-            background: #e0f2f1;
-            color: #004d40;
+            background: var(--msg-user);
+            color: var(--primary-hover);
             align-self: flex-end;
-            border-bottom-right-radius: 0;
+            border-radius: 16px 16px 4px 16px;
         }
 
         .bot-msg {
-            background: #f1f1f1;
-            color: #333;
+            background: var(--msg-bot);
+            color: var(--text-main);
             align-self: flex-start;
-            border-bottom-left-radius: 0;
+            border-radius: 16px 16px 16px 4px;
+            border: 1px solid var(--border-color);
         }
 
         .system-msg {
-            background: #fff3e0;
-            color: #e65100;
+            background: var(--msg-sys-bg);
+            color: var(--msg-sys-text);
             align-self: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-align: center;
+            border-radius: 20px;
+            padding: 6px 16px;
+            max-width: 90%;
+            font-weight: 500;
         }
 
+        /* Input Area */
         .input-area {
             display: flex;
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            background: #fafafa;
+            padding: 20px 24px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            align-items: center;
+            gap: 12px;
         }
 
         textarea {
             flex: 1;
             resize: none;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 10px;
-            height: 50px;
-            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            height: 52px;
+            font-size: 0.95rem;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: border-color 0.2s, background-color 0.2s;
+            overflow-y: hidden;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            background-color: var(--bg-surface);
+            box-shadow: 0 0 0 3px rgba(0, 96, 100, 0.1);
         }
 
         button {
-            background: #004d40;
+            background: var(--primary-teal);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 0 25px;
-            margin-left: 10px;
+            border-radius: 8px;
+            height: 52px;
+            width: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button i {
+            font-size: 1.2rem;
         }
 
         button:disabled,
         textarea:disabled {
-            opacity: 0.5;
+            opacity: 0.6;
             cursor: not-allowed;
         }
 
         button:hover:not(:disabled) {
-            background: #00332a;
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar for Main */
+        main::-webkit-scrollbar {
+            width: 6px;
+        }
+        main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        main::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 10px;
         }
     </style>
 </head>
 
 <body>
     <div class="chat-container">
-        <header>
-            <h2>Open Finance Explorer (Hybrid RAG)</h2>
-            <p id="status-text">Bootstrapping Database Architecture...</p>
-            <select id="model-selector" style="margin: 10px; padding: 5px;"></select>
+        <header id="app-header">
+            <div class="header-titles">
+                <h2><i class="fas fa-cubes"></i> OpenFin Explorer</h2>
+                <p id="status-text">Bootstrapping Database Architecture...</p>
+            </div>
+            <select id="model-selector"></select>
         </header>
 
         <main id="chat-history">
@@ -141,7 +267,9 @@
 
         <div class="input-area">
             <textarea id="user-input" placeholder="Warming up engine..." disabled></textarea>
-            <button id="send-btn" disabled>Send</button>
+            <button id="send-btn" disabled title="Send Message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
@@ -153,23 +281,15 @@
     import { createRxDatabase } from "https://esm.sh/rxdb@15.3.0?bundle";
     import { getRxStorageDexie } from "https://esm.sh/rxdb@15.3.0/plugins/storage-dexie?bundle";
     import MiniSearch from 'https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/es/index.js';
-    
-    const MODEL_CONFIGS = {
-        "Llama-3.2-1B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 9600, searchItems: 30 },
-        "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 9600, searchItems: 30 },
-        "Llama-3.2-3B-Instruct-q4f16_1-MLC": { contextWindow: 2048, maxChars: 4800, searchItems: 15 },
-        "Qwen2.5-7B-Instruct-q4f16_1-MLC": { contextWindow: 1536, maxChars: 3600, searchItems: 10 },
-        "Qwen2.5-0.5B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 9600, searchItems: 90 }
-    };
 
     // DOM Elements
     const statusText = document.getElementById('status-text');
+    const appHeader = document.getElementById('app-header');
     const chatHistory = document.getElementById('chat-history');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
     const modelSelector = document.getElementById('model-selector');
-    let totalItemSearched = 30;
-    let MAX_CONTEXT_CHARS = 9600;
+    const totalItemSearched = 30;
     const context_window_dinamic = 2;
 
     let engine;
@@ -195,7 +315,10 @@
         vectorResults.forEach((res, index) => {
             const docId = res.payload.id;
             const rank = index + 1;
-            rrfScores.set(docId, { payload: res.payload, score: 1.0 / (k + rank) });
+            rrfScores.set(docId, {
+                payload: res.payload,
+                score: 1.0 / (k + rank)
+            });
         });
 
         // 2. Process Lexical Results
@@ -205,22 +328,25 @@
             const lexicalScore = 1.0 / (k + rank);
 
             if (rrfScores.has(docId)) {
-                rrfScores.get(docId).score += lexicalScore; 
+                rrfScores.get(docId).score += lexicalScore; // Combine scores
             } else {
-                rrfScores.set(docId, { payload: res, score: lexicalScore });
+                rrfScores.set(docId, {
+                    payload: res,
+                    score: lexicalScore
+                });
             }
         });
 
-        // 3. Sort by combined RRF score and return using dynamic count
+        // 3. Sort by combined RRF score and return
         return Array.from(rrfScores.values())
             .sort((a, b) => b.score - a.score)
-            .slice(0, totalItemSearched); 
+            .slice(0, totalItemSearched);
     }
 
     // --- FUNÇÃO DE EXPANSÃO (Small-to-Big Retrieval) ---
     async function getExpandedContext(vectorResults, myDatabase) {
-        // Uses dynamic totalItemSearched
-        const limitedVectorResults = vectorResults.slice(0, totalItemSearched); 
+        const limitedVectorResults = vectorResults.slice(0, totalItemSearched);
+        const MAX_CONTEXT_CHARS = 9600;
         const chunksToFetchByFile = {};
 
         limitedVectorResults.forEach(match => {
@@ -228,7 +354,10 @@
             const index = match.chunk_index;
 
             if (!file || index === undefined) return;
-            if (!chunksToFetchByFile[file]) chunksToFetchByFile[file] = new Set();
+
+            if (!chunksToFetchByFile[file]) {
+                chunksToFetchByFile[file] = new Set();
+            }
 
             for (let i = -context_window_dinamic; i <= context_window_dinamic; i++) {
                 chunksToFetchByFile[file].add(Math.max(1, index + i));
@@ -242,7 +371,12 @@
             const uniqueIndexes = Array.from(indexSet).sort((a, b) => a - b);
 
             const retrievedDocs = await myDatabase.chunks.find({
-                selector: { source_file: file, chunk_index: { $in: uniqueIndexes } }
+                selector: {
+                    source_file: file,
+                    chunk_index: {
+                        $in: uniqueIndexes
+                    }
+                }
             }).exec();
 
             retrievedDocs.sort((a, b) => a.chunk_index - b.chunk_index);
@@ -250,26 +384,26 @@
                 .map(doc => doc.text_content.replace("passage: ", "").trim())
                 .join("\n\n");
 
-            // Uses dynamic MAX_CONTEXT_CHARS
-            if (currentTotalChars + fileText.length > MAX_CONTEXT_CHARS) {
+            const blockText = fileText;
+
+            if (currentTotalChars + blockText.length > MAX_CONTEXT_CHARS) {
                 const remainingSpace = MAX_CONTEXT_CHARS - currentTotalChars;
                 if (remainingSpace > 200) {
-                    const truncatedBlock = fileText.substring(0, remainingSpace) + "\n...[Context truncated due to size limits]";
+                    const truncatedBlock = blockText.substring(0, remainingSpace) + "\n...[Context truncated due to size limits]";
                     finalContextBlocks.push(truncatedBlock);
                 }
-                console.warn("Context limit reached based on current model capacity.");
+                console.warn("Context limit reached. Some lower-ranked search matches were omitted.");
                 break;
             }
 
-            finalContextBlocks.push(fileText);
-            currentTotalChars += fileText.length;
+            finalContextBlocks.push(blockText);
+            currentTotalChars += blockText.length;
         }
 
         return finalContextBlocks.join("\n\n---------------------------\n\n");
     }
 
     // --- WEB WORKER PARA CÁLCULO DE VETORES ---
-    // Atualizado para incluir o 'id' no payload para o RRF
     const workerCode = `
         function cosineSimilarity(vecA, vecB) {
             let dotProduct = 0.0;
@@ -285,7 +419,7 @@
         }
 
         self.onmessage = function(e) {
-            const { queryVector, docs, topK } = e.data;
+            const { queryVector, docs } = e.data;
 
             const scoredDocs = docs.map(doc => {
                 return {
@@ -304,18 +438,33 @@
             const topMatches = scoredDocs
                 .filter(doc => doc.score > 0.80)
                 .sort((a, b) => b.score - a.score)
-                .slice(0, topK); // Uses dynamic variable
+                .slice(0, ${totalItemSearched});
 
             self.postMessage(topMatches);
         };
     `;
+
     const blob = new Blob([workerCode], { type: 'application/javascript' });
     const searchWorker = new Worker(URL.createObjectURL(blob));
+
+    // --- Custom UI Function for Status ---
+    function setSystemReady() {
+        statusText.textContent = "System Ready.";
+        appHeader.classList.add("ready");
+        userInput.disabled = false;
+        sendBtn.disabled = false;
+        userInput.placeholder = "Ask about Open Finance Brasil...";
+    }
+    
+    function setSystemBusy(message) {
+        statusText.textContent = message;
+        appHeader.classList.remove("ready");
+    }
 
     // --- Initialize RxDB & MiniSearch ---
     async function initDatabase() {
         try {
-            statusText.textContent = "Initializing local RxDB system...";
+            setSystemBusy("Initializing local RxDB system...");
 
             db = await createRxDatabase({
                 name: 'openfinancedb',
@@ -346,11 +495,11 @@
             const existingCount = await db.chunks.find().exec();
 
             if (existingCount.length === 0) {
-                statusText.textContent = "RxDB syncing... downloading partitions.";
+                setSystemBusy("RxDB syncing... downloading partitions.");
 
                 for (let i = 0; i < 70; i++) {
                     try {
-                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 70...`;
+                        setSystemBusy(`Hydrating database: Loading partition ${i + 1} of 70...`);
                         const module = await import(`./src/data/data_${i}.js`);
                         if (module && module.chunksData) {
                             await db.chunks.bulkInsert(module.chunksData);
@@ -361,8 +510,7 @@
                 }
             }
 
-            // Carregar todos os documentos para o MiniSearch (Lexical Engine)
-            statusText.textContent = "Indexing Lexical Search (BM25)...";
+            setSystemBusy("Indexing Lexical Search (BM25)...");
             const allDocs = await db.chunks.find().exec();
 
             const docsForLexical = allDocs.map(doc => ({
@@ -376,40 +524,21 @@
 
             miniSearch.addAll(docsForLexical);
 
-            statusText.textContent = "Databases synced and ready. Preparing models...";
+            setSystemBusy("Databases synced and ready. Preparing models...");
             await initModelSelector();
         } catch (err) {
-            statusText.textContent = "Failed syncing data layout layers.";
+            setSystemBusy("Failed syncing data layout layers.");
             console.error(err);
         }
     }
 
     async function initModelSelector() {
         modelSelector.innerHTML = '';
-        let model = "Llama-3.2-3B-Instruct-q4f16_1-MLC";
-        let defaultOption = document.createElement('option');
+        const model = "Llama-3.2-3B-Instruct-q4f16_1-MLC";
+        const defaultOption = document.createElement('option');
         defaultOption.value = model;
         defaultOption.textContent = model;
         modelSelector.appendChild(defaultOption);
-        
-        model = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
-
-         model = "Llama-3.2-1B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
-
-        model = "Qwen2.5-7B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = model;
-        modelSelector.appendChild(defaultOption);
-
         initWebLLM();
     }
 
@@ -419,41 +548,23 @@
             const selectedModel = modelSelector.value;
             if(!selectedModel) return;
 
-            // 1. Get the config for the selected model (or fallback to 1B)
-            const config = MODEL_CONFIGS[selectedModel] || MODEL_CONFIGS["Llama-3.2-1B-Instruct-q4f16_1-MLC"];
-            
-            // 2. Update global parameters
-            totalItemSearched = config.searchItems;
-            MAX_CONTEXT_CHARS = config.maxChars;
-
-            // 3. Prevent memory leaks by unloading the previous model if one exists
-            if (engine) {
-                statusText.textContent = "Unloading previous model from VRAM...";
-                await engine.unload();
-            }
-
-            statusText.textContent = `Loading ${selectedModel} (Context: ${config.contextWindow})...`;
+            setSystemBusy(`Loading ${selectedModel}...`);
 
             engine = await CreateMLCEngine(selectedModel, {
                 initProgressCallback: (progress) => {
-                    statusText.textContent = `Loading LLM: ${Math.round(progress.progress * 100)}%`;
+                    setSystemBusy(`Loading LLM: ${Math.round(progress.progress * 100)}%`);
                 },
                 chatOpts: {
-                    context_window_size: config.contextWindow
+                    context_window_size: 4096
                 }
             });
 
-            // Only load embedder once
-            if (!embedder) {
-                statusText.textContent = "Loading Multilingual Embedder...";
-                embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
-            }
+            setSystemBusy("Loading Multilingual Embedder...");
+            embedder = await pipeline("feature-extraction", "Xenova/multilingual-e5-small", { dtype: "q8" });
 
-            statusText.textContent = "System Ready.";
-            userInput.disabled = false;
-            sendBtn.disabled = false;
+            setSystemReady();
         } catch (error) {
-            statusText.textContent = "Error bootstrapping local runtime engine.";
+            setSystemBusy("Error bootstrapping local runtime engine.");
             console.error(error);
         }
     }
@@ -470,21 +581,21 @@
     async function localRxDBSearch(queryVector) {
         const allDocs = await db.chunks.find().exec();
 
-        const plainDocs = allDocs.map(doc => ({
-            id: doc.id,
-            title: doc.title,
-            url: doc.url,
-            text_content: doc.text_content,
-            source_file: doc.source_file,
-            chunk_index: doc.chunk_index,
-            vector: doc.vector
-        }));
+        const plainDocs = allDocs
+            .map(doc => ({
+                id: doc.id,
+                title: doc.title,
+                url: doc.url,
+                text_content: doc.text_content,
+                source_file: doc.source_file,
+                chunk_index: doc.chunk_index,
+                vector: doc.vector
+            }));
 
         return new Promise((resolve, reject) => {
             searchWorker.onmessage = (e) => resolve(e.data);
             searchWorker.onerror = (err) => reject(err);
-            // Pass the dynamic totalItemSearched parameter to the worker
-            searchWorker.postMessage({ queryVector, docs: plainDocs, topK: totalItemSearched }); 
+            searchWorker.postMessage({ queryVector, docs: plainDocs });
         });
     }
 
@@ -499,7 +610,7 @@
 
         appendMessage('user', originalQuery);
         console.log("original query: " + originalQuery)
-        statusText.textContent = "Refining intent parameters...";
+        setSystemBusy("Refining intent parameters...");
 
         try {
             // Passo 1: Otimização de Busca (LLM)
@@ -531,40 +642,36 @@
             console.log("Vector Query:", optimizedQuery);
 
             // Passo 2: Busca Vetorial Semântica
-            statusText.textContent = "Calculating local query vectors...";
+            setSystemBusy("Calculating local query vectors...");
             const queryForE5 = "query: " + optimizedQuery;
             const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
             const vector = Array.from(embedding.data);
 
-            statusText.textContent = "Scanning RxDB (Semantic)...";
+            setSystemBusy("Scanning RxDB (Semantic)...");
             const vectorMatches = await localRxDBSearch(vector);
 
             // Passo 3: Busca Lexical/BM25 (MiniSearch) usando a query original
-            statusText.textContent = "Scanning MiniSearch (Lexical)...";
-            // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
+            setSystemBusy("Scanning MiniSearch (Lexical)...");
             const lexicalMatches = miniSearch.search(originalQuery);
-            console.log("Lexical Matches: ");
-            console.log(lexicalMatches);
+            console.log("Lexical Matches: ", lexicalMatches);
+            
             // Passo 4: Reciprocal Rank Fusion (RRF)
-            statusText.textContent = "Fusing Hybrid Results...";
+            setSystemBusy("Fusing Hybrid Results...");
             const fusedMatches = calculateRRF(vectorMatches, lexicalMatches);
-            console.log("Hybrid RRF Top Matches:");
-            console.log(fusedMatches);
+            console.log("Hybrid RRF Top Matches:", fusedMatches);
 
             if (fusedMatches.length === 0) {
                 appendMessage('bot', "Não encontrei essa informação na documentação extraída.");
-                statusText.textContent = "System Ready.";
-                userInput.disabled = false;
-                sendBtn.disabled = false;
+                setSystemReady();
                 return;
             }
 
             // Passo 5: Expansão Contextual (Small-to-Big)
-            statusText.textContent = "Expanding semantic context neighbors...";
+            setSystemBusy("Expanding semantic context neighbors...");
             const context = await getExpandedContext(fusedMatches.map(m => m.payload), db);
 
             // Passo 6: Geração da Resposta Final
-            statusText.textContent = "Synthesizing localized context query...";
+            setSystemBusy("Synthesizing localized context query...");
 
             const finalPrompt = `
                 Papel:
@@ -586,8 +693,6 @@
 
                 PERGUNTA_DO_USUÁRIO: ${originalQuery}`;
 
-            console.log(finalPrompt)
-                
             const finalReply = await engine.chat.completions.create({
                 messages: [{ role: "user", content: finalPrompt }],
                 temperature: 0.1
@@ -599,9 +704,7 @@
             appendMessage('system', `Execution fault error: ${error.message}`);
             console.error(error);
         } finally {
-            statusText.textContent = "System Ready.";
-            userInput.disabled = false;
-            sendBtn.disabled = false;
+            setSystemReady();
             userInput.focus();
         }
     }
@@ -666,6 +769,7 @@
 
         if (!status.isCompatible) {
             console.error("Bloqueado: O computador do usuário não atende aos requisitos mínimos.");
+            setSystemBusy("Hardware incompatibility detected. See console.");
         } else {
             console.log("Sucesso: Hardware compatível! Inicializando RAG local...");
             initDatabase();
@@ -673,7 +777,9 @@
     });
 
     sendBtn.addEventListener('click', handleUserSubmit);
-    userInput.addEventListener('keypress', (e) => {
+    
+    // Allow multi-line input natively, send on enter without shift
+    userInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleUserSubmit();
