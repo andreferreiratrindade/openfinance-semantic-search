@@ -430,12 +430,20 @@
 
         try {
             const refinementPrompt = `
-            System: Você é um especialista em Open Finance do Banco Central do Brasil. Sua única função é reescrever a pergunta do usuário para que ela utilize a terminologia técnica, formal e regulatória correta do BACEN.
-            Regras:
-            Não responda à pergunta.
-            Expanda siglas e termos coloquiais para suas definições legais (ex: "detentora" vira "instituição detentora de conta").
-            Retorne APENAS a nova pergunta reescrita. Nenhuma outra palavra.
-            User: ${query}
+            System: Você é um arquiteto de busca semântica e um Especialista Sênior em Open Finance Brasil, com domínio absoluto da infraestrutura técnica, manuais de APIs, segurança (FAPI/OAuth2).
+
+            Sua tarefa é receber a pergunta conversacional de um usuário e transformá-la em uma consulta de busca altamente otimizada para bancos de dados vetoriais (Semantic Search) que indexam documentações técnicas e normativas oficiais.
+
+            Siga estas regras estritamente:
+            1. Remova ruídos conversacionais, saudações e palavras de preenchimento (ex: "olá", "por favor me explique", "como funciona").
+            2. Extraia as entidades principais, verbos de ação e jargões técnicos.
+            3. Expansão de Domínio Regulatório (Crucial): Traduza termos coloquiais para a nomenclatura oficial do BCB e do ecossistema Open Finance. (Exemplos: mapeie "pagamento" para "iniciação de transação de pagamento ITP", "banco" para "instituição participante", "autorização" para "consentimento").
+            4. Adicione sinônimos técnicos, siglas relevantes (ex: ITP, detentor de conta, transmissor de dados, receptor) e mencione agrupamentos lógicos (ex: Fase 1, Fase 2, APIs de Consents, Resources, Payments, Resolução Conjunta) que possam estar nos documentos originais para melhorar o 'recall'.
+            5. Mantenha o idioma original da pergunta.
+            6. RETORNE APENAS A CONSULTA REFINADA. Não adicione explicações, aspas, ou textos de introdução.
+            7. Não responda à pergunta do usuário. Apenas reescreva a pergunta para otimização de busca vetorial.
+
+            Pegunta do usuário: ${query}
 
             Nova pergunta reescrita:`;
 
