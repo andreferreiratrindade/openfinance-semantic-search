@@ -150,8 +150,8 @@
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
     env.allowLocalModels = false;
 
-    import { createRxDatabase } from "https://esm.run/rxdb";
-    import { getRxStorageDexie } from "https://esm.run/rxdb/plugins/storage-dexie";
+    import { createRxDatabase } from "https://esm.sh/rxdb@15.3.0";
+    import { getRxStorageDexie } from "https://esm.sh/rxdb@15.3.0/plugins/storage-dexie";
 
     // DOM Elements
     const statusText = document.getElementById('status-text');
@@ -249,6 +249,7 @@
             });
 
             const topMatches = scoredDocs
+                .filter(doc => doc.score > 0.80)
                 .sort((a, b) => b.score - a.score)
                 .slice(0, 4);
 
@@ -336,6 +337,11 @@
             engine = await CreateMLCEngine(selectedModel, {
                 initProgressCallback: (progress) => {
                     statusText.textContent = `Loading LLM: ${Math.round(progress.progress * 100)}%`;
+                },
+                chatOpts: {
+                    // Forces Web-LLM to allocate exactly this much VRAM for context,
+                    // preventing unexpected crashes if a query pulls unusually large chunks.
+                    context_window_size: 4096
                 }
             });
 
@@ -361,7 +367,15 @@
 
     // --- Execute RxDB Local Semantic Vector Search ---
     async function localRxDBSearch(queryVector) {
-        const allDocs = await db.chunks.find().exec();
+        const allDocs = await db.chunks.find({
+            selector: {
+                url: {
+                    $regex: 'https://openfinancebrasil\\.atlassian\\.net',
+                    $options: 'i' // case-insensitive (optional but recommended)
+                }
+            }
+        }).exec();
+        //const allDocs = await db.chunks.find().exec();
 
         const plainDocs = allDocs.map(doc => ({
             title: doc.title,
