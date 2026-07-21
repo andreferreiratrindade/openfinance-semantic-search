@@ -1,6 +1,0 @@
-{
-    "texto": "1\nVisão Geral\n2\nLista de títulos de capitalização\n:\n(GET /opendata-capitalization/v1/bonds)\n2.1\nDicionário de dados\nVisão Geral\nAs instituições financeiras participantes podem consultar a lista de Títulos de Capitalização de outras instituições participantes\nLista de títulos de capitalização\n:\n(GET /opendata-capitalization/v1/bonds)\nMétodo para obter a lista de todos os títulos de Capitalização de uma instituição\nDicionário de dados\nCampos de resposta do endpoint de\n/bonds\nFazer download do dicionário de dados",
-    "paginaId": "109904000_Informa+es+Gerais+-+T+tulos+de+Capitaliza+o+-+v1.0.0",
-    "title": "Informações Gerais - Títulos de Capitalização - v1.0.0 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/109904000/Informa+es+Gerais+-+T+tulos+de+Capitaliza+o+-+v1.0.0"
-}

@@ -1,6 +1,0 @@
-{
-    "texto": "1\nVisão Geral\n2\nObtém dados sobre empréstimos pessoa natural\n: (GET /opendata-loans/v1/personal-loans)\n2.1\nDicionário de dados\n3\nObtém dados sobre empréstimos pessoa jurídica\n: (GET /opendata-loans/v1/business-loans)\n3.1\nDicionário de dados\nVisão Geral\nA API descrita neste documento é referente as API Loans da fase OpenData do Open Finance Brasil.\nObtém dados sobre empréstimos pessoa natural\n: (GET /opendata-loans/v1/personal-loans)\nObtém dados sobre empréstimos pessoa natural.\nDicionário de dados\nFazer download do dicionário de dados\nObtém dados sobre empréstimos pessoa jurídica\n: (GET /opendata-loans/v1/business-loans)\nObtém dados sobre empréstimos pessoa jurídica.\nDicionário de dados\nFazer download do dicionário de dados",
-    "paginaId": "180257014_Informa+es+Gerais+-+DA+Empr+stimos+-+v1.0.0-beta.1",
-    "title": "Informações Gerais - [DA] Empréstimos - v1.0.0-beta.1 - Área do Desenvolvedor - Open Finance Brasil - Área do Desenvolvedor",
-    "url": "https://openfinancebrasil.atlassian.net/wiki/spaces/OF/pages/180257014/Informa+es+Gerais+-+DA+Empr+stimos+-+v1.0.0-beta.1"
-}

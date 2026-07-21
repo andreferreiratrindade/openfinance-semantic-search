@@ -106,6 +106,9 @@ async function buildRAGDatabase() {
             const data = JSON.parse(content);
             const rawText = data.texto || data.text_content || "";
             const sanitizedText = cleanText(rawText);
+            
+            if(sanitizedText && sanitizedText.length < 300) break;          
+
 
             // Quebra o texto usando a API nativa
             const chunks = chunkTextNative(sanitizedText, TEXT_CHUNK_SIZE, TEXT_CHUNK_OVERLAP);
