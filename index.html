@@ -316,9 +316,9 @@
             if (existingCount.length === 0) {
                 statusText.textContent = "RxDB syncing... downloading partitions.";
 
-                for (let i = 0; i < 465; i++) {
+                for (let i = 0; i < 70; i++) {
                     try {
-                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 465...`;
+                        statusText.textContent = `Hydrating database: Loading partition ${i + 1} of 70...`;
                         const module = await import(`./src/data/data_${i}.js`);
                         if (module && module.chunksData) {
                             await db.chunks.bulkInsert(module.chunksData);
