@@ -407,9 +407,10 @@
                 temperature: 0.1
             });
 
+
             const optimizedQuery = refReply.choices[0].message.content.trim();
             statusText.textContent = "Calculating local query vectors...";
-
+            console.log(optimizedQuery);
             const queryForE5 = "query: " + optimizedQuery;
             const embedding = await embedder(queryForE5, { pooling: "mean", normalize: true });
 
@@ -417,7 +418,7 @@
 
             statusText.textContent = "Scanning RxDB collection layers...";
             const matches = await localRxDBSearch(vector);
-
+            console.log(matches);
             // INTEGRAÇÃO: Aqui chamamos a função Small-to-Big em vez de concatenar direto
             statusText.textContent = "Expanding semantic context neighbors...";
             const context = await getExpandedContext(matches.map(m => m.payload), db);
@@ -441,6 +442,7 @@
 
                 User: ${query}`;
 
+            console.log(finalPrompt);
             const finalReply = await engine.chat.completions.create({
                 messages: [{ role: "user", content: finalPrompt }],
                 temperature: 0.2
