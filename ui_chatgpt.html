@@ -219,9 +219,6 @@
             topP: 0.85,
             repetitionPenalty: 1.15
         },
-        // "Llama-3.2-3B-Instruct-q4f16_1-MLC": { contextWindow: 2048, maxChars: 4800, searchItems: 15 },
-        // "Qwen2.5-7B-Instruct-q4f16_1-MLC": { contextWindow: 1536, maxChars: 3600, searchItems: 10 },
-        // "Qwen2.5-0.5B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 9600, searchItems: 90 }
     };
 
     // DOM Elements
@@ -291,9 +288,25 @@
     7. Não inclua explicações ou comentários.
     8. Produza uma consulta curta, objetiva e semanticamente precisa.
     9. Retorne somente a consulta otimizada, sem JSON, sem blocos de código e
-    sem prefixos como "Consulta:".
+    sem prefixos como "Consulta:
+    10. Retorne o resultado no campo JSON "query".".
     `.trim();
 
+    const REFINEMENT_LEXICAL_SYSTEM_PROMPT = `
+    Você é um especialista em Recuperação de Informação (Information Retrieval) e Estratégia de Busca Lexical (SEO Lexical/BM25).
+
+    Sua tarefa é reescrever e otimizar o texto fornecido focado especificamente no algoritmo de busca lexical BM25 (utilizado por motores como Elasticsearch, OpenSearch, Solr e Lucene).
+
+    Regras obrigatórias:
+
+    1. Expanda o vocabulário de forma natural inserindo termos de busca exatos, termos técnicos da área, acrônimos relevantes e variações comuns de busca em português do Brasil (incluindo plurais, variações de gênero e formas verbais derivadas).
+    2. Garanta que entidades centrais e conceitos do domínio apareçam acompanhados de seus termos definidores (princípios de TF-IDF), sem cair no "keyword stuffing" (uso não natural de palavras-chave).
+    3. Substitua metáforas abstratas, linguagem figurada ou frases de efeito por termos concretos, técnicos e literais que os usuários realmente digitariam na barra de busca.
+    4. Adicione os termos principais diretamente nos títulos (H1, H2, H3) e nas primeiras frases das seções.
+    5. Mantenha o texto objetivo e enxuto para preservar uma alta densidade proporcional de termos relevantes em relação ao tamanho total do documento.
+    6. Retorne texto reescrito e pronto para indexação lexical.
+    7. Retorne o resultado no campo JSON "query".
+    `.trim();
     const MODEL_LABELS = {
         "Llama-3.2-3B-Instruct-q4f16_1-MLC": "Llama 3.2 · 3B (recomendado)",
         "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 1.5B (rápido)",
@@ -640,8 +653,9 @@
     async function initModelSelector() {
         modelSelector.innerHTML = '';
         const availableModels = [
-            "Llama-3.2-3B-Instruct-q4f16_1-MLC",
-            "Qwen2.5-1.5B-Instruct-q4f16_1-MLC"
+            "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
+            "Llama-3.2-3B-Instruct-q4f16_1-MLC"
+            
         ];
 
         availableModels.forEach(model => {
@@ -775,6 +789,9 @@
             const optimizedQuery = await refineSearchQuery(originalQuery, REFINEMENT_SYSTEM_PROMPT);
             console.log("Query optimized:", optimizedQuery);
 
+            const optimizedQueryForLexical = await refineSearchQuery(originalQuery, REFINEMENT_LEXICAL_SYSTEM_PROMPT);
+            console.log("Query optimized:", optimizedQueryForLexical);
+
             // Passo 2: Busca Vetorial Semântica
             statusText.textContent = "Calculating local query vectors...";
             const queryForE5 = "query: " + optimizedQuery;
@@ -788,7 +805,7 @@
             // Passo 3: Busca Lexical/BM25 (MiniSearch) usando a query original
             statusText.textContent = "Scanning MiniSearch (Lexical)...";
             // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
-            const lexicalMatches = miniSearch.search(originalQuery);
+            const lexicalMatches = miniSearch.search(optimizedQueryForLexical);
             console.log("Lexical Matches: ");
             console.log(lexicalMatches);
             // Passo 4: Reciprocal Rank Fusion (RRF)
