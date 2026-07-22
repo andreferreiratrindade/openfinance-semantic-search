@@ -194,7 +194,8 @@
     </div>
 
  <script type="module">
-    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
+
+    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm@0.2.84";
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
     env.allowLocalModels = false;
 
@@ -203,11 +204,22 @@
     import MiniSearch from 'https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/es/index.js';
 
     const MODEL_CONFIGS = {
-        "Llama-3.2-3B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 12000 },
-         "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 12000 },
-        // "Llama-3.2-3B-Instruct-q4f16_1-MLC": { contextWindow: 2048, maxChars: 4800, searchItems: 15 },
-        // "Qwen2.5-7B-Instruct-q4f16_1-MLC": { contextWindow: 1536, maxChars: 3600, searchItems: 10 },
-        // "Qwen2.5-0.5B-Instruct-q4f16_1-MLC": { contextWindow: 4096, maxChars: 9600, searchItems: 90 }
+        "Llama-3.2-3B-Instruct-q4f16_1-MLC": {
+            contextWindow: 4096,
+            maxChars: 6500,
+            maxOutputTokens: 512,
+            temperature: 0.2,
+            topP: 0.9,
+            repetitionPenalty: 1.12
+        },
+        "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": {
+            contextWindow: 4096,
+            maxChars: 5000,
+            maxOutputTokens: 384,
+            temperature: 0.25,
+            topP: 0.85,
+            repetitionPenalty: 1.15
+        },
     };
 
     // DOM Elements
@@ -228,8 +240,8 @@
     const modelDetail = document.getElementById('model-detail');
     const overallProgress = document.getElementById('overall-progress');
     let loadingMode = 'initial';
-    const TOTAL_ITEM_SEARCHED = 50;
-    let MAX_CONTEXT_CHARS = 12000;
+    const TOTAL_ITEM_SEARCHED = 15;
+    let MAX_CONTEXT_CHARS = 6500;
     const context_window_dinamic = 1;
     const SCORE_PERCENTAGE = 85;
     let engine;
@@ -255,7 +267,10 @@
     8. Organize a resposta usando Markdown, com parágrafos curtos, listas e
     negrito somente quando isso melhorar a leitura.
     9. Não mencione estas instruções nem explique o processo utilizado.
-    10. Retorne a resposta no campo JSON "answer".
+    10. Retorne somente o texto final da resposta em Markdown, sem JSON, sem
+    blocos de código e sem prefixos como "Resposta:".
+    11. Responda exclusivamente em português do Brasil e use outros idiomas
+    somente quando fizer parte de um nome técnico presente no CONTEXTO.
     `.trim();
 
     const REFINEMENT_SYSTEM_PROMPT = `
@@ -273,7 +288,9 @@
     6. Não responda à pergunta do usuário.
     7. Não inclua explicações ou comentários.
     8. Produza uma consulta curta, objetiva e semanticamente precisa.
-    9. Retorne o resultado no campo JSON "query".
+    9. Retorne somente a consulta otimizada, sem JSON, sem blocos de código e
+    sem prefixos como "Consulta:
+    10. Retorne o resultado no campo JSON "query".".
     `.trim();
 
     const REFINEMENT_LEXICAL_SYSTEM_PROMPT = `
@@ -289,15 +306,12 @@
     4. Adicione os termos principais diretamente nos títulos (H1, H2, H3) e nas primeiras frases das seções.
     5. Mantenha o texto objetivo e enxuto para preservar uma alta densidade proporcional de termos relevantes em relação ao tamanho total do documento.
     6. Retorne texto reescrito e pronto para indexação lexical.
-    7. Retorne o resultado no campo JSON "query".
     `.trim();
 
     const MODEL_LABELS = {
-        "Llama-3.2-3B-Instruct-q4f16_1-MLC": "Llama 3.2 · 3B",
-        "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 1.5B",
-        // "Llama-3.2-1B-Instruct-q4f16_1-MLC": "Llama 3.2 · 1B",
-        // "Qwen2.5-7B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 7B",
-        // "Qwen2.5-0.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 0.5B"
+        "Llama-3.2-3B-Instruct-q4f16_1-MLC": "Llama 3.2 · 3B (recomendado)",
+        "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 1.5B (rápido)",
+
     };
 
     function renderWelcome() {
@@ -448,31 +462,22 @@
             }).exec();
 
             retrievedDocs.sort((a, b) => a.chunk_index - b.chunk_index);
-            const fileText = retrievedDocs
-                .map(doc => doc.text_content.replace("passage: ", "")
-                                            .replace(/\\/g, '\\\\')  // Escapa barras invertidas
-                                            .replace(/"/g, '\\"')    // Escapa aspas duplas
-                                            .replace(/\n/g, ' ')
-                                            .replace(/"/g, '')
-                                            .replace(/“/g, '')
-                                            .replace(/'/g, '')
-                                            .replace(/["\n\r\t\\]/g, ' ')
-                                            .replace(/`/g, '')  // Escapa quebras de linha
-                                            .replace(/\r/g, ' ').trim())
+            const retrievedText = retrievedDocs
+                .map(doc => sanitizeContextText(doc.text_content))
+                .filter(Boolean)
                 .join("\n\n");
 
+            if (!retrievedText) continue;
 
-
+            const fileText = `[FONTE: ${file}]\n${retrievedText}`;
             // Uses dynamic MAX_CONTEXT_CHARS
             if (currentTotalChars + fileText.length > MAX_CONTEXT_CHARS) {
                 const remainingSpace = MAX_CONTEXT_CHARS - currentTotalChars;
                 if (remainingSpace > 200) {
                    // const truncatedBlock = fileText.substring(0, remainingSpace) + "\n...[Context truncated due to size limits]";
                   //  finalContextBlocks.push(truncatedBlock);
-                    let truncatedText = fileText.substring(0, remainingSpace);
-
-                    // Tenta sanitizar escapando aspas e quebras de linha para não quebrar a string do JSON pai
-                    truncatedText = truncatedText + "\n...[Context truncated due to size limits]";
+                    const truncatedText = truncateContextSafely(fileText, remainingSpace)
+                        + "\n[Contexto truncado por limite de tamanho]";
 
                     finalContextBlocks.push(truncatedText);
                 }
@@ -484,9 +489,40 @@
             currentTotalChars += fileText.length;
         }
 
-        var result =  finalContextBlocks.join("...");
+        const result = finalContextBlocks.join("\n\n---\n\n");
 
         return result;
+    }
+
+    function sanitizeContextText(value) {
+        return String(value ?? '')
+            .replace(/^passage:\s*/i, '')
+            .replace(/\u0000/g, '')
+            .replace(/\r\n?/g, '\n')
+            .replace(/[ \t]+/g, ' ')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+    }
+
+    function truncateContextSafely(text, maxLength) {
+        let truncated = text.slice(0, maxLength);
+
+        // Não deixa metade de um par UTF-16 no fim do texto.
+        if (/[\uD800-\uDBFF]$/.test(truncated)) {
+            truncated = truncated.slice(0, -1);
+        }
+
+        // Quando possível, encerra no último limite de palavra próximo ao fim.
+        const lastBoundary = Math.max(
+            truncated.lastIndexOf('\n'),
+            truncated.lastIndexOf('. '),
+            truncated.lastIndexOf(' ')
+        );
+        if (lastBoundary > maxLength * 0.8) {
+            truncated = truncated.slice(0, lastBoundary + 1);
+        }
+
+        return truncated.trimEnd();
     }
 
     // --- WEB WORKER PARA CÁLCULO DE VETORES ---
@@ -615,17 +651,18 @@
 
     async function initModelSelector() {
         modelSelector.innerHTML = '';
-        let model = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
-        let defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = MODEL_LABELS[model];
-        modelSelector.appendChild(defaultOption);
+        const availableModels = [
+            "Qwen2.5-1.5B-Instruct-q4f16_1-MLC",
+            "Llama-3.2-3B-Instruct-q4f16_1-MLC"
+            
+        ];
 
-        model = "Llama-3.2-3B-Instruct-q4f16_1-MLC"
-        defaultOption = document.createElement('option');
-        defaultOption.value = model;
-        defaultOption.textContent = MODEL_LABELS[model];
-        modelSelector.appendChild(defaultOption);
+        availableModels.forEach(model => {
+            const option = document.createElement('option');
+            option.value = model;
+            option.textContent = MODEL_LABELS[model];
+            modelSelector.appendChild(option);
+        });
 
         //  model = "Llama-3.2-1B-Instruct-q4f16_1-MLC"
         // defaultOption = document.createElement('option');
@@ -652,7 +689,7 @@
             if (isInitialLoad) updateDependencyProgress('database', 100, 'Documentação indexada');
 
             // 1. Get the config for the selected model (or fallback to 1B)
-            const config = MODEL_CONFIGS[selectedModel] || MODEL_CONFIGS["Qwen2.5-1.5B-Instruct-q4f16_1-MLC"];
+            const config = getSelectedModelConfig(selectedModel);
 
 
             MAX_CONTEXT_CHARS = config.maxChars;
@@ -694,6 +731,11 @@
             appendMessage('system', `Falha ao carregar o modelo: ${error.message}`);
             console.error(error);
         }
+    }
+
+    function getSelectedModelConfig(modelId = modelSelector.value) {
+        return MODEL_CONFIGS[modelId]
+            || MODEL_CONFIGS["Qwen2.5-1.5B-Instruct-q4f16_1-MLC"];
     }
 
     function appendMessage(role, text) {
@@ -746,10 +788,9 @@
             const optimizedQuery = await refineSearchQuery(originalQuery, REFINEMENT_SYSTEM_PROMPT);
             console.log("Query optimized:", optimizedQuery);
 
-            const optimizedQueryToLexicalSearch = await refineSearchQuery(originalQuery, REFINEMENT_LEXICAL_SYSTEM_PROMPT);
-            console.log("Query Optimized for Lexical:", optimizedQueryToLexicalSearch);
-            MAX_CONTEXT_CHARS -= optimizedQueryToLexicalSearch.length;
-
+            const optimizedQueryForLexical = await refineSearchLexical(originalQuery, REFINEMENT_LEXICAL_SYSTEM_PROMPT);
+            console.log("Query optimized Lexical:", optimizedQueryForLexical);
+            debugger
             // Passo 2: Busca Vetorial Semântica
             statusText.textContent = "Calculating local query vectors...";
             const queryForE5 = "query: " + optimizedQuery;
@@ -763,7 +804,7 @@
             // Passo 3: Busca Lexical/BM25 (MiniSearch) usando a query original
             statusText.textContent = "Scanning MiniSearch (Lexical)...";
             // Usamos a query original para não perder termos exatos como "endToEndId" ou códigos HTTP
-            const lexicalMatches = miniSearch.search(originalQuery);
+            const lexicalMatches = miniSearch.search(optimizedQueryForLexical);
             console.log("Lexical Matches: ");
             console.log(lexicalMatches);
             // Passo 4: Reciprocal Rank Fusion (RRF)
@@ -794,7 +835,7 @@
             appendMessage('bot', finalAnswer);
 
         } catch (error) {
-            appendMessage('system', `Execution fault error: ${error.message}`);
+            appendMessage('system', `Não foi possível gerar a resposta: ${error.message}`);
             console.error(error);
         } finally {
             statusText.textContent = "System Ready.";
@@ -863,57 +904,196 @@
             throw new Error("A consulta original não pode estar vazia.");
         }
 
-        const refinementReply = await engine.chat.completions.create({
-            messages: [
+        try {
+            const refinedQuery = await createStableCompletion(
+                [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: originalQuery.trim() }
+                ],
                 {
-                    role: "system",
-                    content: systemPrompt
-                },
-                {
-                    role: "user",
-                    content: originalQuery.trim()
+                    maxTokens: 80,
+                    preferredField: "query",
+                    maxAttempts: 1
                 }
-            ],
-
-            temperature: 0,
-            max_tokens: 96,
-            stream: false,
-
-            response_format: {
-                type: "json_object",
-                schema: JSON.stringify({
-                    type: "object",
-                    properties: {
-                        query: {
-                            type: "string",
-                            description:
-                                "Consulta otimizada para busca semântica no Open Finance Brasil."
-                        }
-                    },
-                    required: ["query"],
-                    additionalProperties: false
-                })
-            }
-        });
-
-        const content =
-            refinementReply.choices[0]?.message?.content;
-
-        if (!content) {
-            throw new Error(
-                "O modelo não retornou a consulta refinada."
             );
-        }
 
-        const parsedResponse = JSON.parse(content);
-        const refinedQuery = parsedResponse.query?.trim();
+            // Uma consulta refinada deve continuar curta. Se o modelo responder
+            // à pergunta em vez de reescrevê-la, usa-se a consulta original.
+            if (refinedQuery.length > 500) {
+                console.warn('Refinamento muito extenso; usando a consulta original.');
+                return originalQuery.trim();
+            }
 
-        if (!refinedQuery) {
-            // Mantém a busca funcional caso o modelo retorne uma consulta vazia.
+            return refinedQuery;
+        } catch (error) {
+            // O refinamento é opcional: uma falha não pode impedir a busca.
+            console.warn('Refinamento instável; usando a consulta original.', error);
             return originalQuery.trim();
         }
+    }
 
-        return refinedQuery;
+    async function refineSearchLexical(originalQuery, systemPrompt) {
+        if (!originalQuery?.trim()) {
+            throw new Error("A consulta original não pode estar vazia.");
+        }
+
+        try {
+            const refinedQuery = await createStableCompletion(
+                [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: originalQuery.trim() }
+                ],
+                {
+                    maxTokens: 80,
+                    maxAttempts: 1
+                }
+            );
+
+            // Uma consulta refinada deve continuar curta. Se o modelo responder
+            // à pergunta em vez de reescrevê-la, usa-se a consulta original.
+            if (refinedQuery.length > 500) {
+                console.warn('Refinamento muito extenso; usando a consulta original.');
+                return originalQuery.trim();
+            }
+
+            return refinedQuery;
+        } catch (error) {
+            // O refinamento é opcional: uma falha não pode impedir a busca.
+            console.warn('Refinamento instável; usando a consulta original.', error);
+            return originalQuery.trim();
+        }
+    }
+
+    function normalizeModelText(content, preferredField) {
+        let text = String(content ?? '').trim();
+
+        // Alguns modelos ainda podem envolver a saída em um bloco Markdown,
+        // mesmo quando o prompt pede apenas texto.
+        text = text
+            .replace(/^```(?:json|markdown|text)?\s*/i, '')
+            .replace(/\s*```$/i, '')
+            .trim();
+
+        // Compatibilidade defensiva com respostas JSON produzidas espontaneamente,
+        // sem ativar a gramática JSON do WebLLM/xgrammar.
+        if (text.startsWith('{')) {
+            try {
+                const parsed = JSON.parse(text);
+                const value = parsed?.[preferredField];
+                if (typeof value === 'string' && value.trim()) {
+                    return value.trim();
+                }
+            } catch (error) {
+                console.warn('O modelo retornou JSON inválido; usando o texto bruto.', error);
+            }
+        }
+
+        if (preferredField === 'query') {
+            text = text.replace(/^(?:consulta(?:\s+otimizada)?|query)\s*:\s*/i, '');
+        } else if (preferredField === 'answer') {
+            text = text.replace(/^(?:resposta|answer)\s*:\s*/i, '');
+        }
+
+        return text.trim();
+    }
+
+    function isDegenerateText(text) {
+        const value = String(text ?? '').trim();
+        const visible = value.replace(/\s/g, '');
+
+        if (visible.length < 3 || value.includes('\uFFFD')) return true;
+
+        // A base e a resposta são em português. Uma mistura significativa de
+        // alfabetos não latinos indica corrupção/degeneração de tokens.
+        const foreignScripts = value.match(
+            /[\p{Script=Cyrillic}\p{Script=Han}\p{Script=Arabic}\p{Script=Thai}\p{Script=Hangul}\p{Script=Devanagari}\p{Script=Georgian}]/gu
+        ) || [];
+        const latinLetters = value.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/g) || [];
+        if (foreignScripts.length > Math.max(4, latinLetters.length * 0.04)) {
+            return true;
+        }
+
+        const punctuation = value.match(/[^\p{L}\p{N}\p{M}\s]/gu) || [];
+        if (punctuation.length / visible.length > 0.35) return true;
+
+        // Captura ciclos como "GGGGGG" e "!G!G!G!G!G!G".
+        if (/(.{1,4})\1{5,}/u.test(value)) return true;
+
+        const words = value.toLocaleLowerCase('pt-BR').match(/[\p{L}\p{N}_-]+/gu) || [];
+        if (words.length >= 40) {
+            const uniqueWordRatio = new Set(words).size / words.length;
+            if (uniqueWordRatio < 0.2) return true;
+        }
+
+        return false;
+    }
+
+    async function resetGenerationState() {
+        if (typeof engine?.resetChat !== 'function') return;
+
+        try {
+            await engine.resetChat();
+        } catch (error) {
+            console.warn('Não foi possível reiniciar o estado de geração.', error);
+        }
+    }
+
+    async function createStableCompletion(
+        messages,
+        { maxTokens, preferredField, maxAttempts = 2 }
+    ) {
+        const config = getSelectedModelConfig();
+        const attempts = [
+            {
+                temperature: config.temperature,
+                top_p: config.topP,
+                repetition_penalty: config.repetitionPenalty,
+                max_tokens: maxTokens
+            },
+            {
+                temperature: Math.min(config.temperature + 0.15, 0.5),
+                top_p: Math.min(config.topP, 0.8),
+                repetition_penalty: Math.max(config.repetitionPenalty, 1.18),
+                max_tokens: Math.min(maxTokens, 320)
+            }
+        ];
+
+        let lastError;
+
+        for (let attemptIndex = 0; attemptIndex < maxAttempts; attemptIndex++) {
+            try {
+                const reply = await engine.chat.completions.create({
+                    messages,
+                    ...attempts[attemptIndex],
+                    stream: false
+                });
+
+                const content = reply.choices[0]?.message?.content;
+                const normalized = normalizeModelText(content, preferredField);
+
+                if (normalized && !isDegenerateText(normalized)) {
+                    return normalized;
+                }
+
+                lastError = new Error('O modelo local gerou uma saída instável.');
+                console.warn(
+                    `Saída degenerada detectada na tentativa ${attemptIndex + 1}.`,
+                    content
+                );
+            } catch (error) {
+                lastError = error;
+                console.warn(`Falha na geração ${attemptIndex + 1}.`, error);
+            }
+
+            if (attemptIndex + 1 < maxAttempts) {
+                await resetGenerationState();
+            }
+        }
+
+        throw new Error(
+            'O modelo local não conseguiu gerar uma resposta estável. '
+            + 'Tente novamente ou selecione o modelo Llama 3.2 · 3B.'
+        );
     }
 
 
@@ -933,59 +1113,20 @@
             `.trim();
 
 
-        console.log(userMessage)
-        const finalReply = await engine.chat.completions.create({
-            messages: [
-                {
-                    role: "system",
-                    content: SYSTEM_PROMPT
-                },
-                {
-                    role: "user",
-                    content: userMessage
-                }
+        console.log(`Contexto enviado ao modelo: ${context.length} caracteres.`);
+        const config = getSelectedModelConfig();
+
+        return createStableCompletion(
+            [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: userMessage }
             ],
-            max_tokens: MODEL_CONFIGS[modelSelector.value].contextWindow,
-            temperature: 0,
-            stream: false,
-            response_format: {
-                type: "json_object",
-                schema: JSON.stringify({
-                    type: "object",
-                    properties: {
-                        answer: {
-                            type: "string",
-                            description:
-                                "Resposta final em Markdown baseada exclusivamente no contexto."
-                        }
-                    },
-                    required: ["answer"],
-                    additionalProperties: false
-                })
+            {
+                maxTokens: config.maxOutputTokens,
+                preferredField: "answer",
+                maxAttempts: 2
             }
-        });
-
-        const content = finalReply.choices[0]?.message?.content;
-
-        if (!content) {
-            throw new Error("O modelo não retornou uma resposta.");
-        }
-        // Tenta fazer o parse do JSON
-        try {
-            const parsedResponse = JSON.parse(content);
-            return parsedResponse.answer.trim();
-        } catch (error) {
-            console.warn("A IA cortou o JSON no meio. Recuperando o texto bruto...");
-
-            // Remove a abertura do JSON quebrado: {"answer": "
-            let fallbackText = content.replace(/^\{\s*"answer"\s*:\s*"/i, '');
-            // Remove o fechamento do JSON se existir
-            fallbackText = fallbackText.replace(/"\s*\}\s*$/i, '');
-
-            // Retorna o texto até onde a IA conseguiu escrever (ex: até o "21.")
-            // Para não quebrar a tela com "\\n", convertemos para quebras de linha reais
-            return fallbackText.replace(/\\n/g, '\n').trim() + " ... [resposta interrompida por ser muito grande]";
-        }
+        );
 
     }
 

@@ -194,7 +194,8 @@
     </div>
 
  <script type="module">
-    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
+
+    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm@0.2.84";
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
     env.allowLocalModels = false;
 
@@ -305,14 +306,12 @@
     4. Adicione os termos principais diretamente nos títulos (H1, H2, H3) e nas primeiras frases das seções.
     5. Mantenha o texto objetivo e enxuto para preservar uma alta densidade proporcional de termos relevantes em relação ao tamanho total do documento.
     6. Retorne texto reescrito e pronto para indexação lexical.
-    7. Retorne o resultado no campo JSON "query".
     `.trim();
+
     const MODEL_LABELS = {
         "Llama-3.2-3B-Instruct-q4f16_1-MLC": "Llama 3.2 · 3B (recomendado)",
         "Qwen2.5-1.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 1.5B (rápido)",
-        // "Llama-3.2-1B-Instruct-q4f16_1-MLC": "Llama 3.2 · 1B",
-        // "Qwen2.5-7B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 7B",
-        // "Qwen2.5-0.5B-Instruct-q4f16_1-MLC": "Qwen 2.5 · 0.5B"
+
     };
 
     function renderWelcome() {
@@ -789,9 +788,9 @@
             const optimizedQuery = await refineSearchQuery(originalQuery, REFINEMENT_SYSTEM_PROMPT);
             console.log("Query optimized:", optimizedQuery);
 
-            const optimizedQueryForLexical = await refineSearchQuery(originalQuery, REFINEMENT_LEXICAL_SYSTEM_PROMPT);
-            console.log("Query optimized:", optimizedQueryForLexical);
-
+            const optimizedQueryForLexical = await refineSearchLexical(originalQuery, REFINEMENT_LEXICAL_SYSTEM_PROMPT);
+            console.log("Query optimized Lexical:", optimizedQueryForLexical);
+            debugger
             // Passo 2: Busca Vetorial Semântica
             statusText.textContent = "Calculating local query vectors...";
             const queryForE5 = "query: " + optimizedQuery;
@@ -914,6 +913,38 @@
                 {
                     maxTokens: 80,
                     preferredField: "query",
+                    maxAttempts: 1
+                }
+            );
+
+            // Uma consulta refinada deve continuar curta. Se o modelo responder
+            // à pergunta em vez de reescrevê-la, usa-se a consulta original.
+            if (refinedQuery.length > 500) {
+                console.warn('Refinamento muito extenso; usando a consulta original.');
+                return originalQuery.trim();
+            }
+
+            return refinedQuery;
+        } catch (error) {
+            // O refinamento é opcional: uma falha não pode impedir a busca.
+            console.warn('Refinamento instável; usando a consulta original.', error);
+            return originalQuery.trim();
+        }
+    }
+
+    async function refineSearchLexical(originalQuery, systemPrompt) {
+        if (!originalQuery?.trim()) {
+            throw new Error("A consulta original não pode estar vazia.");
+        }
+
+        try {
+            const refinedQuery = await createStableCompletion(
+                [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: originalQuery.trim() }
+                ],
+                {
+                    maxTokens: 80,
                     maxAttempts: 1
                 }
             );
