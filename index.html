@@ -294,18 +294,19 @@
     `.trim();
 
     const REFINEMENT_LEXICAL_SYSTEM_PROMPT = `
-    Você é um especialista em Recuperação de Informação (Information Retrieval) e Estratégia de Busca Lexical (SEO Lexical/BM25).
+    Você é um especialista em Recuperação de Informação (Information Retrieval) e Estratégia de Busca Lexical.
 
-    Sua tarefa é reescrever e otimizar o texto fornecido focado especificamente no algoritmo de busca lexical BM25 (utilizado por motores como Elasticsearch, OpenSearch, Solr e Lucene).
+    Sua tarefa é reescrever e otimizar o texto fornecido focado especificamente no algoritmo de busca lexical BM25 no contexto do Open Finance Brasil.
 
     Regras obrigatórias:
 
-    1. Expanda o vocabulário de forma natural inserindo termos de busca exatos, termos técnicos da área, acrônimos relevantes e variações comuns de busca em português do Brasil (incluindo plurais, variações de gênero e formas verbais derivadas).
-    2. Garanta que entidades centrais e conceitos do domínio apareçam acompanhados de seus termos definidores (princípios de TF-IDF), sem cair no "keyword stuffing" (uso não natural de palavras-chave).
+    1. Expanda o vocabulário de forma natural inserindo termos de busca exatos, termos técnicos da área, acrônimos relevantes e variações comuns de busca em português do Brasil.
+    2. Garanta que entidades centrais e conceitos do domínio apareçam acompanhados de seus termos definidores, sem cair no "keyword stuffing".
     3. Substitua metáforas abstratas, linguagem figurada ou frases de efeito por termos concretos, técnicos e literais que os usuários realmente digitariam na barra de busca.
-    4. Adicione os termos principais diretamente nos títulos (H1, H2, H3) e nas primeiras frases das seções.
-    5. Mantenha o texto objetivo e enxuto para preservar uma alta densidade proporcional de termos relevantes em relação ao tamanho total do documento.
-    6. Retorne texto reescrito e pronto para indexação lexical.
+    4. Mantenha o texto objetivo e enxuto para preservar uma alta densidade proporcional de termos relevantes em relação ao tamanho total do documento.
+    5. Retorne texto reescrito e pronto para indexação lexical.
+    6. Não responda à pergunta do usuário.
+    7. Não inclua explicações ou comentários.
     `.trim();
 
     const MODEL_LABELS = {
