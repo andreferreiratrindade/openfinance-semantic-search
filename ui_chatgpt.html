@@ -75,6 +75,8 @@
         #user-input::placeholder { color:#7d8c86; }
         #send-btn { position:absolute; top:16px; right:16px; display:grid; place-items:center; width:46px; height:46px; padding:0; color:#fff; background:var(--green-2); border:0; border-radius:14px; font-size:20px; cursor:pointer; box-shadow:0 9px 20px rgba(21,116,92,.2); }
         #send-btn:hover:not(:disabled) { background:var(--green); transform:translateY(-1px); }
+        #send-btn.stop-mode { background:var(--danger); box-shadow:0 9px 20px rgba(168,61,50,.2); }
+        #send-btn.stop-mode:hover:not(:disabled) { background:#873129; }
         #send-btn:disabled { color:#a9b5b0; background:#edf1ee; box-shadow:none; cursor:not-allowed; }
         .composer-meta { display:flex; gap:8px; min-height:37px; padding:11px 24px; color:var(--faint); background:#fbfcfa; border-top:1px solid #edf0ed; font-size:10px; }
         .disclaimer { margin-top:10px; color:var(--faint); font-size:9px; text-align:center; }
@@ -302,6 +304,7 @@ let currentModelId = null;
 let loadingMode = "initial";
 let runtimeReady = false;
 let generationInProgress = false;
+let currentGenerationController = null;
 let hardwareReportPromise = null;
 let compatibleModelRecords = [];
 let maxContextChars = 4800;
@@ -342,9 +345,22 @@ function bindPromptButtons() {
 
 function syncComposerState() {
     userInput.disabled = !runtimeReady || generationInProgress;
-    sendBtn.disabled = !runtimeReady
-        || generationInProgress
-        || userInput.value.trim().length === 0;
+    const stopRequested = Boolean(
+        generationInProgress && currentGenerationController?.signal.aborted
+    );
+
+    sendBtn.classList.toggle("stop-mode", generationInProgress);
+    sendBtn.textContent = generationInProgress ? "■" : "↑";
+    sendBtn.setAttribute(
+        "aria-label",
+        generationInProgress ? "Interromper resposta" : "Enviar pergunta"
+    );
+    sendBtn.title = generationInProgress
+        ? "Interromper resposta"
+        : "Enviar pergunta";
+    sendBtn.disabled = generationInProgress
+        ? stopRequested
+        : !runtimeReady || userInput.value.trim().length === 0;
 }
 
 function showLoading(mode = "initial") {
@@ -1095,6 +1111,60 @@ class GpuDeviceLostError extends Error {
     }
 }
 
+class GenerationStoppedError extends Error {
+    constructor() {
+        super("A resposta foi interrompida pelo usuário.");
+        this.name = "GenerationStoppedError";
+    }
+}
+
+function throwIfGenerationStopped(signal) {
+    if (signal?.aborted) {
+        throw new GenerationStoppedError();
+    }
+}
+
+function awaitOrStop(promise, signal) {
+    if (!signal) return promise;
+    throwIfGenerationStopped(signal);
+
+    return new Promise((resolve, reject) => {
+        const handleStop = () => reject(new GenerationStoppedError());
+        signal.addEventListener("abort", handleStop, { once: true });
+
+        Promise.resolve(promise).then(
+            (value) => {
+                signal.removeEventListener("abort", handleStop);
+                resolve(value);
+            },
+            (error) => {
+                signal.removeEventListener("abort", handleStop);
+                reject(error);
+            }
+        );
+    });
+}
+
+function stopCurrentGeneration() {
+    if (!generationInProgress || currentGenerationController?.signal.aborted) {
+        return;
+    }
+
+    currentGenerationController.abort();
+    statusText.textContent = "Interrompendo resposta…";
+
+    try {
+        const interruption = engine?.interruptGenerate?.();
+        interruption?.catch?.((error) => {
+            console.warn("Não foi possível interromper o motor imediatamente.", error);
+        });
+    } catch (error) {
+        console.warn("Não foi possível interromper o motor imediatamente.", error);
+    }
+
+    syncComposerState();
+}
+
 function invalidateLostEngine(failedModelId = currentModelId || modelSelector.value) {
     // WebLLM já chama unload() internamente quando GPUDevice.lost é resolvida.
     // Não toque novamente na instância: seus buffers e pipelines já foram descartados.
@@ -1361,7 +1431,7 @@ async function resetGenerationState() {
     }
 }
 
-async function streamStableCompletion(messages, outputElement, maxTokens) {
+async function streamStableCompletion(messages, outputElement, maxTokens, signal) {
     const config = getSelectedModelConfig();
     let lastError = null;
 
@@ -1371,7 +1441,9 @@ async function streamStableCompletion(messages, outputElement, maxTokens) {
         let renderFrame = 0;
 
         try {
+            throwIfGenerationStopped(signal);
             await resetGenerationState();
+            throwIfGenerationStopped(signal);
             outputElement.textContent = "";
             outputElement.classList.add("streaming");
 
@@ -1388,6 +1460,7 @@ async function streamStableCompletion(messages, outputElement, maxTokens) {
             });
 
             for await (const chunk of stream) {
+                throwIfGenerationStopped(signal);
                 const choice = chunk.choices[0];
                 completeText += choice?.delta?.content || "";
                 if (choice?.finish_reason) {
@@ -1403,6 +1476,7 @@ async function streamStableCompletion(messages, outputElement, maxTokens) {
             }
 
             if (renderFrame) cancelAnimationFrame(renderFrame);
+            throwIfGenerationStopped(signal);
             const normalized = normalizeModelText(completeText);
             if (normalized && !isDegenerateText(normalized)) {
                 const finalText = finishReason === "length"
@@ -1415,10 +1489,17 @@ async function streamStableCompletion(messages, outputElement, maxTokens) {
             }
             lastError = new Error("O modelo gerou uma saída instável.");
         } catch (error) {
+            if (renderFrame) cancelAnimationFrame(renderFrame);
+            const partialText = normalizeModelText(completeText);
+            if (partialText) outputElement.textContent = partialText;
+            outputElement.classList.remove("streaming");
+
+            if (signal?.aborted || error instanceof GenerationStoppedError) {
+                throw new GenerationStoppedError();
+            }
             if (error instanceof GpuDeviceLostError || isGpuDeviceLostError(error)) {
                 const failedModelId = error.failedModelId
                     || invalidateLostEngine(currentModelId || modelSelector.value);
-                outputElement.classList.remove("streaming");
                 throw error instanceof GpuDeviceLostError
                     ? error
                     : new GpuDeviceLostError(error, failedModelId);
@@ -1434,7 +1515,9 @@ async function streamStableCompletion(messages, outputElement, maxTokens) {
     );
 }
 
-async function generateFinalAnswer(context, originalQuery, outputElement) {
+async function generateFinalAnswer(context, originalQuery, outputElement, signal) {
+    throwIfGenerationStopped(signal);
+
     if (!context.trim()) {
         const fallback = "Não encontrei essa informação no contexto fornecido.";
         outputElement.textContent = fallback;
@@ -1457,7 +1540,8 @@ async function generateFinalAnswer(context, originalQuery, outputElement) {
             { role: "user", content: userMessage }
         ],
         outputElement,
-        getSelectedModelConfig().maxOutputTokens
+        getSelectedModelConfig().maxOutputTokens,
+        signal
     );
 }
 
@@ -1465,6 +1549,8 @@ async function handleUserSubmit() {
     const originalQuery = userInput.value.trim();
     if (!originalQuery || generationInProgress || !runtimeReady) return;
 
+    const generationController = new AbortController();
+    currentGenerationController = generationController;
     userInput.value = "";
     generationInProgress = true;
     modelSelector.disabled = true;
@@ -1480,7 +1566,15 @@ async function handleUserSubmit() {
         const embeddingPromise = getQueryEmbedding(retrievalQuery);
         const lexicalResults = miniSearch.search(retrievalQuery)
             .slice(0, APP_CONFIG.lexicalCandidates);
-        const vectorResults = await localVectorSearch(await embeddingPromise);
+        const queryVector = await awaitOrStop(
+            embeddingPromise,
+            generationController.signal
+        );
+        const vectorResults = await awaitOrStop(
+            localVectorSearch(queryVector),
+            generationController.signal
+        );
+        throwIfGenerationStopped(generationController.signal);
         const fusedResults = calculateRRF(vectorResults, lexicalResults);
 
         if (fusedResults.length === 0) {
@@ -1492,29 +1586,56 @@ async function handleUserSubmit() {
         let context = getExpandedContext(fusedResults);
         statusText.textContent = "Gerando resposta…";
         try {
-            await generateFinalAnswer(context, originalQuery, answerElement);
+            await generateFinalAnswer(
+                context,
+                originalQuery,
+                answerElement,
+                generationController.signal
+            );
         } catch (error) {
             if (!(error instanceof GpuDeviceLostError) && !isGpuDeviceLostError(error)) {
                 throw error;
             }
 
             await recoverFromDeviceLoss(error);
+            throwIfGenerationStopped(generationController.signal);
             context = getExpandedContext(fusedResults);
             statusText.textContent = "Gerando resposta em modo seguro…";
-            await generateFinalAnswer(context, originalQuery, answerElement);
+            await generateFinalAnswer(
+                context,
+                originalQuery,
+                answerElement,
+                generationController.signal
+            );
         }
     } catch (error) {
-        answerElement.remove();
-        const message = error instanceof GpuDeviceLostError
-            || isGpuDeviceLostError(error)
-            ? "A GPU perdeu o dispositivo novamente. Recarregue a página ou use outro navegador/GPU; este driver pode não ser compatível com WebLLM."
-            : `Não foi possível gerar a resposta: ${error.message || error}`;
-        appendMessage(
-            "system",
-            message
-        );
-        console.error(error);
+        if (
+            error instanceof GenerationStoppedError
+            || generationController.signal.aborted
+        ) {
+            answerElement.classList.remove("streaming");
+            const partialAnswer = normalizeModelText(answerElement.textContent);
+            answerElement.textContent = partialAnswer
+                ? `${partialAnswer}\n\n⏹️ Resposta interrompida pelo usuário.`
+                : "⏹️ Resposta interrompida pelo usuário.";
+            scheduleChatScroll();
+            showToast("Resposta interrompida. Você já pode fazer outra pergunta.");
+        } else {
+            answerElement.remove();
+            const message = error instanceof GpuDeviceLostError
+                || isGpuDeviceLostError(error)
+                ? "A GPU perdeu o dispositivo novamente. Recarregue a página ou use outro navegador/GPU; este driver pode não ser compatível com WebLLM."
+                : `Não foi possível gerar a resposta: ${error.message || error}`;
+            appendMessage(
+                "system",
+                message
+            );
+            console.error(error);
+        }
     } finally {
+        if (currentGenerationController === generationController) {
+            currentGenerationController = null;
+        }
         generationInProgress = false;
         runtimeReady = Boolean(engine && engineHealthy && currentModelId);
         statusText.textContent = runtimeReady
@@ -1698,6 +1819,7 @@ document.getElementById("permission-decline").addEventListener("click", () => {
 });
 
 document.getElementById("new-chat").addEventListener("click", () => {
+    if (generationInProgress) stopCurrentGeneration();
     renderWelcome();
     userInput.value = "";
     syncComposerState();
@@ -1754,7 +1876,13 @@ document.getElementById("cache-confirm").addEventListener("click", async () => {
     }
 });
 
-sendBtn.addEventListener("click", handleUserSubmit);
+sendBtn.addEventListener("click", () => {
+    if (generationInProgress) {
+        stopCurrentGeneration();
+        return;
+    }
+    handleUserSubmit();
+});
 userInput.addEventListener("input", syncComposerState, { passive: true });
 userInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
