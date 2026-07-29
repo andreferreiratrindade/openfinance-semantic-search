@@ -24,7 +24,7 @@
         .side-section { margin-top:34px; }
         .section-label,.eyebrow { color:var(--muted); font-size:10px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; }
         .suggestions { display:grid; gap:9px; margin-top:13px; }
-        .suggestion { display:grid; grid-template-columns:34px minmax(0,1fr) 16px; align-items:center; gap:10px; min-height:64px; padding:9px 12px; text-align:left; background:rgba(255,255,255,.76); border:1px solid var(--border); border-radius:13px; cursor:pointer; }
+        .suggestion {  grid-template-columns:34px minmax(0,1fr) 16px; align-items:center; gap:10px; min-height:64px; padding:9px 12px; text-align:left; background:rgba(255,255,255,.76); border:1px solid var(--border); border-radius:13px; cursor:pointer; }
         .suggestion:hover { background:#fff; border-color:#a9c9bc; transform:translateY(-1px); }
         .suggestion .icon-box { width:34px; height:34px; color:var(--green-2); background:var(--mint); font-size:16px; }
         .suggestion span:nth-child(2) { font-size:13px; font-weight:620; line-height:1.35; }
@@ -183,7 +183,7 @@
         </section>
     </div>
     <div id="cache-overlay" class="overlay hidden">
-        <section class="dialog" role="alertdialog" aria-modal="true"><div class="dialog-icon" style="color:#a83d32;background:#f9e9e7">⌫</div><p class="eyebrow" style="color:#a83d32">Excluir armazenamento local</p><h2>Excluir todo o cache?</h2><p class="dialog-description">Isso removerá os modelos de IA e o banco de dados deste dispositivo. Será necessário baixar os recursos escolhidos novamente.</p><div class="danger-note">⚠ <span>Esta ação não pode ser desfeita.</span></div><div class="dialog-actions"><button id="cache-cancel" class="secondary-btn">Cancelar</button><button id="cache-confirm" class="danger-btn">Excluir cache</button></div></section>
+        <section class="dialog" role="alertdialog" aria-modal="true"><div class="dialog-icon" style="color:#a83d32;background:#f9e9e7">⌫</div><p class="eyebrow" style="color:#a83d32">Excluir armazenamento local</p><h2>Excluir todo o cache?</h2><p class="dialog-description">Isso removerá os modelos de IA e o banco de dados deste dispositivo. Será necessário baixar os recursos escolhidos novamente. Se preferir, cancele e selecione um modelo menor.</p><div class="danger-note">⚠ <span>Esta ação não pode ser desfeita.</span></div><div class="dialog-actions"><button id="cache-cancel" class="secondary-btn">Cancelar</button><button id="cache-confirm" class="danger-btn">Excluir cache</button></div></section>
     </div>
     <div id="toast" class="toast" role="status"></div>
     <div class="app-shell">
@@ -191,9 +191,9 @@
             <div class="brand"><span class="brand-mark">✦</span><div><strong>Open Finance Explorer</strong><small>Documentação oficial, no seu dispositivo</small></div><button id="mobile-close" class="mobile-close" aria-label="Fechar menu">×</button></div>
             <button id="new-chat" class="new-chat">＋ Nova conversa</button>
             <section class="side-section"><p class="section-label">Perguntas sugeridas</p><div class="suggestions">
-                <button class="suggestion" data-query="Como funciona o consentimento?"><span class="icon-box">▱</span><span>Como funciona o consentimento?</span><span class="arrow">›</span></button>
-                <button class="suggestion" data-query="Quais APIs iniciam pagamentos?"><span class="icon-box">▤</span><span>Quais APIs iniciam pagamentos?</span><span class="arrow">›</span></button>
-                <button class="suggestion" data-query="Como tratar erros no Pix?"><span class="icon-box">△</span><span>Como tratar erros no Pix?</span><span class="arrow">›</span></button>
+                <button class="suggestion" data-query="Como funciona o consentimento de pagamentos?"><span>Como funciona o consentimento de pagamentos?</span></button>
+                <button class="suggestion" data-query="Qual a diferença entre iniciadora e detentora?"><span>Qual a diferença entre Iniciadora e Detentora?</span></button>
+                <button class="suggestion" data-query="Descreva o fluxo de portabilidade de crédito CPC"><span>Descreva o fluxo de portabilidade de crédito CPC</span></button>
             </div></section>
             <section class="storage-card"><div class="storage-head"><span class="icon-box">♢</span><div><strong>Privacidade local</strong><p>Documentos e conversas não saem deste dispositivo.</p><button id="clear-cache-btn" class="clear-cache" disabled>⌫ Excluir cache local</button></div></div></section>
         </aside>
@@ -221,6 +221,7 @@
     <script type="module">
 import {
     CreateMLCEngine,
+    hasModelInCache,
     prebuiltAppConfig
 } from "https://esm.run/@mlc-ai/web-llm@0.2.84";
 import {
@@ -254,6 +255,12 @@ const APP_CONFIG = Object.freeze({
     repeatedShortSequenceWords: 8,
     maxOutputTokens: 10000,
     embeddingModel: "Xenova/multilingual-e5-small"
+});
+
+const STORAGE_POLICY = Object.freeze({
+    reserveMB: 128,
+    estimatedMBPerBillionParameters: 600,
+    minimumModelDownloadMB: 512
 });
 
 const STORAGE_KEYS = Object.freeze({
@@ -381,9 +388,9 @@ function renderWelcome() {
             <h1>Como posso ajudar com<br>Open Finance Brasil?</h1>
             <p>Respostas fundamentadas na documentação oficial,<br>com processamento seguro no seu navegador.</p>
             <div class="starter-grid">
-                <button class="starter" data-query="Explique o fluxo de consentimento no Open Finance Brasil"><span class="icon-box">▱</span><span><small>Consentimentos</small><strong>Explicar o fluxo de consentimento</strong></span></button>
-                <button class="starter" data-query="Compare as principais APIs de pagamentos do Open Finance Brasil"><span class="icon-box">⇄</span><span><small>Pagamentos</small><strong>Comparar APIs de pagamentos</strong></span></button>
-                <button class="starter" data-query="Quais são os principais requisitos de segurança?"><span class="icon-box">♢</span><span><small>Segurança</small><strong>Revisar requisitos de segurança</strong></span></button>
+                <button class="starter" data-query="Explique o fluxo de consentimento em Dados Cadastrais e Transacionais Open Finance Brasil"><span class="icon-box">▱</span><span><small>Consentimentos</small><strong>Explique o fluxo de consentimento em Dados Cadastrais e Transacionais Open Finance Brasil</strong></span></button>
+                <button class="starter" data-query="Qual o papel do diretório central?"><span class="icon-box">⇄</span><span><small>Pagamentos</small><strong>Qual o papel do diretório central?</strong></span></button>
+                <button class="starter" data-query="Quais são as APIs compostas pela Fase 2?"><span class="icon-box">♢</span><span><small>Segurança</small><strong>Quais são as APIs compostas pela Fase 2?</strong></span></button>
             </div>
         </section>`;
     bindPromptButtons();
@@ -621,9 +628,125 @@ function formatModelName(modelId) {
 function getModelLabel(modelId) {
     const record = compatibleModelRecords.find((item) => item.model_id === modelId);
     const memory = record?.vram_required_MB
-        ? ` · ~${(record.vram_required_MB / 1024).toFixed(1)} GB`
+        ? ` · GPU ~${(record.vram_required_MB / 1024).toFixed(1)} GB`
         : "";
     return `${formatModelName(modelId || "Modelo local")}${memory}`;
+}
+
+function getModelRecord(modelId) {
+    return compatibleModelRecords.find((record) =>
+        record.model_id === modelId
+    ) || prebuiltAppConfig.model_list.find((record) =>
+        record.model_id === modelId
+    );
+}
+
+function estimateModelStorageMB(modelId) {
+    const record = getModelRecord(modelId);
+    const parameters = getParameterCount(modelId);
+    const estimatedModelMB = Number.isFinite(parameters)
+        ? parameters * STORAGE_POLICY.estimatedMBPerBillionParameters
+        : (Number(record?.vram_required_MB) || 0) * 0.7;
+    return Math.max(
+        STORAGE_POLICY.minimumModelDownloadMB,
+        Math.ceil(estimatedModelMB + STORAGE_POLICY.reserveMB)
+    );
+}
+
+async function getBrowserStorageSnapshot() {
+    if (!navigator.storage?.estimate) return null;
+
+    try {
+        const estimate = await navigator.storage.estimate();
+        const quotaMB = Math.floor((estimate.quota || 0) / (1024 * 1024));
+        const usageMB = Math.ceil((estimate.usage || 0) / (1024 * 1024));
+        return {
+            quotaMB,
+            usageMB,
+            availableMB: Math.max(0, quotaMB - usageMB)
+        };
+    } catch (error) {
+        console.warn("Não foi possível estimar o armazenamento do navegador.", error);
+        return null;
+    }
+}
+
+function formatStorageSize(megabytes) {
+    if (!Number.isFinite(megabytes)) return "desconhecido";
+    if (megabytes >= 1024) return `${(megabytes / 1024).toFixed(1)} GB`;
+    return `${Math.max(0, Math.round(megabytes))} MB`;
+}
+
+function isStorageQuotaError(error) {
+    return error?.name === "QuotaExceededError"
+        || /(?:quota\s*(?:exceeded)?|exceeded\s+the\s+quota|storage\s+quota|armazenamento\s+insuficiente)/i
+            .test(collectErrorText(error));
+}
+
+class BrowserStorageQuotaError extends Error {
+    constructor(modelId, snapshot, requiredMB, cause) {
+        const availableText = snapshot
+            ? formatStorageSize(snapshot.availableMB)
+            : "não informado pelo navegador";
+        super(
+            `O navegador não possui espaço suficiente para armazenar `
+            + `${formatModelName(modelId)}. Espaço disponível: ${availableText}; `
+            + `espaço recomendado: ${formatStorageSize(requiredMB)}. `
+            + `Exclua o cache local ou escolha um modelo menor.`
+        );
+        this.name = "BrowserStorageQuotaError";
+        this.modelId = modelId;
+        this.snapshot = snapshot;
+        this.requiredMB = requiredMB;
+        this.cause = cause;
+    }
+}
+
+async function ensureModelStorageCapacity(modelId) {
+    try {
+        if (await hasModelInCache(modelId, prebuiltAppConfig)) return;
+    } catch (error) {
+        // A verificação não deve impedir a inicialização. Se o cache estiver
+        // indisponível, a tentativa de carga abaixo produzirá o erro real.
+        console.warn("Não foi possível consultar o cache do modelo.", error);
+    }
+
+    const snapshot = await getBrowserStorageSnapshot();
+    if (!snapshot || snapshot.quotaMB <= 0) return;
+
+    const requiredMB = estimateModelStorageMB(modelId);
+    if (snapshot.availableMB < requiredMB) {
+        throw new BrowserStorageQuotaError(
+            modelId,
+            snapshot,
+            requiredMB
+        );
+    }
+}
+
+async function normalizeModelLoadError(error, modelId) {
+    if (error instanceof BrowserStorageQuotaError) return error;
+    if (!isStorageQuotaError(error)) return error;
+
+    return new BrowserStorageQuotaError(
+        modelId,
+        await getBrowserStorageSnapshot(),
+        estimateModelStorageMB(modelId),
+        error
+    );
+}
+
+function showStorageQuotaRecovery(error, restoredPreviousModel = false) {
+    const restoredNotice = restoredPreviousModel
+        ? "\n\nO modelo anterior foi restaurado e pode continuar sendo usado."
+        : "";
+    appendMessage("system", `${error.message}${restoredNotice}`);
+    loadingOverlay.classList.add("hidden");
+    cacheOverlay.classList.remove("hidden");
+    statusText.textContent = restoredPreviousModel
+        ? "Modelo anterior restaurado"
+        : "Armazenamento insuficiente";
+    showToast("Libere espaço ou selecione um modelo menor.");
 }
 
 function modelSpeedGroup(record) {
@@ -743,9 +866,9 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
     if (!gpuSafeMode) return config;
     return {
         ...config,
-        contextWindow: Math.min(config.contextWindow, 1536),
-        maxChars: Math.min(config.maxChars, 1800),
-        maxOutputTokens: Math.min(config.maxOutputTokens, 160)
+        contextWindow: config.contextWindow ,// Math.min(config.contextWindow, 1536),
+        maxChars: config.maxChars, //Math.min(config.maxChars, 1800),
+        maxOutputTokens:config.maxOutputTokens // Math.min(config.maxOutputTokens, 160)
     };
 }
 
@@ -1319,13 +1442,15 @@ async function recoverFromDeviceLoss(error) {
 }
 
 async function loadSelectedModel({ forceRecreate = false } = {}) {
+    debugger
     const selectedModel = modelSelector.value;
     if (!selectedModel) throw new Error("Nenhum modelo local compatível foi encontrado.");
 
     const config = getSelectedModelConfig(selectedModel);
-    maxContextChars = config.maxChars;
+    
     statusText.textContent = `Carregando ${formatModelName(selectedModel)}…`;
-
+    await ensureModelStorageCapacity(selectedModel);
+    const labelModel = getModelLabel(selectedModel);
     const engineConfig = {
         initProgressCallback: (progress) => {
             const progressValue = Number(progress.progress) || 0;
@@ -1333,7 +1458,7 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
             updateDependencyProgress(
                 "model",
                 percent,
-                `Baixando e preparando ${getModelLabel(selectedModel)}…`
+                `Baixando e preparando ${labelModel}…`
             );
         }
     };
@@ -1353,7 +1478,7 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
             const failedModelId = invalidateLostEngine(selectedModel);
             throw new GpuDeviceLostError(error, failedModelId);
         }
-        throw error;
+        throw await normalizeModelLoadError(error, selectedModel);
     }
 
     engineHealthy = true;
@@ -1391,22 +1516,29 @@ async function bootstrapRuntime() {
 }
 
 async function changeModel() {
+    debugger
     const requestedModel = modelSelector.value;
     if (!requestedModel || requestedModel === currentModelId) return;
 
     showLoading("model");
     try {
-        await loadSelectedModel();
+        await loadSelectedModel({forceRecreate:true});
         statusText.textContent = gpuSafeMode ? "Modo seguro ativo" : "Sistema pronto";
         window.setTimeout(hideLoading, 250);
     } catch (error) {
         console.error("Falha ao trocar o modelo:", error);
-        appendMessage("system", `Falha ao carregar o modelo: ${error.message}`);
+        const normalizedError = await normalizeModelLoadError(
+            error,
+            requestedModel
+        );
+        const quotaFailure = isStorageQuotaError(normalizedError);
+        let restoredPreviousModel = false;
 
         if (currentModelId && requestedModel !== currentModelId) {
             modelSelector.value = currentModelId;
             try {
                 await loadSelectedModel();
+                restoredPreviousModel = true;
                 showToast("O modelo anterior foi restaurado.");
             } catch (restoreError) {
                 console.error("Falha ao restaurar o modelo anterior:", restoreError);
@@ -1414,13 +1546,27 @@ async function changeModel() {
             }
         }
 
-        loadingOverlay.classList.add("hidden");
+        if (quotaFailure) {
+            showStorageQuotaRecovery(
+                normalizedError,
+                restoredPreviousModel
+            );
+        } else {
+            appendMessage(
+                "system",
+                `Falha ao carregar o modelo: ${normalizedError.message}`
+            );
+            loadingOverlay.classList.add("hidden");
+        }
+
         runtimeReady = Boolean(engine && engineHealthy && currentModelId);
         modelSelector.disabled = false;
         clearCacheBtn.disabled = false;
-        statusText.textContent = runtimeReady
-            ? "Sistema pronto"
-            : "Modelo indisponível";
+        if (!quotaFailure) {
+            statusText.textContent = runtimeReady
+                ? "Sistema pronto"
+                : "Modelo indisponível";
+        }
         syncComposerState();
     }
 }
@@ -2041,9 +2187,20 @@ permissionAccept.addEventListener("click", async () => {
         await bootstrapRuntime();
     } catch (error) {
         console.error("Falha ao preparar o ambiente:", error);
+        const normalizedError = await normalizeModelLoadError(
+            error,
+            modelSelector.value
+        );
         loadingOverlay.classList.add("hidden");
-        appendMessage("system", `Falha ao preparar o ambiente: ${error.message}`);
-        statusText.textContent = "Falha na inicialização";
+        if (isStorageQuotaError(normalizedError)) {
+            showStorageQuotaRecovery(normalizedError);
+        } else {
+            appendMessage(
+                "system",
+                `Falha ao preparar o ambiente: ${normalizedError.message}`
+            );
+            statusText.textContent = "Falha na inicialização";
+        }
         runtimeReady = false;
         modelSelector.disabled = false;
         clearCacheBtn.disabled = false;
