@@ -78,6 +78,13 @@
         #send-btn.stop-mode { background:var(--danger); box-shadow:0 9px 20px rgba(168,61,50,.2); }
         #send-btn.stop-mode:hover:not(:disabled) { background:#873129; }
         #send-btn:disabled { color:#a9b5b0; background:#edf1ee; box-shadow:none; cursor:not-allowed; }
+        .audience-options { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:0 24px 12px; }
+        .audience-label { margin-right:2px; color:var(--muted); font-size:10px; font-weight:700; }
+        .audience-option { min-height:32px; padding:6px 11px; color:var(--muted); background:#fff; border:1px solid #d5dfda; border-radius:999px; font-size:10px; font-weight:650; cursor:pointer; transition:.16s ease; }
+        .audience-option:hover:not(:disabled) { color:var(--green); background:var(--soft); border-color:#a9c9bc; }
+        .audience-option[aria-pressed="true"] { color:#fff; background:var(--green-2); border-color:var(--green-2); box-shadow:0 5px 14px rgba(21,116,92,.16); }
+        .audience-option[aria-pressed="true"]::before { content:"✓"; margin-right:5px; }
+        .audience-hint { color:var(--faint); font-size:9px; }
         .composer-meta { display:flex; gap:8px; min-height:37px; padding:11px 24px; color:var(--faint); background:#fbfcfa; border-top:1px solid #edf0ed; font-size:10px; }
         .disclaimer { margin-top:10px; color:var(--faint); font-size:9px; text-align:center; }
         .overlay { position:fixed; z-index:20; inset:0; display:grid; place-items:center; padding:24px; background:rgba(7,38,30,.42); backdrop-filter:blur(10px); }
@@ -139,6 +146,9 @@
             .welcome h1 { font-size:clamp(34px,10vw,44px); }
             .starter-grid { grid-template-columns:1fr; gap:9px; }
             .starter { min-height:78px; }
+            .audience-options { align-items:flex-start; padding-inline:16px; }
+            .audience-label,.audience-hint { flex-basis:100%; }
+            .audience-option { flex:1 1 145px; }
             .dialog { padding:25px 21px; border-radius:20px; }
             .dialog h2 { font-size:25px; }
             .download-summary { grid-template-columns:1fr; }
@@ -191,7 +201,20 @@
             <header class="topbar"><button id="mobile-menu" class="mobile-menu" aria-label="Abrir menu">☰</button><span class="mobile-brand">Open Finance Explorer</span><div class="runtime"><span class="status-dot"></span><span><strong id="status-text">Aguardando permissão</strong><small>WebGPU · processamento local</small></span></div><div class="model-wrap"><label for="model-selector">Modelo</label><select id="model-selector" disabled></select></div></header>
             <main class="content">
                 <div id="chat-history"></div>
-                <div class="composer-wrap"><div class="input-area"><textarea id="user-input" placeholder="Pergunte sobre APIs, consentimentos, pagamentos ou segurança…" disabled></textarea><button id="send-btn" disabled aria-label="Enviar pergunta">↑</button><div class="composer-meta"><span>Enter para enviar</span><span>•</span><span>Shift + Enter para nova linha</span></div></div><p class="disclaimer">As respostas podem conter imprecisões. Consulte sempre a documentação oficial.</p></div>
+                <div class="composer-wrap">
+                    <div class="input-area">
+                        <textarea id="user-input" placeholder="Pergunte sobre APIs, consentimentos, pagamentos ou segurança…" disabled></textarea>
+                        <button id="send-btn" disabled aria-label="Enviar pergunta">↑</button>
+                        <div class="audience-options" role="group" aria-label="Perfil do público da resposta">
+                            <span class="audience-label">Adaptar resposta (opcional):</span>
+                            <button type="button" class="audience-option" data-audience-profile="technical" aria-pressed="false" disabled>Sou uma pessoa com conhecimentos técnicos</button>
+                            <button type="button" class="audience-option" data-audience-profile="nontechnical" aria-pressed="false" disabled>Sou uma pessoa não técnica</button>
+                            <span class="audience-hint">Clique novamente para remover a seleção.</span>
+                        </div>
+                        <div class="composer-meta"><span>Enter para enviar</span><span>•</span><span>Shift + Enter para nova linha</span></div>
+                    </div>
+                    <p class="disclaimer">As respostas podem conter imprecisões. Consulte sempre a documentação oficial.</p>
+                </div>
             </main>
         </section>
     </div>
@@ -226,6 +249,9 @@ const APP_CONFIG = Object.freeze({
     neighborWindow: 1,
     minimumVectorScore: 0.42,
     embeddingCacheSize: 20,
+    repetitionCheckIntervalCharacters: 96,
+    repeatedSequenceWords: 18,
+    repeatedShortSequenceWords: 8,
     maxOutputTokens: 10000,
     embeddingModel: "Xenova/multilingual-e5-small"
 });
@@ -246,13 +272,40 @@ Regras:
 - Preserve condições, exceções e restrições relevantes.
 - Explique termos técnicos de forma clara e responda em português do Brasil.
 - Use Markdown simples quando melhorar a leitura.
+- Não repita frases, listas ou parágrafos já apresentados. Depois de responder,
+  conclua a resposta.
 - Se o contexto não responder à pergunta, escreva exatamente:
 "Não encontrei essa informação no contexto fornecido."
 - Retorne somente a resposta, sem JSON, prefácio ou bloco de código.
 `.trim();
 
+const AUDIENCE_PROFILES = Object.freeze({
+    technical: `
+Adapte a resposta para uma pessoa com conhecimentos técnicos.
+- Use terminologia técnica precisa e preserve detalhes relevantes, como APIs,
+  endpoints, métodos HTTP, campos, fluxos, estados, regras e exceções.
+- Quando ajudar, apresente exemplos técnicos curtos e objetivos.
+- Não simplifique conceitos a ponto de perder precisão.
+- Explique somente siglas ou termos específicos do Open Finance que possam
+  causar ambiguidade.
+`.trim(),
+    nontechnical: `
+Adapte a resposta para uma pessoa sem conhecimentos técnicos.
+- Use linguagem simples, frases curtas e exemplos do cotidiano.
+- Priorize explicar o que é, para que serve e como afeta a pessoa.
+- Evite jargões, siglas, código, nomes de campos e detalhes de implementação.
+- Quando um termo técnico for indispensável, explique-o imediatamente em
+  palavras simples.
+- Não presuma conhecimento prévio de APIs, programação ou arquitetura de
+  sistemas.
+`.trim()
+});
+
 const TRUNCATED_ANSWER_NOTICE =
     "⚠️ A resposta foi interrompida porque ficou longa demais. Faça uma pergunta mais específica.";
+
+const REPETITION_STOP_NOTICE =
+    "🔁 A geração foi interrompida automaticamente porque o modelo começou a repetir o conteúdo.";
 
 const DOMAIN_EXPANSIONS = Object.freeze([
     [/\bconsentiment\w*/i, "autorização permissionamento jornada de consentimento"],
@@ -277,6 +330,9 @@ const statusText = document.getElementById("status-text");
 const chatHistory = document.getElementById("chat-history");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
+const audienceButtons = Array.from(
+    document.querySelectorAll("[data-audience-profile]")
+);
 const modelSelector = document.getElementById("model-selector");
 const permissionOverlay = document.getElementById("permission-overlay");
 const loadingOverlay = document.getElementById("loading-overlay");
@@ -310,6 +366,7 @@ let compatibleModelRecords = [];
 let maxContextChars = 4800;
 let engineHealthy = false;
 let gpuSafeMode = localStorage.getItem(STORAGE_KEYS.safeMode) === "true";
+let selectedAudienceProfile = null;
 
 const documentsById = new Map();
 const chunksByFile = new Map();
@@ -361,6 +418,23 @@ function syncComposerState() {
     sendBtn.disabled = generationInProgress
         ? stopRequested
         : !runtimeReady || userInput.value.trim().length === 0;
+
+    audienceButtons.forEach((button) => {
+        button.disabled = !runtimeReady || generationInProgress;
+    });
+}
+
+function toggleAudienceProfile(profile) {
+    if (!Object.hasOwn(AUDIENCE_PROFILES, profile)) return;
+
+    selectedAudienceProfile =
+        selectedAudienceProfile === profile ? null : profile;
+
+    audienceButtons.forEach((button) => {
+        const isSelected =
+            button.dataset.audienceProfile === selectedAudienceProfile;
+        button.setAttribute("aria-pressed", String(isSelected));
+    });
 }
 
 function showLoading(mode = "initial") {
@@ -620,41 +694,49 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
     const parameters = getParameterCount(modelId);
     let config;
 
-    if (parameters <= 0.6 && false) {
-        config = {
-            contextWindow: 1536,
-            maxChars: 1900,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//170,
-            temperature: 0.1,
-            topP: 0.82,
-            repetitionPenalty: 1.12
-        };
-    } else if (parameters <= 1.1  && false) {
+    if (parameters <= 0.6) {
         config = {
             contextWindow: 2048,
-            maxChars: 2800,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//220,
+            maxChars: 2600,
+            maxOutputTokens:APP_CONFIG.maxOutputTokens,// 384,
             temperature: 0.1,
-            topP: 0.84,
-            repetitionPenalty: 1.1
+            topP: 0.8,
+            repetitionPenalty: 1.15,
+            frequencyPenalty: 0.18,
+            presencePenalty: 0.04
         };
-    } else if (parameters <= 2.1  && false) {
+    } else if (parameters <= 1.1) {
         config = {
             contextWindow: 3072,
-            maxChars: 4300,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//290,
+            maxChars: 4200,
+            maxOutputTokens: APP_CONFIG.maxOutputTokens,//512,
+            temperature: 0.1,
+            topP: 0.82,
+            repetitionPenalty: 1.12,
+            frequencyPenalty: 0.15,
+            presencePenalty: 0.04
+        };
+    } else if (parameters <= 2.1) {
+        config = {
+            contextWindow: 4096,
+            maxChars: 5600,
+            maxOutputTokens: APP_CONFIG.maxOutputTokens,//640,
             temperature: 0.12,
-            topP: 0.86,
-            repetitionPenalty: 1.1
+            topP: 0.84,
+            repetitionPenalty: 1.1,
+            frequencyPenalty: 0.12,
+            presencePenalty: 0.03
         };
     } else {
         config = {
-            contextWindow: 3584,
-            maxChars: 5700,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//350,
+            contextWindow: 4096,
+            maxChars: 6200,
+            maxOutputTokens: APP_CONFIG.maxOutputTokens,//768,
             temperature: 0.14,
-            topP: 0.88,
-            repetitionPenalty: 1.08
+            topP: 0.86,
+            repetitionPenalty: 1.08,
+            frequencyPenalty: 0.1,
+            presencePenalty: 0.02
         };
     }
 
@@ -1412,6 +1494,104 @@ function isDegenerateText(text) {
     return false;
 }
 
+function tokenizeGeneratedText(text) {
+    return [...String(text).matchAll(/[\p{L}\p{N}]+(?:[-_][\p{L}\p{N}]+)*/gu)]
+        .map((match) => ({
+            value: match[0]
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLocaleLowerCase("pt-BR"),
+            index: match.index
+        }));
+}
+
+function tokenSequencesAreEqual(tokens, leftStart, rightStart, size) {
+    for (let offset = 0; offset < size; offset += 1) {
+        if (tokens[leftStart + offset].value !== tokens[rightStart + offset].value) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function detectRepeatedGeneration(text) {
+    const tokens = tokenizeGeneratedText(text);
+    const longSize = APP_CONFIG.repeatedSequenceWords;
+
+    // Detecta quando os últimos 18 termos já apareceram em qualquer trecho
+    // anterior não sobreposto. Isso captura rapidamente respostas que
+    // reiniciam um parágrafo ou voltam ao começo no meio da geração.
+    if (tokens.length >= longSize * 2) {
+        const repeatedStart = tokens.length - longSize;
+        const oldestAllowedStart = repeatedStart - longSize;
+
+        for (
+            let previousStart = 0;
+            previousStart <= oldestAllowedStart;
+            previousStart += 1
+        ) {
+            if (
+                tokenSequencesAreEqual(
+                    tokens,
+                    previousStart,
+                    repeatedStart,
+                    longSize
+                )
+            ) {
+                let previousBoundary = previousStart;
+                let repeatedBoundary = repeatedStart;
+                while (
+                    previousBoundary > 0
+                    && tokens[previousBoundary - 1].value
+                        === tokens[repeatedBoundary - 1].value
+                ) {
+                    previousBoundary -= 1;
+                    repeatedBoundary -= 1;
+                }
+
+                const cutIndex = tokens[repeatedBoundary].index;
+                return {
+                    cutIndex,
+                    cleanText: text.slice(0, cutIndex).trimEnd(),
+                    repeatedWords: longSize
+                        + repeatedStart
+                        - repeatedBoundary
+                };
+            }
+        }
+    }
+
+    // Ciclos curtos são mais comuns em modelos pequenos, mas duas ocorrências
+    // podem ser legítimas. Exige três blocos consecutivos de 8–17 termos.
+    const minimumShortSize = APP_CONFIG.repeatedShortSequenceWords;
+    const maximumShortSize = longSize - 1;
+
+    for (
+        let size = minimumShortSize;
+        size <= maximumShortSize;
+        size += 1
+    ) {
+        if (tokens.length < size * 3) continue;
+
+        const firstStart = tokens.length - size * 3;
+        const secondStart = firstStart + size;
+        const thirdStart = secondStart + size;
+        if (
+            tokenSequencesAreEqual(tokens, firstStart, secondStart, size)
+            && tokenSequencesAreEqual(tokens, secondStart, thirdStart, size)
+        ) {
+            const cutIndex = tokens[secondStart].index;
+            return {
+                cutIndex,
+                cleanText: text.slice(0, cutIndex).trimEnd(),
+                repeatedWords: size
+            };
+        }
+    }
+
+    return null;
+}
+
 async function resetGenerationState() {
     if (!engine || !engineHealthy) {
         throw new GpuDeviceLostError(
@@ -1438,6 +1618,9 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
     for (let attempt = 0; attempt < 2; attempt += 1) {
         let completeText = "";
         let finishReason = null;
+        let repetitionDetection = null;
+        let nextRepetitionCheckAt =
+            APP_CONFIG.repetitionCheckIntervalCharacters;
         let renderFrame = 0;
 
         try {
@@ -1456,20 +1639,57 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
                 repetition_penalty: attempt === 0
                     ? config.repetitionPenalty
                     : Math.max(config.repetitionPenalty, 1.16),
+                frequency_penalty: attempt === 0
+                    ? config.frequencyPenalty
+                    : Math.min(config.frequencyPenalty + 0.1, 0.35),
+                presence_penalty: config.presencePenalty,
                 enable_thinking: false
             });
 
             for await (const chunk of stream) {
                 throwIfGenerationStopped(signal);
                 const choice = chunk.choices[0];
-                completeText += choice?.delta?.content || "";
+                if (!repetitionDetection) {
+                    completeText += choice?.delta?.content || "";
+                }
                 if (choice?.finish_reason) {
                     finishReason = choice.finish_reason;
                 }
+
+                if (
+                    !repetitionDetection
+                    && completeText.length >= nextRepetitionCheckAt
+                ) {
+                    nextRepetitionCheckAt =
+                        completeText.length
+                        + APP_CONFIG.repetitionCheckIntervalCharacters;
+                    repetitionDetection = detectRepeatedGeneration(completeText);
+
+                    if (repetitionDetection) {
+                        completeText = repetitionDetection.cleanText;
+                        if (renderFrame) {
+                            cancelAnimationFrame(renderFrame);
+                            renderFrame = 0;
+                        }
+                        outputElement.textContent =
+                            `${completeText}\n\n${REPETITION_STOP_NOTICE}`;
+                        statusText.textContent =
+                            "Interrompendo repetição do modelo…";
+                        sendBtn.disabled = true;
+                        scheduleChatScroll();
+
+                        // Não encerre o for-await imediatamente. O WebLLM precisa
+                        // emitir o chunk final para liberar o lock da geração.
+                        await engine.interruptGenerate();
+                    }
+                }
+
                 if (!renderFrame) {
                     renderFrame = requestAnimationFrame(() => {
                         renderFrame = 0;
-                        outputElement.textContent = completeText;
+                        outputElement.textContent = repetitionDetection
+                            ? `${completeText}\n\n${REPETITION_STOP_NOTICE}`
+                            : completeText;
                         scheduleChatScroll();
                     });
                 }
@@ -1479,9 +1699,11 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
             throwIfGenerationStopped(signal);
             const normalized = normalizeModelText(completeText);
             if (normalized && !isDegenerateText(normalized)) {
-                const finalText = finishReason === "length"
-                    ? `${normalized}\n\n${TRUNCATED_ANSWER_NOTICE}`
-                    : normalized;
+                const finalText = repetitionDetection
+                    ? `${normalized}\n\n${REPETITION_STOP_NOTICE}`
+                    : finishReason === "length"
+                        ? `${normalized}\n\n${TRUNCATED_ANSWER_NOTICE}`
+                        : normalized;
                 outputElement.textContent = finalText;
                 outputElement.classList.remove("streaming");
                 scheduleChatScroll();
@@ -1515,7 +1737,13 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
     );
 }
 
-async function generateFinalAnswer(context, originalQuery, outputElement, signal) {
+async function generateFinalAnswer(
+    context,
+    originalQuery,
+    audienceProfile,
+    outputElement,
+    signal
+) {
     throwIfGenerationStopped(signal);
 
     if (!context.trim()) {
@@ -1534,9 +1762,20 @@ async function generateFinalAnswer(context, originalQuery, outputElement, signal
         "</PERGUNTA>"
     ].join("\n");
 
+    const audienceInstruction =
+        AUDIENCE_PROFILES[audienceProfile] || "";
+    const effectiveSystemPrompt = audienceInstruction
+        ? [
+            SYSTEM_PROMPT,
+            "",
+            "Perfil do público selecionado pelo usuário:",
+            audienceInstruction
+        ].join("\n")
+        : SYSTEM_PROMPT;
+
     return streamStableCompletion(
         [
-            { role: "system", content: SYSTEM_PROMPT },
+            { role: "system", content: effectiveSystemPrompt },
             { role: "user", content: userMessage }
         ],
         outputElement,
@@ -1548,6 +1787,7 @@ async function generateFinalAnswer(context, originalQuery, outputElement, signal
 async function handleUserSubmit() {
     const originalQuery = userInput.value.trim();
     if (!originalQuery || generationInProgress || !runtimeReady) return;
+    const audienceProfile = selectedAudienceProfile;
 
     const generationController = new AbortController();
     currentGenerationController = generationController;
@@ -1589,6 +1829,7 @@ async function handleUserSubmit() {
             await generateFinalAnswer(
                 context,
                 originalQuery,
+                audienceProfile,
                 answerElement,
                 generationController.signal
             );
@@ -1604,6 +1845,7 @@ async function handleUserSubmit() {
             await generateFinalAnswer(
                 context,
                 originalQuery,
+                audienceProfile,
                 answerElement,
                 generationController.signal
             );
@@ -1889,6 +2131,11 @@ userInput.addEventListener("keydown", (event) => {
         event.preventDefault();
         handleUserSubmit();
     }
+});
+audienceButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        toggleAudienceProfile(button.dataset.audienceProfile);
+    });
 });
 modelSelector.addEventListener("change", changeModel);
 
