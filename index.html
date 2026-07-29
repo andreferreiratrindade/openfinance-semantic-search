@@ -253,14 +253,17 @@ const APP_CONFIG = Object.freeze({
     repetitionCheckIntervalCharacters: 96,
     repeatedSequenceWords: 18,
     repeatedShortSequenceWords: 8,
-    maxOutputTokens: 10000,
+    maxOutputTokens: 768,
     embeddingModel: "Xenova/multilingual-e5-small"
 });
 
 const STORAGE_POLICY = Object.freeze({
     reserveMB: 128,
     estimatedMBPerBillionParameters: 600,
-    minimumModelDownloadMB: 512
+    minimumModelDownloadMB: 512,
+    defaultSafeVramMB: 1800,
+    maximumSafeVramMB: 2600,
+    ramFractionForGpu: 0.25
 });
 
 const STORAGE_KEYS = Object.freeze({
@@ -583,12 +586,14 @@ function supportsRequiredFeatures(record, adapterFeatures) {
 }
 
 function findCompatibleFastModels(report) {
+    const safeVramBudgetMB =
+        report.safeVramBudgetMB || STORAGE_POLICY.defaultSafeVramMB;
     const candidates = prebuiltAppConfig.model_list
         .filter((record) => {
             const parameters = getParameterCount(record.model_id);
             return isGeneralChatModel(record.model_id)
                 && parameters <= 4
-                && Number(record.vram_required_MB || 0) <= 3800
+                && Number(record.vram_required_MB || 0) <= safeVramBudgetMB
                 && /q4f(?:16|32)_1/i.test(record.model_id)
                 && supportsRequiredFeatures(record, report.adapterFeatures);
         })
@@ -1442,7 +1447,6 @@ async function recoverFromDeviceLoss(error) {
 }
 
 async function loadSelectedModel({ forceRecreate = false } = {}) {
-    debugger
     const selectedModel = modelSelector.value;
     if (!selectedModel) throw new Error("Nenhum modelo local compatível foi encontrado.");
 
@@ -1467,8 +1471,20 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
     };
 
     try {
-        if (forceRecreate || !engineHealthy) engine = null;
+        if (forceRecreate && engine) {
+            const engineToUnload = engine;
+            engine = null;
+            engineHealthy = false;
+            await engineToUnload.unload();
+
+            // Permite ao navegador e ao driver concluírem a liberação dos
+            // buffers antes de criar outro GPUDevice.
+            await new Promise((resolve) => window.setTimeout(resolve, 350));
+        }
+
         if (engine) {
+            engineHealthy = false;
+            // reload() descarrega o modelo atual antes de alocar o próximo.
             await engine.reload(selectedModel, chatOptions);
         } else {
             engine = await CreateMLCEngine(selectedModel, engineConfig, chatOptions);
@@ -1478,6 +1494,7 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
             const failedModelId = invalidateLostEngine(selectedModel);
             throw new GpuDeviceLostError(error, failedModelId);
         }
+        engineHealthy = false;
         throw await normalizeModelLoadError(error, selectedModel);
     }
 
@@ -1516,12 +1533,14 @@ async function bootstrapRuntime() {
 }
 
 async function changeModel() {
-    debugger
     const requestedModel = modelSelector.value;
     if (!requestedModel || requestedModel === currentModelId) return;
 
     showLoading("model");
     try {
+        // O reload oficial descarrega primeiro o modelo atual. Não descarte a
+        // referência do engine sem unload(), pois isso pode manter as duas
+        // alocações de GPU vivas durante a troca.
         await loadSelectedModel({forceRecreate:true});
         statusText.textContent = gpuSafeMode ? "Modo seguro ativo" : "Sistema pronto";
         window.setTimeout(hideLoading, 250);
@@ -1537,7 +1556,9 @@ async function changeModel() {
         if (currentModelId && requestedModel !== currentModelId) {
             modelSelector.value = currentModelId;
             try {
-                await loadSelectedModel();
+                if (!engine || !engineHealthy) {
+                    await loadSelectedModel();
+                }
                 restoredPreviousModel = true;
                 showToast("O modelo anterior foi restaurado.");
             } catch (restoreError) {
@@ -2036,6 +2057,33 @@ async function handleUserSubmit() {
     }
 }
 
+function calculateSafeVramBudgetMB(report) {
+    if (!report.estimatedRamGB) {
+        return STORAGE_POLICY.defaultSafeVramMB;
+    }
+
+    const ramBasedBudgetMB = Math.floor(
+        report.estimatedRamGB
+        * 1024
+        * STORAGE_POLICY.ramFractionForGpu
+    );
+    const description = report.adapterDescription || "";
+    const likelyIntegratedGpu =
+        /(?:intel|integrated|apple|adreno|mali|iris|uhd)/i.test(description);
+    const adapterCapMB = likelyIntegratedGpu
+        ? STORAGE_POLICY.defaultSafeVramMB
+        : STORAGE_POLICY.maximumSafeVramMB;
+
+    return Math.max(
+        768,
+        Math.min(
+            ramBasedBudgetMB,
+            adapterCapMB,
+            STORAGE_POLICY.maximumSafeVramMB
+        )
+    );
+}
+
 async function checkSystemSpecs() {
     const report = {
         webGpuSupported: false,
@@ -2045,6 +2093,7 @@ async function checkSystemSpecs() {
         estimatedRamGB: navigator.deviceMemory || null,
         cpuCores: navigator.hardwareConcurrency || null,
         availableStorageMB: null,
+        safeVramBudgetMB: STORAGE_POLICY.defaultSafeVramMB,
         isCompatible: false,
         warnings: []
     };
@@ -2098,6 +2147,7 @@ async function checkSystemSpecs() {
         report.warnings.push("Pouca memória disponível; prefira um modelo de até 1B.");
     }
 
+    report.safeVramBudgetMB = calculateSafeVramBudgetMB(report);
     report.isCompatible = report.webGpuSupported
         && !report.knownDriverIncompatibility;
     return report;
