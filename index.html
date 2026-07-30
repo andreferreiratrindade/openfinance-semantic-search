@@ -191,8 +191,8 @@
             <div class="brand"><span class="brand-mark">✦</span><div><strong>Open Finance Explorer</strong><small>Documentação oficial, no seu dispositivo</small></div><button id="mobile-close" class="mobile-close" aria-label="Fechar menu">×</button></div>
             <button id="new-chat" class="new-chat">＋ Nova conversa</button>
             <section class="side-section"><p class="section-label">Perguntas sugeridas</p><div class="suggestions">
-                <button class="suggestion" data-query="Como funciona o consentimento de pagamentos?"><span>Como funciona o consentimento de pagamentos?</span></button>
-                <button class="suggestion" data-query="Qual a diferença entre iniciadora e detentora?"><span>Qual a diferença entre Iniciadora e Detentora?</span></button>
+                <button class="suggestion" data-query="Como funciona o fluxo de iniciação de pagamentos?"><span>Como funciona o fluxo de iniciação de pagamentos?</span></button>
+                <button class="suggestion" data-query="Qual papel da iniciadora e detentora?"><span>Qual o papel da iniciadora e detentora?</span></button>
                 <button class="suggestion" data-query="Descreva o fluxo de portabilidade de crédito CPC"><span>Descreva o fluxo de portabilidade de crédito CPC</span></button>
             </div></section>
             <section class="storage-card"><div class="storage-head"><span class="icon-box">♢</span><div><strong>Privacidade local</strong><p>Documentos e conversas não saem deste dispositivo.</p><button id="clear-cache-btn" class="clear-cache" disabled>⌫ Excluir cache local</button></div></div></section>
@@ -253,7 +253,7 @@ const APP_CONFIG = Object.freeze({
     repetitionCheckIntervalCharacters: 96,
     repeatedSequenceWords: 18,
     repeatedShortSequenceWords: 8,
-    maxOutputTokens: 768,
+    maxOutputTokens: 10000,
     embeddingModel: "Xenova/multilingual-e5-small"
 });
 
@@ -525,11 +525,24 @@ function scheduleChatScroll() {
     });
 }
 
+// function normalizeSearchTerm(term) {
+//     const normalized = String(term)
+//         .normalize("NFD")
+//         .replace(/[\u0300-\u036f]/g, "")
+//         .toLocaleLowerCase("pt-BR");
+//     if (STOP_WORDS.has(normalized)) return null;
+//     if (normalized.length < 2 && !/^\d+$/.test(normalized)) return null;
+//     return normalized;
+// }
+
 function normalizeSearchTerm(term) {
     const normalized = String(term)
+        .toLocaleLowerCase("pt-BR")
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLocaleLowerCase("pt-BR");
+        // Range excludes \u0327 (combining cedilla)
+        .replace(/[\u0300-\u0326\u0328-\u036f]/g, "")
+        .normalize("NFC"); // Recombines 'c' + cedilla back into 'ç'
+
     if (STOP_WORDS.has(normalized)) return null;
     if (normalized.length < 2 && !/^\d+$/.test(normalized)) return null;
     return normalized;
@@ -541,7 +554,7 @@ function createLexicalIndex() {
         storeFields: ["id"],
         processTerm: normalizeSearchTerm,
         searchOptions: {
-            boost: { title: 2.5 },
+           // boost: { title: 2.5 },
             prefix: (term) => term.length >= 4,
             fuzzy: (term) => term.length >= 7 ? 0.12 : false
         }
@@ -1864,6 +1877,7 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
 
             if (renderFrame) cancelAnimationFrame(renderFrame);
             throwIfGenerationStopped(signal);
+            debugger
             const normalized = normalizeModelText(completeText);
             if (normalized && !isDegenerateText(normalized)) {
                 const finalText = repetitionDetection
@@ -1969,10 +1983,15 @@ async function handleUserSubmit() {
     try {
         const retrievalQuery = buildRetrievalQuery(originalQuery);
         statusText.textContent = "Buscando contexto relevante…";
+        console.log("Consulta de recuperação:", retrievalQuery);
 
         const embeddingPromise = getQueryEmbedding(retrievalQuery);
         const lexicalResults = miniSearch.search(retrievalQuery)
             .slice(0, APP_CONFIG.lexicalCandidates);
+
+        console.log("Lexical Results:",
+            lexicalResults
+        );
         const queryVector = await awaitOrStop(
             embeddingPromise,
             generationController.signal
@@ -1982,8 +2001,11 @@ async function handleUserSubmit() {
             generationController.signal
         );
         throwIfGenerationStopped(generationController.signal);
-        const fusedResults = calculateRRF(vectorResults, lexicalResults);
 
+        console.log("Vector Results:", vectorResults);
+
+        const fusedResults = calculateRRF(vectorResults, lexicalResults);
+        console.log("Fused Results:", fusedResults);
         if (fusedResults.length === 0) {
             answerElement.textContent =
                 "Não encontrei essa informação na documentação extraída.";
@@ -1992,6 +2014,8 @@ async function handleUserSubmit() {
 
         let context = getExpandedContext(fusedResults);
         statusText.textContent = "Gerando resposta…";
+        console.log("Contexto expandido:", context);
+        console.log("Consulta original:", originalQuery);
         try {
             await generateFinalAnswer(
                 context,
@@ -2008,6 +2032,7 @@ async function handleUserSubmit() {
             await recoverFromDeviceLoss(error);
             throwIfGenerationStopped(generationController.signal);
             context = getExpandedContext(fusedResults);
+            console.log("Contexto expandido (modo seguro):", context);
             statusText.textContent = "Gerando resposta em modo seguro…";
             await generateFinalAnswer(
                 context,
