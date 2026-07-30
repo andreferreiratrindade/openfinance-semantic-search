@@ -191,7 +191,7 @@
             <div class="brand"><span class="brand-mark">✦</span><div><strong>Open Finance Explorer</strong><small>Documentação oficial, no seu dispositivo</small></div><button id="mobile-close" class="mobile-close" aria-label="Fechar menu">×</button></div>
             <button id="new-chat" class="new-chat">＋ Nova conversa</button>
             <section class="side-section"><p class="section-label">Perguntas sugeridas</p><div class="suggestions">
-                <button class="suggestion" data-query="Como funciona o fluxo de iniciação de pagamentos?"><span>Como funciona o fluxo de iniciação de pagamentos?</span></button>
+                <button class="suggestion" data-query="Como funciona o fluxo de iniciação de pagamentos - API Payment?"><span>Como funciona o fluxo de iniciação de pagamentos - API Payment?</span></button>
                 <button class="suggestion" data-query="Qual papel da iniciadora e detentora?"><span>Qual o papel da iniciadora e detentora?</span></button>
                 <button class="suggestion" data-query="Descreva o fluxo de portabilidade de crédito CPC"><span>Descreva o fluxo de portabilidade de crédito CPC</span></button>
             </div></section>
@@ -253,7 +253,8 @@ const APP_CONFIG = Object.freeze({
     repetitionCheckIntervalCharacters: 96,
     repeatedSequenceWords: 18,
     repeatedShortSequenceWords: 8,
-    maxOutputTokens: 10000,
+    maxOutputTokens: 4000,
+    context_window_size: 4096,
     embeddingModel: "Xenova/multilingual-e5-small"
 });
 
@@ -320,7 +321,7 @@ const REPETITION_STOP_NOTICE =
 const DOMAIN_EXPANSIONS = Object.freeze([
     [/\bconsentiment\w*/i, "autorização permissionamento jornada de consentimento"],
     [/\bpix\b/i, "pagamento instantâneo iniciação de pagamento"],
-    [/\bpagament\w*/i, "iniciação pagamento recurring-payments"],
+    [/\bpagament\w*/i, "iniciação pagamento payment"],
     [/\brecorrent\w*|\bautomátic\w*/i, "pagamento automático recorrente consentimento recorrente"],
     [/\bseguran\w*|\bcertificad\w*/i, "FAPI mTLS assinatura JWS autenticação autorização"],
     [/\berro\w*|\bfalha\w*/i, "código HTTP status rejectionReason tratamento de erro"],
@@ -373,7 +374,7 @@ let generationInProgress = false;
 let currentGenerationController = null;
 let hardwareReportPromise = null;
 let compatibleModelRecords = [];
-let maxContextChars = 4800;
+let maxContextChars = 10000;
 let engineHealthy = false;
 let gpuSafeMode = localStorage.getItem(STORAGE_KEYS.safeMode) === "true";
 let selectedAudienceProfile = null;
@@ -550,7 +551,7 @@ function normalizeSearchTerm(term) {
 
 function createLexicalIndex() {
     return new MiniSearch({
-        fields: ["title", "text_content"],
+        fields: ["text_content"],
         storeFields: ["id"],
         processTerm: normalizeSearchTerm,
         searchOptions: {
@@ -834,12 +835,12 @@ function populateModelSelector(report) {
 function getSelectedModelConfig(modelId = modelSelector.value) {
     const parameters = getParameterCount(modelId);
     let config;
-
+    let contextWindow = APP_CONFIG.context_window_size;
+    let maxOutputTokens = APP_CONFIG.maxOutputTokens;
     if (parameters <= 0.6) {
         config = {
-            contextWindow: 2048,
-            maxChars: 2600,
-            maxOutputTokens:APP_CONFIG.maxOutputTokens,// 384,
+            contextWindow: contextWindow   ,
+            maxOutputTokens:maxOutputTokens,// 384,
             temperature: 0.1,
             topP: 0.8,
             repetitionPenalty: 1.15,
@@ -848,9 +849,8 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     } else if (parameters <= 1.1) {
         config = {
-            contextWindow: 3072,
-            maxChars: 4200,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//512,
+            contextWindow: contextWindow,
+            maxOutputTokens: maxOutputTokens,//512,
             temperature: 0.1,
             topP: 0.82,
             repetitionPenalty: 1.12,
@@ -859,9 +859,8 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     } else if (parameters <= 2.1) {
         config = {
-            contextWindow: 4096,
-            maxChars: 5600,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//640,
+            contextWindow: contextWindow,
+            maxOutputTokens: maxOutputTokens,//640,
             temperature: 0.12,
             topP: 0.84,
             repetitionPenalty: 1.1,
@@ -870,8 +869,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     } else {
         config = {
-            contextWindow: 4096,
-            maxChars: 6200,
+            contextWindow: contextWindow,
             maxOutputTokens: APP_CONFIG.maxOutputTokens,//768,
             temperature: 0.14,
             topP: 0.86,
@@ -1877,7 +1875,7 @@ async function streamStableCompletion(messages, outputElement, maxTokens, signal
 
             if (renderFrame) cancelAnimationFrame(renderFrame);
             throwIfGenerationStopped(signal);
-            debugger
+
             const normalized = normalizeModelText(completeText);
             if (normalized && !isDegenerateText(normalized)) {
                 const finalText = repetitionDetection
