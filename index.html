@@ -841,11 +841,11 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
     let maxOutputTokens = APP_CONFIG.maxOutputTokens;
     if (parameters <= 0.6) {
         config = {
-            contextWindow: contextWindow   ,
+            contextWindow: contextWindow ,
             maxOutputTokens:maxOutputTokens,// 384,
-            maxContextChars: 3000,
+            maxContextChars: 5000,
             temperature: 0.1,
-            topP: 0.8,
+            topP: 0.84,
             repetitionPenalty: 1.15,
             frequencyPenalty: 0.18,
             presencePenalty: 0.04
@@ -856,7 +856,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
             maxOutputTokens: maxOutputTokens,//512,
             maxContextChars: 8000,
             temperature: 0.1,
-            topP: 0.82,
+            topP: 0.84,
             repetitionPenalty: 1.12,
             frequencyPenalty: 0.15,
             presencePenalty: 0.04
@@ -867,7 +867,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
             maxOutputTokens: 4000,//640,
             maxContextChars: 10000,
 
-            temperature: 0.12,
+            temperature: 0.1,
             topP: 0.84,
             repetitionPenalty: 1.1,
             frequencyPenalty: 0.12,
@@ -879,7 +879,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
             maxOutputTokens: 4000,//768,
             maxContextChars: 10000,
 
-            temperature: 0.14,
+            temperature: 0.1,
             topP: 0.86,
             repetitionPenalty: 1.08,
             frequencyPenalty: 0.1,
