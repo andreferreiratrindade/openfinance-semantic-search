@@ -801,6 +801,8 @@ function chooseDefaultModel(records) {
 }
 
 function populateModelSelector(report) {
+    maxContextChars = 10000;
+
     compatibleModelRecords = findCompatibleFastModels(report);
     modelSelector.replaceChildren();
 
@@ -880,11 +882,12 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
     }
 
     if (!gpuSafeMode) return config;
+        maxContextChars = 5000;
     return {
         ...config,
-        contextWindow: config.contextWindow ,// Math.min(config.contextWindow, 1536),
-        maxChars: config.maxChars, //Math.min(config.maxChars, 1800),
-        maxOutputTokens:config.maxOutputTokens // Math.min(config.maxOutputTokens, 160)
+        contextWindow: Math.min(config.contextWindow, 1536),
+        maxChars: Math.min(config.maxChars, 1800),
+        maxOutputTokens:Math.min(config.maxOutputTokens, 160)
     };
 }
 
