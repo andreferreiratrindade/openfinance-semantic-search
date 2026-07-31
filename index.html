@@ -374,7 +374,6 @@ let generationInProgress = false;
 let currentGenerationController = null;
 let hardwareReportPromise = null;
 let compatibleModelRecords = [];
-let maxContextChars = 10000;
 let engineHealthy = false;
 let gpuSafeMode = localStorage.getItem(STORAGE_KEYS.safeMode) === "true";
 let selectedAudienceProfile = null;
@@ -383,6 +382,8 @@ const documentsById = new Map();
 const chunksByFile = new Map();
 const pendingWorkerSearches = new Map();
 const embeddingCache = new Map();
+
+let configModelSelected = {};
 
 function renderWelcome() {
     chatHistory.innerHTML = `
@@ -801,7 +802,6 @@ function chooseDefaultModel(records) {
 }
 
 function populateModelSelector(report) {
-    maxContextChars = 10000;
 
     compatibleModelRecords = findCompatibleFastModels(report);
     modelSelector.replaceChildren();
@@ -843,6 +843,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         config = {
             contextWindow: contextWindow   ,
             maxOutputTokens:maxOutputTokens,// 384,
+            maxContextChars: 3000,
             temperature: 0.1,
             topP: 0.8,
             repetitionPenalty: 1.15,
@@ -853,6 +854,7 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         config = {
             contextWindow: contextWindow,
             maxOutputTokens: maxOutputTokens,//512,
+            maxContextChars: 8000,
             temperature: 0.1,
             topP: 0.82,
             repetitionPenalty: 1.12,
@@ -861,8 +863,10 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     } else if (parameters <= 2.1) {
         config = {
-            contextWindow: contextWindow,
-            maxOutputTokens: maxOutputTokens,//640,
+            contextWindow: 4096,
+            maxOutputTokens: 4000,//640,
+            maxContextChars: 10000,
+
             temperature: 0.12,
             topP: 0.84,
             repetitionPenalty: 1.1,
@@ -871,8 +875,10 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     } else {
         config = {
-            contextWindow: contextWindow,
-            maxOutputTokens: APP_CONFIG.maxOutputTokens,//768,
+            contextWindow: 4096,
+            maxOutputTokens: 4000,//768,
+            maxContextChars: 10000,
+
             temperature: 0.14,
             topP: 0.86,
             repetitionPenalty: 1.08,
@@ -881,14 +887,18 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     }
 
-    if (!gpuSafeMode) return config;
-        maxContextChars = 5000;
-    return {
+    configModelSelected = config;
+
+    if (!gpuSafeMode) return configModelSelected;
+  
+    configModelSelected =  {
         ...config,
         contextWindow: Math.min(config.contextWindow, 1536),
-        maxChars: Math.min(config.maxChars, 1800),
+        maxChars: Math.min(config.maxContextChars, 1800),
         maxOutputTokens:Math.min(config.maxOutputTokens, 2000)
     };
+
+    return configModelSelected;
 }
 
 function calculateRRF(vectorResults, lexicalResults) {
@@ -979,7 +989,7 @@ function getExpandedContext(fusedResults) {
         if (!text) continue;
         const sourceBlock = `[FONTE: ${sourceFile}]\n${text}`;
         const separatorLength = blocks.length ? 7 : 0;
-        const remaining = maxContextChars - usedCharacters - separatorLength;
+        const remaining = configModelSelected.maxContextChars - usedCharacters - separatorLength;
         if (remaining <= 180) break;
 
         if (sourceBlock.length > remaining) {
