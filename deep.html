@@ -165,7 +165,7 @@
             <div class="dialog-icon">↓</div><p class="eyebrow">Permissão necessária</p>
             <h2 id="permission-title">Baixar os recursos para uso local?</h2>
             <p class="dialog-description">Para funcionar, o Open Finance Explorer precisa baixar os modelos de IA e o banco de dados da documentação.</p>
-            <div class="download-summary"><div class="download-size"><strong>até 1 GB</strong><small>varia conforme o modelo</small></div><div class="download-items"><span>▧ &nbsp;Modelo de inteligência artificial selecionado</span><span>▤ &nbsp;Base documental do Open Finance</span></div></div>
+            <div class="download-summary"><div class="download-size"><strong>até 6 GB</strong><small>varia conforme o modelo</small></div><div class="download-items"><span id="permission-model-item">▧ &nbsp;Detectando o modelo recomendado…</span><span>▤ &nbsp;Base documental do Open Finance</span></div></div>
             <div class="privacy-note">♢ <span>Os arquivos ficam armazenados neste dispositivo e nenhum download começa sem sua autorização.</span></div>
             <div class="dialog-actions"><button id="permission-decline" class="secondary-btn">Agora não</button><button id="permission-accept" class="primary-btn">↓ &nbsp; Permitir e continuar</button></div>
             <button id="permission-clear-cache" class="permission-cache-btn">⌫ Excluir cache local deste dispositivo</button>
@@ -239,42 +239,92 @@ import MiniSearch from "https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/es/in
 env.allowLocalModels = false;
 env.useBrowserCache = true;
 
+// ====================================================================
+// CONFIGURAÇÕES PRINCIPAIS (com melhorias)
+// ====================================================================
 const APP_CONFIG = Object.freeze({
     databaseName: "openfinancedb",
     databasePartitions: 70,
     importConcurrency: 4,
-    lexicalCandidates: 60,
-    vectorCandidates: 150,
-    fusedCandidates: 30,
-    rerankCandidates: 20,
-    finalCandidates: 10,
-    rrfK: 20,
-    neighborWindow: 2,
-    minimumVectorScore: 0.20,
-    embeddingCacheSize: 64,
-    semanticEmbeddingVersion: "e5-query-v2",
+    lexicalCandidates: 60,           // aumentado (era 30)
+    vectorCandidates: 150,           // aumentado (era 30)
+    fusedCandidates: 12,
+    rrfK: 50,
+    neighborWindow: 2,               // aumentado (era 1)
+    minimumVectorScore: 0.42,
+    embeddingCacheSize: 20,
     repetitionCheckIntervalCharacters: 96,
     repeatedSequenceWords: 18,
     repeatedShortSequenceWords: 8,
-    maxOutputTokens: 4000,
-    totalEqualCaracters: 100,
+    maxOutputTokens: 1200,
     context_window_size: 4096,
-    embeddingModel: "Xenova/multilingual-e5-small"
+    promptReserveTokens: 420,
+    estimatedCharactersPerToken: 3.6,
+    minimumContextCharacters: 900,
+    maximumContextCharacters: 10000,
+    embeddingModel: "Xenova/multilingual-e5-small",
+    dedupCharCount: 100              // para deduplicação textual
+});
+
+const DEVICE_PROFILES = Object.freeze({
+    safe: Object.freeze({
+        id: "safe",
+        label: "Modo seguro",
+        targetParametersB: 0.5,
+        maxParametersB: 1.1,
+        contextWindow: 2048,
+        maxOutputTokens: 384
+    }),
+    essential: Object.freeze({
+        id: "essential",
+        label: "Essencial",
+        targetParametersB: 0.5,
+        maxParametersB: 0.6,
+        contextWindow: 2048,
+        maxOutputTokens: 384
+    }),
+    light: Object.freeze({
+        id: "light",
+        label: "Leve",
+        targetParametersB: 1.0,
+        maxParametersB: 1.1,
+        contextWindow: 3072,
+        maxOutputTokens: 512
+    }),
+    balanced: Object.freeze({
+        id: "balanced",
+        label: "Equilibrado",
+        targetParametersB: 1.5,
+        maxParametersB: 2.1,
+        contextWindow: 4096,
+        maxOutputTokens: 768
+    }),
+    performance: Object.freeze({
+        id: "performance",
+        label: "Desempenho",
+        targetParametersB: 3.0,
+        maxParametersB: 3.2,
+        contextWindow: 4096,
+        maxOutputTokens: 1024
+    })
 });
 
 const STORAGE_POLICY = Object.freeze({
     reserveMB: 128,
     estimatedMBPerBillionParameters: 600,
     minimumModelDownloadMB: 512,
-    defaultSafeVramMB: 1800,
-    maximumSafeVramMB: 2600,
-    ramFractionForGpu: 0.25
+    minimumFreeStorageAfterModelMB: 384,
+    minimumSafeVramMB: 640,
+    defaultSafeVramMB: 1400,
+    safeModeVramMB: 1100,
+    maximumSafeVramMB: 3200
 });
 
 const STORAGE_KEYS = Object.freeze({
     selectedModel: "openfinance.selectedModel.v3",
     loadedPartitions: "openfinance.loadedPartitions.v2",
-    safeMode: "openfinance.gpuSafeMode.v1"
+    safeMode: "openfinance.gpuSafeMode.v1",
+    unstableModels: "openfinance.unstableModels.v1"
 });
 
 const SYSTEM_PROMPT = `
@@ -322,24 +372,23 @@ const TRUNCATED_ANSWER_NOTICE =
 const REPETITION_STOP_NOTICE =
     "🔁 A geração foi interrompida automaticamente porque o modelo começou a repetir o conteúdo.";
 
-const SYNONYM_MAP = {
-    "consentimento": ["autorização", "permissionamento", "jornada de consentimento", "consent"],
-    "pagamento": ["iniciação de pagamento", "transferência", "pix", "payment", "pagto"],
-    "segurança": ["fapi", "mtls", "assinatura", "jws", "oauth", "oidc", "certificado"],
-    "conta": ["dados cadastrais", "dados de conta", "resource", "customer"],
-    "erro": ["falha", "rejeição", "rejection reason", "código de erro", "status http"],
-    "api": ["endpoint", "requisição", "resposta", "payload", "operação"],
-    "webhook": ["callback", "notificação", "evento"],
-    "fluxo": ["processo", "jornada", "etapas", "sequência"],
-    "regra": ["requisito", "obrigação", "restrição", "política"],
-};
+const DOMAIN_EXPANSIONS = Object.freeze([
+    [/\bconsentiment\w*/i, "autorização permissionamento jornada de consentimento"],
+    [/\bpix\b/i, "pagamento instantâneo iniciação de pagamento"],
+    [/\bpagament\w*/i, "iniciação pagamento payment"],
+    [/\brecorrent\w*|\bautomátic\w*/i, "pagamento automático recorrente consentimento recorrente"],
+    [/\bseguran\w*|\bcertificad\w*/i, "FAPI mTLS assinatura JWS autenticação autorização"],
+    [/\berro\w*|\bfalha\w*/i, "código HTTP status rejectionReason tratamento de erro"],
+    [/\bcliente\w*|\bconta\w*/i, "dados cadastrais dados de conta resource"],
+    [/\bendpoint\w*|\bapi\b/i, "requisição resposta payload operação endpoint API"],
+    [/\bscope\w*|\bescopo\w*/i, "permissão OAuth escopo autorização"],
+    [/\bwebhook\w*|\bnotifica\w*/i, "callback evento notificação webhook"]
+]);
 
 const STOP_WORDS = new Set([
     "a", "ao", "aos", "as", "com", "como", "da", "das", "de", "do", "dos",
     "e", "em", "entre", "é", "na", "nas", "no", "nos", "o", "os", "ou",
-    "para", "por", "qual", "quais", "que", "se", "um", "uma", "são", "foram",
-    "também", "já", "mais", "menos", "muito", "pouco", "isso", "isto", "aquele",
-    "aquela", "estes", "essas", "aqueles", "aquilo", "meu", "minha", "teu", "sua"
+    "para", "por", "qual", "quais", "que", "se", "um", "uma"
 ]);
 
 const statusText = document.getElementById("status-text");
@@ -362,6 +411,7 @@ const modelPercent = document.getElementById("model-percent");
 const modelDetail = document.getElementById("model-detail");
 const overallProgress = document.getElementById("overall-progress");
 const permissionAccept = document.getElementById("permission-accept");
+const permissionModelItem = document.getElementById("permission-model-item");
 
 let engine = null;
 let embedder = null;
@@ -378,17 +428,28 @@ let runtimeReady = false;
 let generationInProgress = false;
 let currentGenerationController = null;
 let hardwareReportPromise = null;
+let currentHardwareReport = null;
 let compatibleModelRecords = [];
+let recommendedModelId = "";
+let maxContextChars = APP_CONFIG.maximumContextCharacters;
 let engineHealthy = false;
 let gpuSafeMode = localStorage.getItem(STORAGE_KEYS.safeMode) === "true";
 let selectedAudienceProfile = null;
+let unstableModelIds;
+try {
+    unstableModelIds = new Set(
+        JSON.parse(localStorage.getItem(STORAGE_KEYS.unstableModels) || "[]")
+            .filter((value) => typeof value === "string" && value)
+    );
+} catch {
+    unstableModelIds = new Set();
+}
+const contextCache = new Map(); // cache de contexto
 
 const documentsById = new Map();
 const chunksByFile = new Map();
 const pendingWorkerSearches = new Map();
 const embeddingCache = new Map();
-
-let configModelSelected = {};
 
 function renderWelcome() {
     chatHistory.innerHTML = `
@@ -533,145 +594,57 @@ function scheduleChatScroll() {
 }
 
 function normalizeSearchTerm(term) {
-    let normalized = String(term)
+    const normalized = String(term)
         .toLocaleLowerCase("pt-BR")
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[\u0300-\u0326\u0328-\u036f]/g, "")
         .normalize("NFC");
-
-    normalized = normalized
-        .replace(/(?:ções|ção|mento|mente|idades|idade|ando|endo|indo|ado|ido|ar|er|ir|a|e|o|as|es|os)$/, '')
-        .replace(/([a-z])\1+$/, '$1')
-        .replace(/^([a-z]+)(s)$/, '$1');
-
-    if (STOP_WORDS.has(normalized) || normalized.length < 2) return null;
-    if (!/^\d+$/.test(normalized) && normalized.length < 2) return null;
+    if (STOP_WORDS.has(normalized)) return null;
+    if (normalized.length < 2 && !/^\d+$/.test(normalized)) return null;
     return normalized;
-}
-
-function normalizeSearchText(value) {
-    return String(value ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLocaleLowerCase("pt-BR")
-        .replace(/\s+/g, " ")
-        .trim();
 }
 
 function createLexicalIndex() {
     return new MiniSearch({
-        fields: ["title", "text_content", "paginaId", "source_file", "url"],
+        fields: ["text_content"],
         storeFields: ["id"],
         processTerm: normalizeSearchTerm,
         searchOptions: {
-            boost: {
-                title: 3.5,
-                paginaId: 1.8,
-                source_file: 1.15
-            },
             prefix: (term) => term.length >= 4,
             fuzzy: (term) => term.length >= 7 ? 0.12 : false
         }
     });
 }
 
-function sanitizeUserQuery(originalQuery) {
-    return String(originalQuery ?? "")
+function buildRetrievalQuery(originalQuery) {
+    const base = originalQuery
         .replace(/\s+/g, " ")
         .replace(/[\u0000-\u001F\u007F]/g, "")
-        .trim()
-        .slice(0, 600);
-}
-
-function expandWithSynonyms(query) {
-    let expanded = query;
-    for (const [key, synonyms] of Object.entries(SYNONYM_MAP)) {
-        const regex = new RegExp(`\\b${key}\\b`, 'gi');
-        if (regex.test(query)) {
-            expanded += " " + synonyms.join(" ");
-        }
-    }
-    return expanded;
-}
-
-function buildLexicalQuery(originalQuery) {
-    const base = sanitizeUserQuery(originalQuery);
-    const expanded = expandWithSynonyms(base);
+        .trim();
     const additions = [];
 
     for (const [pattern, expansion] of DOMAIN_EXPANSIONS) {
         if (pattern.test(base)) additions.push(expansion);
     }
 
-    return `${expanded} ${[...new Set(additions)].join(" ")}`
-        .trim()
-        .slice(0, 900);
-}
-
-function buildSemanticQuery(originalQuery) {
-    const base = sanitizeUserQuery(originalQuery);
-    const expanded = expandWithSynonyms(base);
-    const expansions = [];
-    for (const [pattern, expansion] of DOMAIN_EXPANSIONS) {
-        if (pattern.test(base)) expansions.push(expansion);
-    }
-    const words = base.split(/\s+/).filter(w => w.length > 3 && !STOP_WORDS.has(w.toLowerCase()));
-    const uniqueExpansions = [...new Set([...expansions, ...words])].join(' ');
-    return `${expanded} ${uniqueExpansions}`.trim().slice(0, 400);
-}
-
-const DOMAIN_EXPANSIONS = Object.freeze([
-    [/\bconsentiment\w*/i, "autorização permissionamento jornada de consentimento"],
-    [/\bpix\b/i, "pagamento instantâneo iniciação de pagamento"],
-    [/\bpagament\w*/i, "iniciação pagamento payment"],
-    [/\brecorrent\w*|\bautomátic\w*/i, "pagamento automático recorrente consentimento recorrente"],
-    [/\bseguran\w*|\bcertificad\w*/i, "FAPI mTLS assinatura JWS autenticação autorização"],
-    [/\berro\w*|\bfalha\w*/i, "código HTTP status rejectionReason tratamento de erro"],
-    [/\bcliente\w*|\bconta\w*/i, "dados cadastrais dados de conta resource"],
-    [/\bendpoint\w*|\bapi\b/i, "requisição resposta payload operação endpoint API"],
-    [/\bscope\w*|\bescopo\w*/i, "permissão OAuth escopo autorização"],
-    [/\bwebhook\w*|\bnotifica\w*/i, "callback evento notificação webhook"]
-]);
-
-function classifyQuery(query) {
-    const q = normalizeSearchText(query);
-
-    return {
-        asksApi: /\b(api|apis|endpoint|endpoints|http|get|post|put|patch|delete|payload|request|response)\b/.test(q),
-        asksFlow: /\b(fluxo|processo|etapa|etapas|jornada|como funciona|sequencia|sequência)\b/.test(q),
-        asksResponsibility: /\b(papel|responsabilidade|responsavel|responsável|funcao|função|atribuiçao|atribuição)\b/.test(q),
-        asksRule: /\b(regra|regras|obrigatorio|obrigatória|obrigatorio|deve|devem|pode|podem|permitido|proibido|restricao|restrição)\b/.test(q),
-        asksError: /\b(erro|erros|falha|falhas|rejeicao|rejeição|rejection|status|codigo|código|http)\b/.test(q),
-        asksSecurity: /\b(fapi|mtls|m-?tls|jws|oauth|oidc|certificado|certificado|seguranca|segurança|assinatura)\b/.test(q),
-        technical: /\b(fapi|mtls|m-?tls|jws|oauth|oidc|api|apis|endpoint|http|json|payload|scope|webhook|rejectionreason)\b/.test(q)
-    };
-}
-
-function getHybridWeights(intent) {
-    let vectorWeight = 0.65;
-    let lexicalWeight = 0.35;
-
-    if (intent.asksApi || intent.asksError || intent.asksRule || intent.technical) {
-        vectorWeight = 0.52;
-        lexicalWeight = 0.48;
-    }
-
-    if (intent.asksFlow || !intent.technical) {
-        vectorWeight = Math.min(vectorWeight + 0.10, 0.85);
-        lexicalWeight = 1 - vectorWeight;
-    }
-
-    const total = vectorWeight + lexicalWeight;
-    return {
-        vectorWeight: vectorWeight / total,
-        lexicalWeight: lexicalWeight / total
-    };
+    return `${base} ${[...new Set(additions)].join(" ")}`.trim().slice(0, 600);
 }
 
 function getParameterCount(modelId) {
-    const matches = [...String(modelId).matchAll(/(?:^|[-_])(\d+(?:\.\d+)?)B(?:[-_]|$)/gi)];
-    if (matches.length === 0) return Number.POSITIVE_INFINITY;
-    return Number(matches.at(-1)[1]);
+    const value = String(modelId);
+    const billionMatches = [
+        ...value.matchAll(/(?:^|[-_])(\d+(?:\.\d+)?)B(?:[-_]|$)/gi)
+    ];
+    if (billionMatches.length) return Number(billionMatches.at(-1)[1]);
+
+    const millionMatches = [
+        ...value.matchAll(/(?:^|[-_])(\d+(?:\.\d+)?)M(?:[-_]|$)/gi)
+    ];
+    if (millionMatches.length) {
+        return Number(millionMatches.at(-1)[1]) / 1000;
+    }
+
+    return Number.POSITIVE_INFINITY;
 }
 
 function getLogicalModelKey(modelId) {
@@ -691,41 +664,68 @@ function supportsRequiredFeatures(record, adapterFeatures) {
     );
 }
 
+function getRecordContextWindow(record) {
+    const configuredContext = Number(record?.overrides?.context_window_size);
+    return Number.isFinite(configuredContext) && configuredContext > 0
+        ? configuredContext
+        : APP_CONFIG.context_window_size;
+}
+
+function compareModelVariants(left, right, report) {
+    const desiredContext = report.deviceProfile?.contextWindow
+        || APP_CONFIG.context_window_size;
+    const leftCoverage = Math.min(
+        getRecordContextWindow(left),
+        desiredContext
+    ) / desiredContext;
+    const rightCoverage = Math.min(
+        getRecordContextWindow(right),
+        desiredContext
+    ) / desiredContext;
+
+    if (leftCoverage !== rightCoverage) return rightCoverage - leftCoverage;
+
+    const leftF16 = /q4f16_1/i.test(left.model_id) ? 1 : 0;
+    const rightF16 = /q4f16_1/i.test(right.model_id) ? 1 : 0;
+    if (leftF16 !== rightF16) return rightF16 - leftF16;
+
+    return Number(left.vram_required_MB || Number.POSITIVE_INFINITY)
+        - Number(right.vram_required_MB || Number.POSITIVE_INFINITY);
+}
+
 function findCompatibleFastModels(report) {
-    const safeVramBudgetMB =
-        report.safeVramBudgetMB || STORAGE_POLICY.defaultSafeVramMB;
-    const candidates = prebuiltAppConfig.model_list
-        .filter((record) => {
-            const parameters = getParameterCount(record.model_id);
-            return isGeneralChatModel(record.model_id)
-                && parameters <= 4
-                && Number(record.vram_required_MB || 0) <= safeVramBudgetMB
-                && /q4f(?:16|32)_1/i.test(record.model_id)
-                && supportsRequiredFeatures(record, report.adapterFeatures);
-        })
-        .sort((left, right) => {
-            const leftF16 = /q4f16_1/i.test(left.model_id) ? 0 : 1;
-            const rightF16 = /q4f16_1/i.test(right.model_id) ? 0 : 1;
-            return leftF16 - rightF16
-                || Number(left.vram_required_MB) - Number(right.vram_required_MB);
-        });
+    const profile = report.deviceProfile || DEVICE_PROFILES.light;
+    const safeVramBudgetMB = report.safeVramBudgetMB
+        || STORAGE_POLICY.defaultSafeVramMB;
+
+    const candidates = prebuiltAppConfig.model_list.filter((record) => {
+        const parameters = getParameterCount(record.model_id);
+        const requiredVramMB = Number(record.vram_required_MB);
+
+        return isGeneralChatModel(record.model_id)
+            && !unstableModelIds.has(record.model_id)
+            && Number.isFinite(parameters)
+            && parameters <= profile.maxParametersB
+            && Number.isFinite(requiredVramMB)
+            && requiredVramMB > 0
+            && requiredVramMB <= safeVramBudgetMB
+            && /q4f(?:16|32)_1/i.test(record.model_id)
+            && supportsRequiredFeatures(record, report.adapterFeatures);
+    });
 
     const bestByModel = new Map();
     for (const record of candidates) {
         const key = getLogicalModelKey(record.model_id);
-        if (!bestByModel.has(key)) bestByModel.set(key, record);
+        const current = bestByModel.get(key);
+        if (!current || compareModelVariants(record, current, report) < 0) {
+            bestByModel.set(key, record);
+        }
     }
 
-    return [...bestByModel.values()].sort((left, right) => {
-        const preferredOrder = (record) => {
-            if (/Qwen2\.5-1\.5B-Instruct/i.test(record.model_id)) return 0;
-            if (/Llama-3\.2-1B-Instruct/i.test(record.model_id)) return 1;
-            if (/Qwen2\.5-0\.5B-Instruct/i.test(record.model_id)) return 2;
-            return 10 + getParameterCount(record.model_id);
-        };
-        return preferredOrder(left) - preferredOrder(right)
-            || Number(left.vram_required_MB) - Number(right.vram_required_MB);
-    });
+    return [...bestByModel.values()].sort((left, right) =>
+        getParameterCount(left.model_id) - getParameterCount(right.model_id)
+        || Number(left.vram_required_MB) - Number(right.vram_required_MB)
+    );
 }
 
 function formatModelName(modelId) {
@@ -737,7 +737,8 @@ function formatModelName(modelId) {
 }
 
 function getModelLabel(modelId) {
-    const record = compatibleModelRecords.find((item) => item.model_id === modelId);
+    const record = compatibleModelRecords.find((item) => item.model_id === modelId)
+        || prebuiltAppConfig.model_list.find((item) => item.model_id === modelId);
     const memory = record?.vram_required_MB
         ? ` · GPU ~${(record.vram_required_MB / 1024).toFixed(1)} GB`
         : "";
@@ -823,7 +824,8 @@ async function ensureModelStorageCapacity(modelId) {
     const snapshot = await getBrowserStorageSnapshot();
     if (!snapshot || snapshot.quotaMB <= 0) return;
 
-    const requiredMB = estimateModelStorageMB(modelId);
+    const requiredMB = estimateModelStorageMB(modelId)
+        + STORAGE_POLICY.minimumFreeStorageAfterModelMB;
     if (snapshot.availableMB < requiredMB) {
         throw new BrowserStorageQuotaError(
             modelId,
@@ -840,7 +842,8 @@ async function normalizeModelLoadError(error, modelId) {
     return new BrowserStorageQuotaError(
         modelId,
         await getBrowserStorageSnapshot(),
-        estimateModelStorageMB(modelId),
+        estimateModelStorageMB(modelId)
+            + STORAGE_POLICY.minimumFreeStorageAfterModelMB,
         error
     );
 }
@@ -860,50 +863,90 @@ function showStorageQuotaRecovery(error, restoredPreviousModel = false) {
 
 function modelSpeedGroup(record) {
     const parameters = getParameterCount(record.model_id);
-    if (parameters <= 1) return "Ultrarrápidos · até 1B";
-    if (parameters <= 2) return "Equilibrados · até 2B";
-    return "Mais qualidade · até 4B";
+    if (parameters <= 0.6) return "Essenciais · até 0,6B";
+    if (parameters <= 1.1) return "Leves · até 1B";
+    if (parameters <= 2.1) return "Equilibrados · até 2B";
+    return "Desempenho · até 3B";
 }
 
-function chooseDefaultModel(records) {
+function scoreModelForDevice(record, report) {
+    const profile = report.deviceProfile || DEVICE_PROFILES.light;
+    const parameters = getParameterCount(record.model_id);
+    const parameterDistance = Math.abs(
+        parameters - profile.targetParametersB
+    );
+    const requiredVramMB = Number(record.vram_required_MB) || 0;
+    const vramRatio = requiredVramMB / Math.max(
+        report.safeVramBudgetMB || STORAGE_POLICY.defaultSafeVramMB,
+        1
+    );
+    const contextCoverage = Math.min(
+        getRecordContextWindow(record),
+        profile.contextWindow
+    ) / profile.contextWindow;
+
+    let score = 1000 - parameterDistance * 260;
+    if (parameters > profile.targetParametersB) score -= 120;
+    if (parameters <= profile.targetParametersB) score += parameters * 45;
+    score += contextCoverage * 80;
+    score += Math.max(0, 1 - vramRatio) * 45;
+    if (/q4f16_1/i.test(record.model_id)) score += 20;
+    if (record.low_resource_required && profile.id !== "performance") score += 8;
+
+    if (Number.isFinite(report.availableStorageMB)) {
+        const requiredStorageMB = estimateModelStorageMB(record.model_id)
+            + STORAGE_POLICY.minimumFreeStorageAfterModelMB;
+        if (requiredStorageMB > report.availableStorageMB) score -= 2000;
+    }
+
+    return score;
+}
+
+function chooseRecommendedModel(records, report) {
+    if (!records.length) return "";
+
+    return [...records]
+        .sort((left, right) =>
+            scoreModelForDevice(right, report)
+            - scoreModelForDevice(left, report)
+            || Number(left.vram_required_MB) - Number(right.vram_required_MB)
+        )[0]?.model_id || "";
+}
+
+function chooseDefaultModel(records, report) {
+    if (!records.length) return "";
+
     if (gpuSafeMode) {
-        return [...records]
-            .sort((left, right) =>
-                getParameterCount(left.model_id) - getParameterCount(right.model_id)
-                || Number(left.vram_required_MB) - Number(right.vram_required_MB)
-            )[0]?.model_id || "";
+        const safeRecommendation = chooseRecommendedModel(records, {
+            ...report,
+            deviceProfile: DEVICE_PROFILES.safe
+        });
+        if (safeRecommendation) return safeRecommendation;
     }
 
-    const storedModel = localStorage.getItem(STORAGE_KEYS.selectedModel);
-    if (records.some((record) => record.model_id === storedModel)) return storedModel;
-
-    const preferredPatterns = [
-        /Qwen2\.5-0\.5B-Instruct/i,
-        /Llama-3\.2-1B-Instruct/i,
-        /Qwen2\.5-1\.5B-Instruct/i
-    ];
-
-    for (const pattern of preferredPatterns) {
-        const match = records.find((record) => pattern.test(record.model_id));
-        if (match) return match.model_id;
-    }
-    return records[0]?.model_id || "";
+    return chooseRecommendedModel(records, report)
+        || records[0]?.model_id
+        || "";
 }
 
 function populateModelSelector(report) {
-
+    currentHardwareReport = report;
     compatibleModelRecords = findCompatibleFastModels(report);
     modelSelector.replaceChildren();
 
     if (compatibleModelRecords.length === 0) {
+        recommendedModelId = "";
         const option = document.createElement("option");
         option.textContent = "Nenhum modelo compatível";
         option.value = "";
         modelSelector.appendChild(option);
+        permissionModelItem.textContent =
+            "▧ Nenhum modelo local atende ao orçamento seguro deste dispositivo";
         return;
     }
 
-    const defaultModel = chooseDefaultModel(compatibleModelRecords);
+    recommendedModelId = chooseDefaultModel(compatibleModelRecords, report);
+    report.recommendedModelId = recommendedModelId;
     const groups = new Map();
 
     for (const record of compatibleModelRecords) {
@@ -917,58 +960,90 @@ function populateModelSelector(report) {
 
         const option = document.createElement("option");
         option.value = record.model_id;
-        option.textContent = getModelLabel(record.model_id);
-        if (record.model_id === defaultModel) option.selected = true;
+        option.textContent = `${getModelLabel(record.model_id)}${
+            record.model_id === recommendedModelId ? " · Recomendado" : ""
+        }`;
+        if (record.model_id === recommendedModelId) option.selected = true;
         groups.get(groupName).appendChild(option);
     }
+
+    const profileLabel = report.deviceProfile?.label || "Automático";
+    modelSelector.title =
+        `Perfil ${profileLabel}. Modelo recomendado: ${formatModelName(recommendedModelId)}.`;
+    permissionModelItem.textContent =
+        `▧ ${getModelLabel(recommendedModelId)} · perfil ${profileLabel}`;
+}
+
+function calculateContextCharacterBudget(contextWindow, maxOutputTokens) {
+    const availableInputTokens = Math.max(
+        250,
+        contextWindow - maxOutputTokens - APP_CONFIG.promptReserveTokens
+    );
+    return Math.max(
+        APP_CONFIG.minimumContextCharacters,
+        Math.min(
+            APP_CONFIG.maximumContextCharacters,
+            Math.floor(
+                availableInputTokens * APP_CONFIG.estimatedCharactersPerToken
+            )
+        )
+    );
 }
 
 function getSelectedModelConfig(modelId = modelSelector.value) {
     const parameters = getParameterCount(modelId);
-    let config;
-    let contextWindow = APP_CONFIG.context_window_size;
-    let maxOutputTokens = APP_CONFIG.maxOutputTokens;
+    const record = getModelRecord(modelId);
+    const profile = currentHardwareReport?.deviceProfile
+        || DEVICE_PROFILES.light;
+    const compiledContextWindow = getRecordContextWindow(record);
+
+    let contextWindow = Math.min(
+        APP_CONFIG.context_window_size,
+        profile.contextWindow,
+        compiledContextWindow
+    );
+    let maxOutputTokens = Math.min(
+        APP_CONFIG.maxOutputTokens,
+        profile.maxOutputTokens,
+        Math.max(192, Math.floor(contextWindow * 0.28))
+    );
+
+    if (gpuSafeMode) {
+        contextWindow = Math.min(contextWindow, DEVICE_PROFILES.safe.contextWindow);
+        maxOutputTokens = Math.min(
+            maxOutputTokens,
+            DEVICE_PROFILES.safe.maxOutputTokens
+        );
+    }
+
+    let generationConfig;
     if (parameters <= 0.6) {
-        config = {
-            contextWindow: 4096 ,
-            maxOutputTokens:4096,
-            maxContextChars: 10000,
-            temperature: 0,
-            topP: 0.84,
+        generationConfig = {
+            temperature: 0.1,
+            topP: 0.8,
             repetitionPenalty: 1.15,
             frequencyPenalty: 0.18,
             presencePenalty: 0.04
         };
     } else if (parameters <= 1.1) {
-        config = {
-            contextWindow: contextWindow,
-            maxOutputTokens: maxOutputTokens,
-            maxContextChars: 10000,
-            temperature: 0,
-            topP: 0.84,
+        generationConfig = {
+            temperature: 0.1,
+            topP: 0.82,
             repetitionPenalty: 1.12,
             frequencyPenalty: 0.15,
             presencePenalty: 0.04
         };
     } else if (parameters <= 2.1) {
-        config = {
-            contextWindow: 4096,
-            maxOutputTokens: 4000,
-            maxContextChars: 10000,
-
-            temperature: 0.1,
+        generationConfig = {
+            temperature: 0.12,
             topP: 0.84,
             repetitionPenalty: 1.1,
             frequencyPenalty: 0.12,
             presencePenalty: 0.03
         };
     } else {
-        config = {
-            contextWindow: 4096,
-            maxOutputTokens: 4000,
-            maxContextChars: 10000,
-
-            temperature: 0.1,
+        generationConfig = {
+            temperature: 0.14,
             topP: 0.86,
             repetitionPenalty: 1.08,
             frequencyPenalty: 0.1,
@@ -976,230 +1051,40 @@ function getSelectedModelConfig(modelId = modelSelector.value) {
         };
     }
 
-    configModelSelected = config;
-
-    if (!gpuSafeMode) return configModelSelected;
-
-    configModelSelected =  {
-        ...config,
-        contextWindow: Math.min(config.contextWindow, 1536),
-        maxContextChars: Math.min(config.maxContextChars, 1800),
-        maxOutputTokens:Math.min(config.maxOutputTokens, 2000)
+    return {
+        ...generationConfig,
+        contextWindow,
+        maxOutputTokens,
+        maxContextChars: calculateContextCharacterBudget(
+            contextWindow,
+            maxOutputTokens
+        )
     };
-
-    return configModelSelected;
-}
-
-function normalizeScores(results) {
-    if (!results.length) return new Map();
-
-    const scores = results.map((result) => Number(result.score) || 0);
-    const min = Math.min(...scores);
-    const max = Math.max(...scores);
-
-    return new Map(
-        results.map((result) => [
-            result.id,
-            max === min ? 1 : (Number(result.score) - min) / (max - min)
-        ])
-    );
-}
-
-function normalizeLexicalScores(results) {
-    if (!results.length) return new Map();
-
-    const scores = results.map((result) => Number(result.score) || 0);
-    const min = Math.min(...scores);
-    const max = Math.max(...scores);
-
-    return new Map(
-        results.map((result) => [
-            result.id,
-            max === min ? 1 : (Number(result.score) - min) / (max - min)
-        ])
-    );
 }
 
 function calculateRRF(vectorResults, lexicalResults) {
     const scores = new Map();
 
-    const addRankedResults = (results, source) => {
+    const addRankedResults = (results, weight) => {
         results.forEach((result, index) => {
             const id = result.id;
             if (!id || !documentsById.has(id)) return;
-
-            const item = scores.get(id) || {
-                id,
-                rrfScore: 0,
-                vectorRank: null,
-                lexicalRank: null,
-                vectorRawScore: null,
-                lexicalRawScore: null
-            };
-
-            item.rrfScore += 1 / (APP_CONFIG.rrfK + index + 1);
-
-            if (source === "vector") {
-                item.vectorRank = index + 1;
-                item.vectorRawScore = Number(result.score) || 0;
-            } else {
-                item.lexicalRank = index + 1;
-                item.lexicalRawScore = Number(result.score) || 0;
-            }
-
+            const item = scores.get(id) || { id, score: 0 };
+            item.score += weight / (APP_CONFIG.rrfK + index + 1);
             scores.set(id, item);
         });
     };
 
-    addRankedResults(vectorResults, "vector");
-    addRankedResults(lexicalResults, "lexical");
+    addRankedResults(vectorResults, 1);
+    addRankedResults(lexicalResults, 1.1);
 
     return [...scores.values()]
-        .sort((left, right) => right.rrfScore - left.rrfScore)
+        .sort((left, right) => right.score - left.score)
         .slice(0, APP_CONFIG.fusedCandidates)
         .map((item) => ({
             ...item,
             payload: documentsById.get(item.id)
         }));
-}
-
-function exactTermCoverage(query, payload) {
-    const queryTerms = normalizeSearchText(query)
-        .split(/[^a-z0-9à-ÿ_-]+/i)
-        .filter((term) => term.length >= 3);
-
-    if (!queryTerms.length) return 0;
-
-    const text = normalizeSearchText([
-        payload?.title,
-        payload?.paginaId,
-        payload?.source_file,
-        payload?.text_content
-    ].filter(Boolean).join(" "));
-
-    let matches = 0;
-    for (const term of new Set(queryTerms)) {
-        if (text.includes(term)) matches += 1;
-    }
-
-    return matches / new Set(queryTerms).size;
-}
-
-function metadataBoost(query, payload) {
-    const q = normalizeSearchText(query);
-    const title = normalizeSearchText(payload?.title);
-    const page = normalizeSearchText(payload?.paginaId);
-    const source = normalizeSearchText(payload?.source_file);
-    let boost = 0;
-
-    if (title && q.includes(title)) boost += 0.18;
-    if (page && q.includes(page)) boost += 0.10;
-    if (title && title.split(/\s+/).some((term) => term.length >= 4 && q.includes(term))) {
-        boost += 0.05;
-    }
-    if (source && q.includes(source)) boost += 0.03;
-
-    return boost;
-}
-
-function calculateHybridScores(vectorResults, lexicalResults, originalQuery) {
-    const vectorScores = normalizeScores(vectorResults);
-    const lexicalScores = normalizeLexicalScores(lexicalResults);
-    const intent = classifyQuery(originalQuery);
-    let weights = getHybridWeights(intent);
-
-    const vectorTop = vectorResults.slice(0, 5).map(r => Number(r.score) || 0);
-    const lexicalTop = lexicalResults.slice(0, 5).map(r => Number(r.score) || 0);
-    const avgVector = vectorTop.length ? vectorTop.reduce((a,b)=>a+b,0)/vectorTop.length : 0;
-    const avgLexical = lexicalTop.length ? lexicalTop.reduce((a,b)=>a+b,0)/lexicalTop.length : 0;
-    if (avgVector > 0.7 && avgLexical < 0.3) {
-        weights.vectorWeight = Math.min(weights.vectorWeight + 0.15, 0.9);
-        weights.lexicalWeight = 1 - weights.vectorWeight;
-    } else if (avgLexical > 0.7 && avgVector < 0.3) {
-        weights.lexicalWeight = Math.min(weights.lexicalWeight + 0.15, 0.9);
-        weights.vectorWeight = 1 - weights.lexicalWeight;
-    }
-
-    const rrfCandidates = calculateRRF(vectorResults, lexicalResults);
-    const candidates = new Map();
-    for (const candidate of rrfCandidates) {
-        const vectorScore = vectorScores.get(candidate.id) || 0;
-        const lexicalScore = lexicalScores.get(candidate.id) || 0;
-        const coverage = exactTermCoverage(originalQuery, candidate.payload);
-        const metadata = metadataBoost(originalQuery, candidate.payload);
-        const score =
-            vectorScore * weights.vectorWeight +
-            lexicalScore * weights.lexicalWeight +
-            candidate.rrfScore * 0.08 +
-            coverage * 0.10 +
-            metadata;
-        candidates.set(candidate.id, { ...candidate, vectorScore, lexicalScore, lexicalCoverage: coverage, metadataBoost: metadata, score });
-    }
-    return [...candidates.values()].sort((a, b) => b.score - a.score);
-}
-
-function resultSimilarity(left, right) {
-    if (!left?.payload || !right?.payload) return 0;
-    if (left.payload.source_file !== right.payload.source_file) return 0;
-
-    const leftIndex = Number(left.payload.chunk_index);
-    const rightIndex = Number(right.payload.chunk_index);
-    if (!Number.isFinite(leftIndex) || !Number.isFinite(rightIndex)) return 0;
-
-    const distance = Math.abs(leftIndex - rightIndex);
-    if (distance === 0) return 1;
-    if (distance === 1) return 0.85;
-    if (distance === 2) return 0.55;
-    if (distance <= 4) return 0.25;
-    return 0;
-}
-
-function diversifyResults(results, limit = APP_CONFIG.finalCandidates) {
-    const remaining = [...results];
-    const selected = [];
-
-    while (remaining.length && selected.length < limit) {
-        let bestIndex = 0;
-        let bestScore = Number.NEGATIVE_INFINITY;
-
-        remaining.forEach((candidate, index) => {
-            let diversityPenalty = 0;
-
-            for (const previous of selected) {
-                diversityPenalty = Math.max(
-                    diversityPenalty,
-                    resultSimilarity(candidate, previous)
-                );
-            }
-
-            const adjusted = candidate.score * (1 - 0.5 * diversityPenalty);
-
-            if (adjusted > bestScore) {
-                bestScore = adjusted;
-                bestIndex = index;
-            }
-        });
-
-        selected.push(remaining.splice(bestIndex, 1)[0]);
-    }
-
-    return selected;
-}
-
-function rerankCandidates(vectorResults, lexicalResults, originalQuery, queryVector) {
-    const hybrid = calculateHybridScores(vectorResults, lexicalResults, originalQuery);
-    const vectorScoreMap = new Map(vectorResults.map(r => [r.id, Number(r.score) || 0]));
-
-    const reranked = hybrid
-        .slice(0, APP_CONFIG.rerankCandidates)
-        .map(candidate => {
-            const semanticScore = vectorScoreMap.get(candidate.id) || 0;
-            const finalScore = candidate.score * 0.4 + semanticScore * 0.6;
-            return { ...candidate, finalScore, semanticScore };
-        })
-        .sort((a, b) => b.finalScore - a.finalScore);
-
-    return diversifyResults(reranked, APP_CONFIG.finalCandidates);
 }
 
 function sanitizeContextText(value) {
@@ -1227,64 +1112,84 @@ function truncateContextSafely(text, maxLength) {
     return truncated.trimEnd();
 }
 
-// ======== CORREÇÃO: DEDUPLICAÇÃO DE CHUNKS ========
+// ====================================================================
+// FUNÇÃO REFINADA getExpandedContext (com deduplicação por ID e prefixo)
+// ====================================================================
 function getExpandedContext(fusedResults) {
-    const selectedByFile = new Map();
+    // 1. Coletar todos os chunks candidatos (principal + vizinhos) com seu score
+    const candidateChunks = [];
 
     for (const result of fusedResults) {
         const match = result.payload;
         if (!match?.source_file || !Number.isFinite(match.chunk_index)) continue;
-        if (!selectedByFile.has(match.source_file)) {
-            selectedByFile.set(match.source_file, new Set());
-        }
-        const indexes = selectedByFile.get(match.source_file);
-        for (let offset = -APP_CONFIG.neighborWindow; offset <= APP_CONFIG.neighborWindow; offset += 1) {
-            indexes.add(match.chunk_index + offset);
-        }
-    }
 
-    const blocks = [];
-    let usedCharacters = 0;
-    const addedChunkIds = new Set(); // rastreia IDs já incluídos
-    let context = []
-    for (const [sourceFile, indexes] of selectedByFile) {
-        const fileChunks = chunksByFile.get(sourceFile);
+        const fileChunks = chunksByFile.get(match.source_file);
         if (!fileChunks) continue;
 
-        const sortedIndexes = [...indexes].sort((a, b) => a - b);
-        const fileTexts = [];
-        for (const idx of sortedIndexes) {
-            const doc = fileChunks.get(idx);
-            if (!doc) continue;
-            if (addedChunkIds.has(doc.id)) continue; // pula duplicados
-            addedChunkIds.add(doc.id);
-            const body = sanitizeContextText(doc.text_content);
-            if (body) fileTexts.push(body);
+        // Adiciona o chunk principal
+        const mainDoc = fileChunks.get(match.chunk_index);
+        if (mainDoc) {
+            candidateChunks.push({
+                doc: mainDoc,
+                score: result.score || 0,
+                isMain: true
+            });
         }
-        const text = fileTexts.join("\n\n");
+
+        // Adiciona os vizinhos
+        for (let offset = -APP_CONFIG.neighborWindow; offset <= APP_CONFIG.neighborWindow; offset += 1) {
+            if (offset === 0) continue;
+            const neighbor = fileChunks.get(match.chunk_index + offset);
+            if (neighbor) {
+                const attenuation = 1 - (Math.abs(offset) / (APP_CONFIG.neighborWindow + 1));
+                candidateChunks.push({
+                    doc: neighbor,
+                    score: (result.score || 0) * attenuation,
+                    isMain: false
+                });
+            }
+        }
+    }
+
+    // 2. Ordenar por score decrescente
+    candidateChunks.sort((a, b) => b.score - a.score);
+
+    // 3. Montar o contexto, adicionando chunks únicos (ID e prefixo) até o limite
+    const addedIds = new Set();
+    const addedPrefixes = new Set();  // para evitar conteúdo similar
+    const blocks = [];
+    let usedChars = 0;
+    const maxChars = maxContextChars || APP_CONFIG.maximumContextCharacters;
+    const dedupLen = APP_CONFIG.dedupCharCount || 100;
+
+    for (const { doc } of candidateChunks) {
+        if (addedIds.has(doc.id)) continue;
+        const text = sanitizeContextText(doc.text_content);
         if (!text) continue;
 
-        if(context.filter((existing) => existing.includes(text.substring(0, APP_CONFIG.totalEqualCaracters))).length > 0) continue;
-        context.push(text);
-    }
-     for (const text of context) {
+        // Verifica se já temos um bloco com conteúdo similar (primeiros N caracteres)
+        const prefix = text.slice(0, dedupLen).toLowerCase().trim();
+        if (addedPrefixes.has(prefix)) continue;
+        addedPrefixes.add(prefix);
 
-        const sourceBlock = text;
-        const separatorLength = blocks.length ? 7 : 0;
-        const remaining = configModelSelected.maxContextChars - usedCharacters - separatorLength;
-        if (remaining <= 180) break;
-
-        if (sourceBlock.length > remaining) {
-            blocks.push(
-                `${truncateContextSafely(sourceBlock, remaining - 48)}\n[Contexto truncado]`
-            );
-            break;
+        // Verifica se cabe (com separador)
+        const separator = blocks.length ? "\n\n---\n\n" : "";
+        const totalSize = separator.length + text.length;
+        if (usedChars + totalSize > maxChars) {
+            // Se for o primeiro bloco e não couber, trunca
+            if (blocks.length === 0) {
+                const truncated = truncateContextSafely(text, maxChars - 48);
+                if (truncated) blocks.push(truncated);
+            }
+            break; // não cabe mais
         }
 
-        blocks.push(sourceBlock);
-        usedCharacters += sourceBlock.length + separatorLength;
+        addedIds.add(doc.id);
+        blocks.push(text);
+        usedChars += totalSize;
     }
 
+    if (blocks.length === 0) return "";
     return blocks.join("\n\n---\n\n");
 }
 
@@ -1439,7 +1344,6 @@ async function buildSearchIndexes(rxDocuments) {
             title: rawDocument.title || "",
             url: rawDocument.url || "",
             text_content: rawDocument.text_content || "",
-            paginaId: rawDocument.paginaId || "",
             source_file: rawDocument.source_file || "",
             chunk_index: Number(rawDocument.chunk_index)
         };
@@ -1686,23 +1590,37 @@ function invalidateLostEngine(failedModelId = currentModelId || modelSelector.va
     currentModelId = null;
     gpuSafeMode = true;
     localStorage.setItem(STORAGE_KEYS.safeMode, "true");
+    if (failedModelId) {
+        unstableModelIds.add(failedModelId);
+        localStorage.setItem(
+            STORAGE_KEYS.unstableModels,
+            JSON.stringify([...unstableModelIds])
+        );
+    }
     return failedModelId;
 }
 
 function chooseDeviceLossFallback(failedModelId) {
-    const qwenHalfB = compatibleModelRecords.find((record) =>
-        /Qwen2\.5-0\.5B-Instruct/i.test(record.model_id)
-    );
-    if (qwenHalfB) return qwenHalfB.model_id;
+    const baseReport = currentHardwareReport || {
+        adapterFeatures: new Set(),
+        availableStorageMB: null,
+        safeVramBudgetMB: STORAGE_POLICY.safeModeVramMB,
+        deviceProfile: DEVICE_PROFILES.safe
+    };
+    const safeReport = {
+        ...baseReport,
+        safeVramBudgetMB: Math.min(
+            baseReport.safeVramBudgetMB || STORAGE_POLICY.safeModeVramMB,
+            STORAGE_POLICY.safeModeVramMB
+        ),
+        deviceProfile: DEVICE_PROFILES.safe
+    };
+    const safeCandidates = findCompatibleFastModels(safeReport)
+        .filter((record) => record.model_id !== failedModelId);
 
-    return [...compatibleModelRecords]
-        .sort((left, right) =>
-            getParameterCount(left.model_id) - getParameterCount(right.model_id)
-            || Number(left.vram_required_MB) - Number(right.vram_required_MB)
-        )
-        .find((record) => record.model_id !== failedModelId)?.model_id
-        || failedModelId
-        || compatibleModelRecords[0]?.model_id
+    currentHardwareReport = safeReport;
+    return chooseRecommendedModel(safeCandidates, safeReport)
+        || safeCandidates[0]?.model_id
         || "";
 }
 
@@ -1734,6 +1652,7 @@ async function recoverFromDeviceLoss(error) {
         throw new Error("Nenhum modelo de recuperação é compatível com esta GPU.");
     }
 
+    populateModelSelector(currentHardwareReport);
     modelSelector.value = fallbackModelId;
     showDeviceRecovery(fallbackModelId);
 
@@ -1752,6 +1671,7 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
     if (!selectedModel) throw new Error("Nenhum modelo local compatível foi encontrado.");
 
     const config = getSelectedModelConfig(selectedModel);
+    maxContextChars = config.maxContextChars;
 
     statusText.textContent = `Carregando ${formatModelName(selectedModel)}…`;
     await ensureModelStorageCapacity(selectedModel);
@@ -1804,6 +1724,13 @@ async function loadSelectedModel({ forceRecreate = false } = {}) {
         100,
         `${getModelLabel(selectedModel)} carregado${gpuSafeMode ? " · modo seguro" : ""}`
     );
+    console.info("Configuração ativa do modelo", {
+        modelId: selectedModel,
+        profile: currentHardwareReport?.deviceProfile?.label,
+        contextWindow: config.contextWindow,
+        maxOutputTokens: config.maxOutputTokens,
+        contextCharacters: config.maxContextChars
+    });
 }
 
 async function bootstrapRuntime() {
@@ -1896,8 +1823,7 @@ function setEmbeddingCache(key, vector) {
 }
 
 async function getQueryEmbedding(query) {
-    const normalizedQuery = sanitizeUserQuery(query);
-    const cacheKey = `${APP_CONFIG.semanticEmbeddingVersion}:${normalizedQuery.toLocaleLowerCase("pt-BR")}`;
+    const cacheKey = query.toLocaleLowerCase("pt-BR");
     const cached = embeddingCache.get(cacheKey);
     if (cached) {
         embeddingCache.delete(cacheKey);
@@ -1905,7 +1831,7 @@ async function getQueryEmbedding(query) {
         return cached;
     }
 
-    const output = await embedder(`query: ${normalizedQuery}`, {
+    const output = await embedder(`query: ${query}`, {
         pooling: "mean",
         normalize: true
     });
@@ -2218,7 +2144,7 @@ async function generateFinalAnswer(
         originalQuery.trim(),
         "</PERGUNTA>"
     ].join("\n");
-    const modelSelected = getSelectedModelConfig();
+
     const audienceInstruction =
         AUDIENCE_PROFILES[audienceProfile] || "";
     const effectiveSystemPrompt = audienceInstruction
@@ -2236,15 +2162,39 @@ async function generateFinalAnswer(
             { role: "user", content: userMessage }
         ],
         outputElement,
-        modelSelected.maxOutputTokens + modelSelected.contextWindow,
+        getSelectedModelConfig().maxOutputTokens,
         signal
     );
 }
 
+// ====================================================================
+// handleUserSubmit com cache de contexto
+// ====================================================================
 async function handleUserSubmit() {
     const originalQuery = userInput.value.trim();
     if (!originalQuery || generationInProgress || !runtimeReady) return;
     const audienceProfile = selectedAudienceProfile;
+
+    // Gera uma chave de cache baseada na consulta e no perfil
+    const cacheKey = `${originalQuery.toLowerCase().trim()}|${audienceProfile || ''}`;
+    const cached = contextCache.get(cacheKey);
+    if (cached) {
+        // Reutiliza o contexto e gera a resposta
+        const answerElement = appendMessage("bot", "");
+        try {
+            await generateFinalAnswer(
+                cached,
+                originalQuery,
+                audienceProfile,
+                answerElement,
+                null // sem signal (não interrompível)
+            );
+        } catch (error) {
+            answerElement.remove();
+            appendMessage("system", `Erro ao gerar resposta: ${error.message}`);
+        }
+        return;
+    }
 
     const generationController = new AbortController();
     currentGenerationController = generationController;
@@ -2257,21 +2207,15 @@ async function handleUserSubmit() {
     const answerElement = appendMessage("bot", "");
 
     try {
-        const lexicalQuery = buildLexicalQuery(originalQuery);
-        const semanticQuery = buildSemanticQuery(originalQuery);
-        const queryIntent = classifyQuery(originalQuery);
-
+        const retrievalQuery = buildRetrievalQuery(originalQuery);
         statusText.textContent = "Buscando contexto relevante…";
-        console.log("Consulta semântica:", semanticQuery);
-        console.log("Consulta lexical:", lexicalQuery);
-        console.log("Intenção de busca:", queryIntent);
+        console.log("Consulta de recuperação:", retrievalQuery);
 
-        const embeddingPromise = getQueryEmbedding(semanticQuery);
-        const lexicalResults = miniSearch.search(lexicalQuery)
+        const embeddingPromise = getQueryEmbedding(retrievalQuery);
+        const lexicalResults = miniSearch.search(retrievalQuery)
             .slice(0, APP_CONFIG.lexicalCandidates);
 
         console.log("Lexical Results:", lexicalResults);
-
         const queryVector = await awaitOrStop(
             embeddingPromise,
             generationController.signal
@@ -2284,21 +2228,18 @@ async function handleUserSubmit() {
 
         console.log("Vector Results:", vectorResults);
 
-        const finalResults = rerankCandidates(
-            vectorResults,
-            lexicalResults,
-            originalQuery,
-            queryVector
-        );
-
-        console.log("Final retrieval results:", finalResults);
-        if (finalResults.length === 0) {
+        const fusedResults = calculateRRF(vectorResults, lexicalResults);
+        console.log("Fused Results:", fusedResults);
+        if (fusedResults.length === 0) {
             answerElement.textContent =
                 "Não encontrei essa informação na documentação extraída.";
             return;
         }
 
-        let context = getExpandedContext(finalResults);
+        let context = getExpandedContext(fusedResults);
+        // Armazena no cache
+        contextCache.set(cacheKey, context);
+
         statusText.textContent = "Gerando resposta…";
         console.log("Contexto expandido:", context);
         console.log("Consulta original:", originalQuery);
@@ -2317,7 +2258,8 @@ async function handleUserSubmit() {
 
             await recoverFromDeviceLoss(error);
             throwIfGenerationStopped(generationController.signal);
-            context = getExpandedContext(finalResults);
+            context = getExpandedContext(fusedResults);
+            contextCache.set(cacheKey, context); // atualiza cache
             console.log("Contexto expandido (modo seguro):", context);
             statusText.textContent = "Gerando resposta em modo seguro…";
             await generateFinalAnswer(
@@ -2368,31 +2310,132 @@ async function handleUserSubmit() {
     }
 }
 
+// ====================================================================
+// DIAGNÓSTICO DE HARDWARE E INICIALIZAÇÃO
+// ====================================================================
+function bytesToMegabytes(value) {
+    const bytes = Number(value);
+    return Number.isFinite(bytes) && bytes > 0
+        ? Math.round(bytes / (1024 * 1024))
+        : 0;
+}
+
+function classifyGpu(adapterDescription, isMobile) {
+    const description = String(adapterDescription || "");
+    if (/(?:swiftshader|llvmpipe|software|basic render|warp)/i.test(description)) {
+        return "software";
+    }
+    if (isMobile || /(?:adreno|mali|powervr)/i.test(description)) {
+        return "mobile";
+    }
+    if (/(?:apple|unified)/i.test(description)) return "unified";
+    if (/(?:nvidia|geforce|quadro|tesla|rtx|gtx|radeon\s+rx|arc\s+a\d)/i.test(description)) {
+        return "discrete";
+    }
+    if (/(?:intel|integrated|iris|uhd|vega\s+\d|radeon\s+graphics)/i.test(description)) {
+        return "integrated";
+    }
+    return "unknown";
+}
+
 function calculateSafeVramBudgetMB(report) {
-    if (!report.estimatedRamGB) {
-        return STORAGE_POLICY.defaultSafeVramMB;
+    const ramGB = Number(report.estimatedRamGB);
+    let budgetMB;
+
+    if (!Number.isFinite(ramGB) || ramGB <= 0) {
+        budgetMB = STORAGE_POLICY.defaultSafeVramMB;
+    } else if (ramGB <= 2) {
+        budgetMB = 640;
+    } else if (ramGB <= 4) {
+        budgetMB = 900;
+    } else if (ramGB < 8) {
+        budgetMB = 1300;
+    } else if (ramGB < 16) {
+        budgetMB = 2000;
+    } else {
+        budgetMB = 2700;
     }
 
-    const ramBasedBudgetMB = Math.floor(
-        report.estimatedRamGB
-        * 1024
-        * STORAGE_POLICY.ramFractionForGpu
-    );
-    const description = report.adapterDescription || "";
-    const likelyIntegratedGpu =
-        /(?:intel|integrated|apple|adreno|mali|iris|uhd)/i.test(description);
-    const adapterCapMB = likelyIntegratedGpu
-        ? STORAGE_POLICY.defaultSafeVramMB
-        : STORAGE_POLICY.maximumSafeVramMB;
+    const gpuMultiplier = {
+        software: 0.55,
+        mobile: 0.72,
+        integrated: 0.85,
+        unified: 1.05,
+        discrete: 1.25,
+        unknown: 0.92
+    }[report.gpuClass] || 0.92;
+    budgetMB *= gpuMultiplier;
 
+    const cores = Number(report.cpuCores);
+    if (Number.isFinite(cores) && cores > 0) {
+        if (cores <= 4) budgetMB *= 0.9;
+        else if (cores >= 12) budgetMB *= 1.08;
+        else if (cores >= 8) budgetMB *= 1.05;
+    }
+
+    if (!report.adapterFeatures.has("shader-f16")) budgetMB *= 0.88;
+
+    const maxBufferSizeMB = report.adapterLimits.maxBufferSizeMB || 0;
+    if (maxBufferSizeMB && maxBufferSizeMB <= 256) budgetMB *= 0.9;
+    else if (maxBufferSizeMB >= 1024) budgetMB *= 1.05;
+
+    if (Number.isFinite(report.availableStorageMB)) {
+        if (report.availableStorageMB < 1000) budgetMB = Math.min(budgetMB, 800);
+        else if (report.availableStorageMB < 1800) {
+            budgetMB = Math.min(budgetMB, 1200);
+        }
+    }
+
+    if (gpuSafeMode) {
+        budgetMB = Math.min(budgetMB, STORAGE_POLICY.safeModeVramMB);
+    }
+
+    const roundedBudget = Math.floor(budgetMB / 32) * 32;
     return Math.max(
-        768,
-        Math.min(
-            ramBasedBudgetMB,
-            adapterCapMB,
-            STORAGE_POLICY.maximumSafeVramMB
-        )
+        STORAGE_POLICY.minimumSafeVramMB,
+        Math.min(roundedBudget, STORAGE_POLICY.maximumSafeVramMB)
     );
+}
+
+function chooseDeviceProfile(report) {
+    if (gpuSafeMode) return DEVICE_PROFILES.safe;
+
+    const ramGB = Number(report.estimatedRamGB);
+    const cores = Number(report.cpuCores);
+    const ramKnown = Number.isFinite(ramGB) && ramGB > 0;
+    const coresKnown = Number.isFinite(cores) && cores > 0;
+    const budgetMB = report.safeVramBudgetMB;
+
+    if (
+        report.gpuClass === "mobile"
+        || report.gpuClass === "software"
+        || (ramKnown && ramGB <= 4)
+        || (coresKnown && cores <= 4)
+        || budgetMB < 850
+    ) {
+        return DEVICE_PROFILES.essential;
+    }
+
+    if (
+        budgetMB < 1350
+        || (ramKnown && ramGB < 8)
+        || (coresKnown && cores < 6)
+    ) {
+        return DEVICE_PROFILES.light;
+    }
+
+    const performanceGpu = report.gpuClass === "discrete"
+        || report.gpuClass === "unified";
+    if (
+        performanceGpu
+        && budgetMB >= 2200
+        && (!coresKnown || cores >= 8)
+        && (!ramKnown || ramGB >= 8)
+    ) {
+        return DEVICE_PROFILES.performance;
+    }
+
+    return DEVICE_PROFILES.balanced;
 }
 
 async function checkSystemSpecs() {
@@ -2400,11 +2443,20 @@ async function checkSystemSpecs() {
         webGpuSupported: false,
         adapterFeatures: new Set(),
         adapterDescription: "",
+        adapterLimits: {
+            maxBufferSizeMB: 0,
+            maxStorageBufferBindingSizeMB: 0,
+            maxComputeWorkgroupStorageKB: 0
+        },
+        gpuClass: "unknown",
         knownDriverIncompatibility: false,
+        isMobile: /(?:Android|iPhone|iPad|Mobile)/i.test(navigator.userAgent),
         estimatedRamGB: navigator.deviceMemory || null,
         cpuCores: navigator.hardwareConcurrency || null,
         availableStorageMB: null,
         safeVramBudgetMB: STORAGE_POLICY.defaultSafeVramMB,
+        deviceProfile: DEVICE_PROFILES.light,
+        recommendedModelId: "",
         isCompatible: false,
         warnings: []
     };
@@ -2424,8 +2476,22 @@ async function checkSystemSpecs() {
                 report.adapterDescription = [
                     adapter.info?.vendor,
                     adapter.info?.architecture,
+                    adapter.info?.device,
                     adapter.info?.description
                 ].filter(Boolean).join(" ");
+                report.adapterLimits = {
+                    maxBufferSizeMB: bytesToMegabytes(
+                        adapter.limits?.maxBufferSize
+                    ),
+                    maxStorageBufferBindingSizeMB: bytesToMegabytes(
+                        adapter.limits?.maxStorageBufferBindingSize
+                    ),
+                    maxComputeWorkgroupStorageKB: Math.round(
+                        Number(adapter.limits?.maxComputeWorkgroupStorageSize || 0)
+                        / 1024
+                    )
+                };
+
                 if (
                     /Android/i.test(navigator.userAgent)
                     && /(?:Qualcomm|Adreno)/i.test(report.adapterDescription)
@@ -2444,23 +2510,60 @@ async function checkSystemSpecs() {
     }
 
     if (navigator.storage?.estimate) {
-        const estimate = await navigator.storage.estimate();
-        report.availableStorageMB = Math.round(
-            ((estimate.quota || 0) - (estimate.usage || 0)) / (1024 * 1024)
-        );
-        if (report.availableStorageMB < 1500) {
+        try {
+            const estimate = await navigator.storage.estimate();
+            const quotaBytes = Number(estimate.quota) || 0;
+            const usageBytes = Number(estimate.usage) || 0;
+            if (quotaBytes > 0) {
+                report.availableStorageMB = Math.round(
+                    (quotaBytes - usageBytes) / (1024 * 1024)
+                );
+                if (report.availableStorageMB < 1500) {
+                    report.warnings.push(
+                        `Há apenas ${report.availableStorageMB} MB livres; `
+                        + "o sistema priorizará um modelo menor."
+                    );
+                }
+            }
+        } catch (error) {
             report.warnings.push(
-                `Há apenas ${report.availableStorageMB} MB livres; escolha um modelo menor.`
+                `Não foi possível estimar o armazenamento: ${error.message}`
             );
         }
     }
-    if (report.estimatedRamGB && report.estimatedRamGB < 4) {
-        report.warnings.push("Pouca memória disponível; prefira um modelo de até 1B.");
+
+    if (report.estimatedRamGB && report.estimatedRamGB <= 4) {
+        report.warnings.push(
+            "Pouca memória detectada; o sistema priorizará um modelo de até 0,6B."
+        );
+    }
+    if (report.cpuCores && report.cpuCores <= 4) {
+        report.warnings.push(
+            "Poucos núcleos de CPU detectados; o contexto e a saída serão reduzidos."
+        );
     }
 
+    report.gpuClass = classifyGpu(
+        report.adapterDescription,
+        report.isMobile
+    );
     report.safeVramBudgetMB = calculateSafeVramBudgetMB(report);
+    report.deviceProfile = chooseDeviceProfile(report);
     report.isCompatible = report.webGpuSupported
         && !report.knownDriverIncompatibility;
+
+    console.info("Diagnóstico automático do dispositivo", {
+        ramGB: report.estimatedRamGB,
+        cpuCores: report.cpuCores,
+        gpu: report.adapterDescription || report.gpuClass,
+        gpuClass: report.gpuClass,
+        shaderF16: report.adapterFeatures.has("shader-f16"),
+        adapterLimits: report.adapterLimits,
+        availableStorageMB: report.availableStorageMB,
+        safeVramBudgetMB: report.safeVramBudgetMB,
+        profile: report.deviceProfile.label
+    });
+
     return report;
 }
 
@@ -2470,6 +2573,7 @@ async function clearLocalApplicationCache() {
     engineHealthy = false;
     currentModelId = null;
     gpuSafeMode = false;
+    unstableModelIds.clear();
 
     if (typeof embedder?.dispose === "function") await embedder.dispose();
     embedder = null;
@@ -2517,6 +2621,9 @@ async function clearLocalApplicationCache() {
     Object.values(STORAGE_KEYS).forEach((key) => localStorage.removeItem(key));
 }
 
+// ====================================================================
+// INICIALIZAÇÃO
+// ====================================================================
 renderWelcome();
 permissionAccept.disabled = true;
 hardwareReportPromise = checkSystemSpecs();
@@ -2535,8 +2642,15 @@ hardwareReportPromise.then((report) => {
     }
 
     permissionAccept.disabled = false;
-    if (report.warnings.length) showToast(report.warnings.join(" "));
-    statusText.textContent = "Aguardando permissão";
+    if (report.warnings.length) {
+        showToast(report.warnings.join(" "));
+    } else {
+        showToast(
+            `Modelo recomendado: ${formatModelName(recommendedModelId)}.`
+        );
+    }
+    statusText.textContent =
+        `Perfil ${report.deviceProfile.label} · aguardando permissão`;
 }).catch((error) => {
     permissionOverlay.classList.add("hidden");
     appendMessage("system", `Falha no diagnóstico do dispositivo: ${error.message}`);
@@ -2622,6 +2736,7 @@ document.getElementById("cache-confirm").addEventListener("click", async () => {
         statusText.textContent = "Cache excluído";
         showToast("Cache local excluído com sucesso.");
 
+        hardwareReportPromise = checkSystemSpecs();
         const report = await hardwareReportPromise;
         populateModelSelector(report);
         permissionAccept.disabled = !report.isCompatible
