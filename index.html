@@ -254,7 +254,7 @@ const APP_CONFIG = Object.freeze({
     embeddingCacheSize: 64,
     semanticEmbeddingVersion: "e5-query-v2",
     repetitionCheckIntervalCharacters: 96,
-    repeatedSequenceWords: 18,
+    repeatedSequenceWords: 15,
     repeatedShortSequenceWords: 8,
     maxOutputTokens: 4000,
     totalEqualCaracters: 100,
@@ -1958,6 +1958,7 @@ function isDegenerateText(text) {
 }
 
 function tokenizeGeneratedText(text) {
+    debugger
     return [...String(text).matchAll(/[\p{L}\p{N}]+(?:[-_][\p{L}\p{N}]+)*/gu)]
         .map((match) => ({
             value: match[0]

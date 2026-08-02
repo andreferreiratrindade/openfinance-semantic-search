@@ -280,8 +280,8 @@ const DEVICE_PROFILES = Object.freeze({
         label: "Essencial",
         targetParametersB: 0.5,
         maxParametersB: 0.6,
-        contextWindow: 2048,
-        maxOutputTokens: 384
+        contextWindow: 4096,
+        maxOutputTokens: 4096
     }),
     light: Object.freeze({
         id: "light",
@@ -904,13 +904,13 @@ function scoreModelForDevice(record, report) {
 
 function chooseRecommendedModel(records, report) {
     if (!records.length) return "";
-
-    return [...records]
-        .sort((left, right) =>
-            scoreModelForDevice(right, report)
-            - scoreModelForDevice(left, report)
-            || Number(left.vram_required_MB) - Number(right.vram_required_MB)
-        )[0]?.model_id || "";
+    return "Qwen2.5-0.5B-Instruct-q4f16_1-MLC"
+    // return [...records]
+    //     .sort((left, right) =>
+    //         scoreModelForDevice(right, report)
+    //         - scoreModelForDevice(left, report)
+    //         || Number(left.vram_required_MB) - Number(right.vram_required_MB)
+    //     )[0]?.model_id || "";
 }
 
 function chooseDefaultModel(records, report) {
@@ -1159,7 +1159,8 @@ function getExpandedContext(fusedResults) {
     const addedPrefixes = new Set();  // para evitar conteúdo similar
     const blocks = [];
     let usedChars = 0;
-    const maxChars = maxContextChars || APP_CONFIG.maximumContextCharacters;
+   // const maxChars = maxContextChars || APP_CONFIG.maximumContextCharacters;
+    const maxChars =APP_CONFIG.maximumContextCharacters;
     const dedupLen = APP_CONFIG.dedupCharCount || 100;
 
     for (const { doc } of candidateChunks) {
